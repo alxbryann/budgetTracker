@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 public class Controller {
 
@@ -19,6 +19,13 @@ public class Controller {
     public void createFo(FinancialObligation fo) {
         try {
             pc.createFo(fo);
+            System.out.println("creando fo, id: " + fo.getId());
+            if (fo.isRepetitive()) {
+                System.out.println("creando repetitivefo");
+                RepetitiveFO rf = new RepetitiveFO();
+                rf.setFo_id(fo.getId());
+                pc.createRepetitiveFo(rf);
+            }
         } catch (Exception e) {
             System.out.println("Exception");
         }
@@ -32,8 +39,16 @@ public class Controller {
         }
     }
 
+    public List findAllRepetitiveFo() {
+        return pc.findAllRepetitiveFO();
+    }
+
     public List findAllFo() {
         return pc.findAllFo();
+    }
+
+    public FinancialObligation findFOById(int id) {
+        return pc.findFoById(id);
     }
 
     public List findAllIncome() {
@@ -66,6 +81,10 @@ public class Controller {
 
     public ArrayList paintDays() {
         return model.paintDays();
+    }
+
+    public void getRepetitiveFO() {
+        model.getRepetitiveFO();
     }
 
 }

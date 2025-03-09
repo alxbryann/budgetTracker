@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 public class Model {
 
@@ -83,5 +83,20 @@ public class Model {
             }
         }
         return days;
+    }
+
+    public /*ArrayList<String>*/ void getRepetitiveFO() {
+        List<RepetitiveFO> rf;
+        rf = (List<RepetitiveFO>) controller.findAllRepetitiveFo();
+        System.out.println("size: " + rf.size());
+        for (int i = 0; i < rf.size(); i++) {
+            System.out.println("el id es: " + rf.get(i).getFo_id());
+            int id = rf.get(i).getFo_id();
+            FinancialObligation fo = (FinancialObligation) controller.findFOById(id);
+            System.out.println(fo.getName() + ", se repite, desde : " + fo.getDate());
+            if (fo.isWeekOrMonth()) {
+                
+            }
+        }
     }
 }

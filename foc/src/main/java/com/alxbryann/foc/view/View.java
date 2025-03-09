@@ -1,6 +1,7 @@
 package com.alxbryann.foc.view;
 
 import com.alxbryann.foc.model.Controller;
+import com.alxbryann.foc.model.RepetitiveFO;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -132,7 +133,7 @@ public final class View extends JFrame {
         paintDays();
         setVisible(true);
     }
-    
+
     public void paintDays() {
         ArrayList<Object[]> daysToPaint = viewController.paintDays();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
@@ -147,7 +148,6 @@ public final class View extends JFrame {
             int blue = Integer.parseInt(strRgb);
             Object name = daysToPaint.get(i + 2);
             String strName = (String) name;
-
             viewCalendar[intDay - 1].setBackground(new Color(red, green, blue));
             JLabel nameJLabel = new JLabel(strName);
             nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
@@ -156,5 +156,10 @@ public final class View extends JFrame {
             nameJLabel.setBounds(0, 40, 100, 50);
             viewCalendar[intDay - 1].add(nameJLabel);
         }
+        paintRepetitiveFO();
+    }
+    
+    public void paintRepetitiveFO(){
+        viewController.getRepetitiveFO();
     }
 }

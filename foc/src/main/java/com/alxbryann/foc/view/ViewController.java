@@ -37,6 +37,10 @@ public class ViewController {
         return controller.findAllFo();
     }
 
+    public void getRepetitiveFO() {
+        controller.getRepetitiveFO();
+    }
+
     public List getInfoIncome() {
         return controller.findAllIncome();
     }

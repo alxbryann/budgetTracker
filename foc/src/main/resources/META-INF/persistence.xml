@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.alxbryann.foc.model.FinancialObligation</class>
     <class>com.alxbryann.foc.model.Income</class>
+    <class>com.alxbryann.foc.model.RepetitiveFO</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://82.197.82.18:3306/u482925761_foc?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true "/>
       <property name="javax.persistence.jdbc.user" value="u482925761_alxbryann"/>

@@ -1,5 +1,10 @@
 package com.alxbryann.foc.model;
 
+/**
+ *
+ * @author alxbryann
+ */
+
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.Date;
@@ -90,7 +95,7 @@ public class FinancialObligation implements Serializable {
                 + color.getBlue();
     }
 
-    public boolean isIsRepetitive() {
+    public boolean isRepetitive() {
         return isRepetitive;
     }
 

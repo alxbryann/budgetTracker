@@ -51,4 +51,12 @@ public final class Calendar {
     public LocalDate getLocalDate() {
         return LocalDate.now();
     }
+
+    public int getMonth() {
+        return LocalDate.now().getMonthValue(); // Retorna el número del mes (1-12)
+    }
+
+    public int getDay() {
+        return LocalDate.now().getDayOfMonth(); // Retorna el día del mes (1-31)
+    }
 }
