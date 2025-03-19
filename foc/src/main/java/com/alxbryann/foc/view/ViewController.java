@@ -37,10 +37,6 @@ public class ViewController {
         return controller.findAllFo();
     }
 
-    public void getRepetitiveFO() {
-        controller.getRepetitiveFO();
-    }
-
     public List getInfoIncome() {
         return controller.findAllIncome();
     }
@@ -55,6 +51,10 @@ public class ViewController {
 
     public ArrayList paintDays() {
         return controller.paintDays();
+    }
+    
+    public ArrayList paintRepetitiveDays() {
+        return controller.paintRepetitiveDays();
     }
 
     public void paintDaysInView() {

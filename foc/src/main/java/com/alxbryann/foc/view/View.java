@@ -1,7 +1,6 @@
 package com.alxbryann.foc.view;
 
 import com.alxbryann.foc.model.Controller;
-import com.alxbryann.foc.model.RepetitiveFO;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -20,7 +19,7 @@ public final class View extends JFrame {
 
     private ViewController viewController;
     private JPanel[] viewCalendar;
-    private JPanel notifications;
+    private final JPanel notifications;
 
     public View(Controller controller) {
         viewController = new ViewController();
@@ -160,6 +159,26 @@ public final class View extends JFrame {
     }
     
     public void paintRepetitiveFO(){
-        viewController.getRepetitiveFO();
+        ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveDays();
+        for (int i = 0; i < daysToPaint.size(); i += 3) {
+            Object day = daysToPaint.get(i);
+            Object rgb = daysToPaint.get(i + 1);
+            int intDay = (Integer) day;
+            String strRgb = (String) rgb;
+            int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
+            strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
+            int green = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
+            strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
+            int blue = Integer.parseInt(strRgb);
+            Object name = daysToPaint.get(i + 2);
+            String strName = (String) name;
+            viewCalendar[intDay - 1].setBackground(new Color(red, green, blue));
+            JLabel nameJLabel = new JLabel(strName);
+            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
+            nameJLabel.setForeground(Color.BLACK);
+            nameJLabel.setHorizontalAlignment(JLabel.CENTER);
+            nameJLabel.setBounds(0, 40, 100, 50);
+            viewCalendar[intDay - 1].add(nameJLabel);
+        }
     }
 }

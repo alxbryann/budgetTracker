@@ -19,9 +19,7 @@ public class Controller {
     public void createFo(FinancialObligation fo) {
         try {
             pc.createFo(fo);
-            System.out.println("creando fo, id: " + fo.getId());
             if (fo.isRepetitive()) {
-                System.out.println("creando repetitivefo");
                 RepetitiveFO rf = new RepetitiveFO();
                 rf.setFo_id(fo.getId());
                 pc.createRepetitiveFo(rf);
@@ -83,8 +81,8 @@ public class Controller {
         return model.paintDays();
     }
 
-    public void getRepetitiveFO() {
-        model.getRepetitiveFO();
+    public ArrayList paintRepetitiveDays() {
+        return model.paintRepetitiveDays();
     }
 
 }

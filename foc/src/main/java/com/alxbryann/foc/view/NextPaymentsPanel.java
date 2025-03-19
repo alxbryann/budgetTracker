@@ -12,9 +12,9 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-public class NextPaymentsPanel extends JPanel {
+public final class NextPaymentsPanel extends JPanel {
 
-    private ViewController viewController;
+    private final ViewController viewController;
     private JPanel foContainer;
 
     public NextPaymentsPanel(ViewController viewController) {

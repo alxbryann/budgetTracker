@@ -2,7 +2,9 @@ package com.alxbryann.foc.model;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 
 public final class Calendar {
 
@@ -53,10 +55,22 @@ public final class Calendar {
     }
 
     public int getMonth() {
-        return LocalDate.now().getMonthValue(); // Retorna el número del mes (1-12)
+        return LocalDate.now().getMonthValue(); 
+    }
+
+    public int getMonthFromFo(Date date) {
+        LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
+        String localDateStr = String.valueOf(localDate);
+        return Integer.parseInt(localDateStr.substring(localDateStr.length() - 5, localDateStr.length() - 3));
     }
 
     public int getDay() {
-        return LocalDate.now().getDayOfMonth(); // Retorna el día del mes (1-31)
+        return LocalDate.now().getDayOfMonth(); 
+    }
+
+    public int getDayFromFo(Date date) {
+        LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
+        String localDateStr = String.valueOf(localDate);
+        return Integer.parseInt(localDateStr.substring(localDateStr.length() - 2, localDateStr.length()));
     }
 }

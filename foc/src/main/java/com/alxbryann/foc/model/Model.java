@@ -3,7 +3,6 @@ package com.alxbryann.foc.model;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,10 +53,8 @@ public class Model {
             for (int i = 0; i < allFo.size(); i++) {
                 FinancialObligation fo = (FinancialObligation) allFo.get(i);
                 Date date = fo.getDate();
-                LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
-                String localDateStr = String.valueOf(localDate);
-                int day = Integer.parseInt(localDateStr.substring(localDateStr.length() - 2, localDateStr.length()));
-                int month = Integer.parseInt(localDateStr.substring(localDateStr.length() - 5, localDateStr.length() - 3));
+                int day = cal.getDayFromFo(date);
+                int month = cal.getMonthFromFo(date);
                 Days temp = cal.getDayByNumber(day, month);
                 temp.setNewObligation(fo);
                 if (!cal.getBusyDays().contains(temp)) {
@@ -85,18 +82,30 @@ public class Model {
         return days;
     }
 
-    public /*ArrayList<String>*/ void getRepetitiveFO() {
+    public ArrayList<Integer> paintRepetitiveDays() {
+        ArrayList days = new ArrayList<>();
         List<RepetitiveFO> rf;
         rf = (List<RepetitiveFO>) controller.findAllRepetitiveFo();
-        System.out.println("size: " + rf.size());
         for (int i = 0; i < rf.size(); i++) {
-            System.out.println("el id es: " + rf.get(i).getFo_id());
             int id = rf.get(i).getFo_id();
-            FinancialObligation fo = (FinancialObligation) controller.findFOById(id);
-            System.out.println(fo.getName() + ", se repite, desde : " + fo.getDate());
-            if (fo.isWeekOrMonth()) {
-                
+            FinancialObligation tempFo = (FinancialObligation) controller.findFOById(id);
+            if (tempFo.isWeekOrMonth()) {
+                int foDay = cal.getDayFromFo(tempFo.getDate());
+                int foMonth = cal.getMonthFromFo(tempFo.getDate());
+                int thisMonth = cal.getMonth();
+                int dayToPaint = foDay + 7;
+                while (dayToPaint < cal.getDaysInMonth()) {
+                    if (foMonth == thisMonth) {
+                        days.add(dayToPaint);
+                        days.add(tempFo.getRgb());
+                        days.add(tempFo.getName());
+                        dayToPaint += 7;
+                    }
+                }
+
+            } else {
             }
         }
+        return days;
     }
 }
