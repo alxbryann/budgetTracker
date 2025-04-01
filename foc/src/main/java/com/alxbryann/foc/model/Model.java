@@ -55,7 +55,7 @@ public class Model {
                 Date date = fo.getDate();
                 int day = cal.getDayFromFo(date);
                 int month = cal.getMonthFromFo(date);
-                Days temp = cal.getDayByNumber(day, month);
+                Day temp = cal.getDayByNumber(day, month);
                 temp.setNewObligation(fo);
                 if (!cal.getBusyDays().contains(temp)) {
                     cal.addToBusyDays(temp, month);
@@ -71,7 +71,7 @@ public class Model {
     public ArrayList<Integer> paintDays() {
         ArrayList days = new ArrayList<>();
         for (int i = 0; i < cal.getBusyDays().size(); i++) {
-            Days tempDay = cal.getBusyDays().get(i);
+            Day tempDay = cal.getBusyDays().get(i);
             for (int j = 0; j < tempDay.getObligations().size(); j++) {
                 FinancialObligation tempFo = (FinancialObligation) tempDay.getObligations().get(j);
                 days.add(tempDay.getNumberDay());
@@ -89,23 +89,43 @@ public class Model {
         for (int i = 0; i < rf.size(); i++) {
             int id = rf.get(i).getFo_id();
             FinancialObligation tempFo = (FinancialObligation) controller.findFOById(id);
-            if (tempFo.isWeekOrMonth()) {
+            if (tempFo.isWeekOrMonth()) { //if is repetitive by week
                 int foDay = cal.getDayFromFo(tempFo.getDate());
                 int foMonth = cal.getMonthFromFo(tempFo.getDate());
                 int thisMonth = cal.getMonth();
                 int dayToPaint = foDay + 7;
                 while (dayToPaint < cal.getDaysInMonth()) {
-                    if (foMonth == thisMonth) {
-                        days.add(dayToPaint);
-                        days.add(tempFo.getRgb());
-                        days.add(tempFo.getName());
-                        dayToPaint += 7;
-                    }
+                    try {
+                        if (foMonth == thisMonth) {
+                            days.add(dayToPaint);
+                            days.add(tempFo.getRgb());
+                            days.add(tempFo.getName());
+                            dayToPaint += 7;
+                            Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
+                            tempDay.setNewObligation(tempFo);
+                        }
+                    } catch (Exception e) {}
                 }
 
-            } else {
+            } else { // if is repetitive by month
+                int dayToPaint = cal.getDayFromFo(tempFo.getDate());
+                days.add(dayToPaint);
+                days.add(tempFo.getRgb());
+                days.add(tempFo.getName());
+                Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
+                tempDay.setNewObligation(tempFo);
             }
         }
         return days;
     }
+
+    public void assignRepetitiveFoToDays() {
+
+    }
+
+    public List getFOsByDay(int day) {
+        Day tempDay = cal.getDayByNumber(day, cal.getMonth());
+        return tempDay.getObligations();
+    }
+
 }

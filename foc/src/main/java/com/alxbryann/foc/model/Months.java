@@ -8,26 +8,26 @@ import java.util.ArrayList;
  */
 public class Months {
 
-    private ArrayList<Days> days = new ArrayList<>();
-    private ArrayList<Days> busyDays = new ArrayList<>();
+    private ArrayList<Day> days = new ArrayList<>();
+    private ArrayList<Day> busyDays = new ArrayList<>();
 
     public Months(int numberOfDays) {
         for (int i = 0; i < numberOfDays; i++) {
-            Days temp = new Days();
+            Day temp = new Day();
             temp.setNumberDay(i);
             days.add(temp);
         }
     }
 
-    public Days getDayByNumber(int numberDay) {
+    public Day getDayByNumber(int numberDay) {
         return days.get(numberDay);
     }
 
-    public ArrayList<Days> getBusyDays() {
+    public ArrayList<Day> getBusyDays() {
         return busyDays;
     }
 
-    public void addToBusyDays(Days days) {
+    public void addToBusyDays(Day days) {
         busyDays.add(days);
     }
 

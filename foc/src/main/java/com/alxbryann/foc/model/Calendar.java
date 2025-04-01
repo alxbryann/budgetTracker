@@ -9,8 +9,8 @@ import java.util.Date;
 public final class Calendar {
 
     private int daysInMonth;
-    private final ArrayList<Days> days = new ArrayList<>();
-    private final ArrayList<Days> busyDays = new ArrayList<>();
+    private final ArrayList<Day> days = new ArrayList<>();
+    private final ArrayList<Day> busyDays = new ArrayList<>();
     private final ArrayList<Months> months = new ArrayList<>();
 
     public Calendar() {
@@ -19,7 +19,7 @@ public final class Calendar {
         }
     }
 
-    public Days getDayByNumber(int numberDay, int month) {
+    public Day getDayByNumber(int numberDay, int month) {
         return months.get(month).getDayByNumber(numberDay);
     }
 
@@ -42,11 +42,11 @@ public final class Calendar {
         return daysInMonth;
     }
 
-    public ArrayList<Days> getBusyDays() {
+    public ArrayList<Day> getBusyDays() {
         return months.get(LocalDate.now().getMonthValue()).getBusyDays();
     }
 
-    public void addToBusyDays(Days days, int month) {
+    public void addToBusyDays(Day days, int month) {
         months.get(month).addToBusyDays(days);
     }
 

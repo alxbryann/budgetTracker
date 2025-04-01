@@ -84,5 +84,9 @@ public class Controller {
     public ArrayList paintRepetitiveDays() {
         return model.paintRepetitiveDays();
     }
+    
+    public List getFOsByDay(int day){
+        return model.getFOsByDay(day);
+    }
 
 }

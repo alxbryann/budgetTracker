@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -77,6 +79,31 @@ public final class View extends JFrame {
         color = new Color(194, 206, 197);
         calendary.setBackground(color);
 
+        MouseListener dayClickListener = new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JPanel clickedPanel = (JPanel) e.getSource();
+                int clickedDay = (int) clickedPanel.getClientProperty("dayNumber");
+                System.out.println(viewController.getFOsByDay(clickedDay));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        };
+
         viewCalendar = new JPanel[viewController.getDaysInMonth()];
         int x = 30, y = 10;
         for (int i = 1; i < viewCalendar.length + 1; i++) {
@@ -110,6 +137,8 @@ public final class View extends JFrame {
             numberDay.setBounds(10, 6, 50, 30);
             numberDay.setForeground(Color.white);
             day.add(numberDay);
+            day.putClientProperty("dayNumber", i);
+            day.addMouseListener(dayClickListener);
             viewCalendar[i - 1] = day;
 
             x += 115;
@@ -157,8 +186,8 @@ public final class View extends JFrame {
         }
         paintRepetitiveFO();
     }
-    
-    public void paintRepetitiveFO(){
+
+    public void paintRepetitiveFO() {
         ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveDays();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);

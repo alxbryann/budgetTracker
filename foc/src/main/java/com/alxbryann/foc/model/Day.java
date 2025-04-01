@@ -2,7 +2,7 @@ package com.alxbryann.foc.model;
 
 import java.util.ArrayList;
 
-public class Days {
+public class Day {
 
     private int numberDay;
     private ArrayList<FinancialObligation> obligations = new ArrayList<>();

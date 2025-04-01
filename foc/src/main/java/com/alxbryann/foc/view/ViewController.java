@@ -60,5 +60,9 @@ public class ViewController {
     public void paintDaysInView() {
         vt.paintDays();
     }
+    
+    public List getFOsByDay(int day){
+        return controller.getFOsByDay(day);
+    }
 
 }

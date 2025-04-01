@@ -111,4 +111,9 @@ public class FinancialObligation implements Serializable {
         this.weekOrMonth = weekOrMonth;
     }
 
+    @Override
+    public String toString() {
+        return "FinancialObligation{" + "id=" + id + ", name=" + name + ", date=" + date + ", cost=" + cost + ", rgb=" + rgb + ", isRepetitive=" + isRepetitive + ", weekOrMonth=" + weekOrMonth + '}';
+    }
+    
 }
