@@ -308,6 +308,7 @@ public final class NextPaymentsPanel extends JPanel {
                         }
                     };
                     nameContainer.setBounds(0, y, 120, 40);
+                    nameContainer.setLayout(new GridBagLayout());
                     String rgb = temp.getRgb();
                     int red = Integer.parseInt(rgb.substring(0, rgb.indexOf(",")));
                     rgb = rgb.substring(rgb.indexOf(",") + 2);
@@ -318,8 +319,17 @@ public final class NextPaymentsPanel extends JPanel {
                     nameContainer.setBackground(new Color(red, green, blue));
                     foContainer.add(nameContainer);
                     JLabel name = new JLabel(temp.getName());
-                    name.setFont(new Font("Lexend", Font.PLAIN, 22));
-                    name.setForeground(Color.BLACK);
+                    if (temp.getName().length() <= 7) {
+                        name.setFont(new Font("Lexend", Font.PLAIN, 22));
+                    } else {
+                        if (temp.getName().length() > 7) {
+                            name.setFont(new Font("Lexend", Font.PLAIN, 16));
+                        } else {
+                            if (temp.getName().length() > 10) {
+                                name.setFont(new Font("Lexend", Font.PLAIN, 14));
+                            }
+                        }
+                    }
                     nameContainer.add(name);
                     JPanel costContainer = new JPanel() {
                         @Override
@@ -346,7 +356,17 @@ public final class NextPaymentsPanel extends JPanel {
                     JLabel cost = new JLabel("        " + "$" + String.valueOf(temp.getCost()));
                     costContainer.setOpaque(true);
                     costContainer.setBackground(Color.WHITE);
-                    cost.setFont(new Font("Lexend", Font.PLAIN, 22));
+                    if (String.valueOf(temp.getCost()).length() <= 7) {
+                        cost.setFont(new Font("Lexend", Font.PLAIN, 22));
+                    } else {
+                        if (String.valueOf(temp.getCost()).length() > 7) {
+                            cost.setFont(new Font("Lexend", Font.PLAIN, 16));
+                        } else {
+                            if (String.valueOf(temp.getCost()).length() > 10) {
+                                cost.setFont(new Font("Lexend", Font.PLAIN, 14));
+                            }
+                        }
+                    }
                     cost.setForeground(Color.BLACK);
                     cost.setBounds(100, 0, 100, 100);
                     costContainer.add(cost);

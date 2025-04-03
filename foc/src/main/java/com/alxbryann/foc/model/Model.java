@@ -96,7 +96,7 @@ public class Model {
                 int dayToPaint = foDay + 7;
                 while (dayToPaint < cal.getDaysInMonth()) {
                     try {
-                        if (foMonth == thisMonth) {
+                        if (foMonth <= thisMonth) {
                             days.add(dayToPaint);
                             days.add(tempFo.getRgb());
                             days.add(tempFo.getName());
@@ -104,7 +104,8 @@ public class Model {
                             Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
                             tempDay.setNewObligation(tempFo);
                         }
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
                 }
 
             } else { // if is repetitive by month

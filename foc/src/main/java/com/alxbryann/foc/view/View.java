@@ -105,6 +105,7 @@ public final class View extends JFrame {
         };
 
         viewCalendar = new JPanel[viewController.getDaysInMonth()];
+
         int x = 30, y = 10;
         for (int i = 1; i < viewCalendar.length + 1; i++) {
             JPanel day = new JPanel() {
@@ -149,7 +150,6 @@ public final class View extends JFrame {
         }
 
         add(calendary);
-
         notifications = new JPanel();
         notifications.setLayout(null);
         notifications.setBounds(920, 0, 400, 720);
@@ -178,7 +178,18 @@ public final class View extends JFrame {
             String strName = (String) name;
             viewCalendar[intDay - 1].setBackground(new Color(red, green, blue));
             JLabel nameJLabel = new JLabel(strName);
-            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
+            if (strName.length() <= 7) {
+                nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
+            } else {
+                if (strName.length() > 7) {
+                    nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
+                } else {
+                    if (strName.length() > 10) {
+                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 10));
+                    }
+                }
+            }
+
             nameJLabel.setForeground(Color.BLACK);
             nameJLabel.setHorizontalAlignment(JLabel.CENTER);
             nameJLabel.setBounds(0, 40, 100, 50);
@@ -201,13 +212,26 @@ public final class View extends JFrame {
             int blue = Integer.parseInt(strRgb);
             Object name = daysToPaint.get(i + 2);
             String strName = (String) name;
-            viewCalendar[intDay - 1].setBackground(new Color(red, green, blue));
-            JLabel nameJLabel = new JLabel(strName);
-            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
-            nameJLabel.setForeground(Color.BLACK);
-            nameJLabel.setHorizontalAlignment(JLabel.CENTER);
-            nameJLabel.setBounds(0, 40, 100, 50);
-            viewCalendar[intDay - 1].add(nameJLabel);
+            //if (viewCalendar[intDay - 1].) {
+                viewCalendar[intDay - 1].setBackground(new Color(red, green, blue));
+                JLabel nameJLabel = new JLabel(strName);
+                if (strName.length() <= 7) {
+                    nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
+                } else {
+                    if (strName.length() > 7) {
+                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
+                    } else {
+                        if (strName.length() > 10) {
+                            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 10));
+                        }
+                    }
+                }
+
+                nameJLabel.setForeground(Color.BLACK);
+                nameJLabel.setHorizontalAlignment(JLabel.CENTER);
+                nameJLabel.setBounds(0, 40, 100, 50);
+                viewCalendar[intDay - 1].add(nameJLabel);
+            //}
         }
     }
 }
