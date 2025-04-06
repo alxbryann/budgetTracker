@@ -91,9 +91,9 @@ public class Model {
             FinancialObligation tempFo = (FinancialObligation) controller.findFOById(id);
             if (tempFo.isWeekOrMonth()) { //if is repetitive by week
                 int foDay = cal.getDayFromFo(tempFo.getDate());
+                int dayToPaint = foDay;
                 int foMonth = cal.getMonthFromFo(tempFo.getDate());
                 int thisMonth = cal.getMonth();
-                int dayToPaint = foDay + 7;
                 while (dayToPaint < cal.getDaysInMonth()) {
                     try {
                         if (foMonth <= thisMonth) {
@@ -101,8 +101,10 @@ public class Model {
                             days.add(tempFo.getRgb());
                             days.add(tempFo.getName());
                             dayToPaint += 7;
-                            Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
-                            tempDay.setNewObligation(tempFo);
+                            if (!days.contains(dayToPaint)) {
+                                Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
+                                tempDay.setNewObligation(tempFo);
+                            }
                         }
                     } catch (Exception e) {
                     }
@@ -110,11 +112,13 @@ public class Model {
 
             } else { // if is repetitive by month
                 int dayToPaint = cal.getDayFromFo(tempFo.getDate());
-                days.add(dayToPaint);
-                days.add(tempFo.getRgb());
-                days.add(tempFo.getName());
-                Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
-                tempDay.setNewObligation(tempFo);
+                if (cal.getMonthFromFo(tempFo.getDate()) != cal.getMonth()) {
+                    days.add(dayToPaint);
+                    days.add(tempFo.getRgb());
+                    days.add(tempFo.getName());
+                    Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
+                    tempDay.setNewObligation(tempFo);
+                }
             }
         }
         return days;
