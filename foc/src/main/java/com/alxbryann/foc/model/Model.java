@@ -13,26 +13,27 @@ import java.util.List;
  */
 public class Model {
 
-    Calendar cal = new Calendar();
+    Calendar calendar = new Calendar();
     Controller controller = new Controller();
 
     public Model(Controller controller) {
         this.controller = controller;
     }
 
-    public void setInfoFo(String name, String cost, String dateStr, Color selectedColor, boolean isRepetitive, boolean weekOrMonth) {
-        FinancialObligation fo = new FinancialObligation();
-        fo.setName(name);
+    public void setInfoFinancialObligation(String name, String cost, String dateStr, Color selectedColor, boolean isRepetitive, boolean repetitiveByWeek, boolean repetitiveByMonth) {
+        FinancialObligation financialObligation = new FinancialObligation();
+        financialObligation.setName(name);
         double costDouble = Double.parseDouble(cost);
-        fo.setCost(costDouble);
+        financialObligation.setCost(costDouble);
         LocalDate localDate = LocalDate.parse(dateStr);
         ZoneId defaultZoneId = ZoneId.systemDefault();
         Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-        fo.setDate(date);
-        fo.setColor(selectedColor);
-        fo.setIsRepetitive(isRepetitive);
-        fo.setWeekOrMonth(weekOrMonth);
-        controller.createFo(fo);
+        financialObligation.setDate(date);
+        financialObligation.setColor(selectedColor);
+        financialObligation.setIsRepetitive(isRepetitive);
+        financialObligation.setRepetitiveByWeek(repetitiveByWeek);
+        financialObligation.setRepetitiveByMonth(repetitiveByMonth);
+        controller.createFinancialObligation(financialObligation);
     }
 
     public void setInfoIncome(String name, String value, String dateStr) {
@@ -47,63 +48,65 @@ public class Model {
         controller.createIncome(income);
     }
 
-    public void assignFoToDays() {
-        List allFo = controller.findAllFo();
-        if (!allFo.isEmpty()) {
-            for (int i = 0; i < allFo.size(); i++) {
-                FinancialObligation fo = (FinancialObligation) allFo.get(i);
-                Date date = fo.getDate();
-                int day = cal.getDayFromFo(date);
-                int month = cal.getMonthFromFo(date);
-                Day temp = cal.getDayByNumber(day, month);
-                temp.setNewObligation(fo);
-                if (!cal.getBusyDays().contains(temp)) {
-                    cal.addToBusyDays(temp, month);
+    public void assignFinancialObligationToDays() {
+        List allFinancialObligation = controller.findAllFinancialObligations();
+        if (!allFinancialObligation.isEmpty()) {
+            for (int i = 0; i < allFinancialObligation.size(); i++) {
+                FinancialObligation temporalFinancialObligation = (FinancialObligation) allFinancialObligation.get(i);
+                Date date = temporalFinancialObligation.getDate();
+                int dayOfFinancialObligation = calendar.getDayFromFo(date);
+                int monthOfFinancialObligation = calendar.getMonthFromFo(date);
+                Day temporalDay = calendar.getDayByNumberInSpecificMonth(dayOfFinancialObligation, monthOfFinancialObligation);
+                temporalDay.setNewFinancialObligation(temporalFinancialObligation);
+                if (!calendar.getBusyDaysInCurrentMonth().contains(temporalDay)) {
+                    calendar.addToBusyDaysInSpecificMonth(temporalDay, monthOfFinancialObligation);
                 }
             }
         }
     }
 
-    public int getDaysInMonth() {
-        return cal.getDaysInMonth();
+    public int getNumberOfDaysInCurrentMonth() {
+        return calendar.getNumberOfDaysInCurrentMonth();
     }
 
-    public ArrayList<Integer> paintDays() {
-        ArrayList days = new ArrayList<>();
-        for (int i = 0; i < cal.getBusyDays().size(); i++) {
-            Day tempDay = cal.getBusyDays().get(i);
-            for (int j = 0; j < tempDay.getObligations().size(); j++) {
-                FinancialObligation tempFo = (FinancialObligation) tempDay.getObligations().get(j);
-                days.add(tempDay.getNumberDay());
-                days.add(tempFo.getRgb());
-                days.add(tempFo.getName());
+    public ArrayList<Integer> getListOfFinancialObligationsInCurrentMonth() {
+        ArrayList FinancialObligationsInCurrentMonth = new ArrayList<>();
+        for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
+            Day temporalDay = calendar.getBusyDaysInCurrentMonth().get(i);
+            for (int j = 0; j < temporalDay.getFinancialObligations().size(); j++) {
+                FinancialObligation temporalFinancialObligation = (FinancialObligation) temporalDay.getFinancialObligations().get(j);
+                if (temporalFinancialObligation.isRepetitiveByMonth()) {
+                    FinancialObligationsInCurrentMonth.add(temporalDay.getNumberDay());
+                    FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getRgb());
+                    FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getName());
+                }
             }
         }
-        return days;
+        return FinancialObligationsInCurrentMonth;
     }
 
-    public ArrayList<Integer> paintRepetitiveDays() {
-        ArrayList days = new ArrayList<>();
+    public ArrayList<Integer> getListOfRepetitiveFinancialObligationsInCurrentMonth() {
+        ArrayList RepetitiveFinancialObligationsInCurrentMonth = new ArrayList<>();
         List<RepetitiveFO> rf;
-        rf = (List<RepetitiveFO>) controller.findAllRepetitiveFo();
+        rf = (List<RepetitiveFO>) controller.findAllRepetitiveFinancialObligations();
         for (int i = 0; i < rf.size(); i++) {
             int id = rf.get(i).getFo_id();
-            FinancialObligation tempFo = (FinancialObligation) controller.findFOById(id);
-            if (tempFo.isWeekOrMonth()) { //if is repetitive by week
-                int foDay = cal.getDayFromFo(tempFo.getDate());
+            FinancialObligation temporalFinancialObligation = (FinancialObligation) controller.findFinancialObligationById(id);
+            if (temporalFinancialObligation.isRepetitiveByWeek()) { //if is repetitive by week
+                int foDay = calendar.getDayFromFo(temporalFinancialObligation.getDate());
                 int dayToPaint = foDay;
-                int foMonth = cal.getMonthFromFo(tempFo.getDate());
-                int thisMonth = cal.getMonth();
-                while (dayToPaint < cal.getDaysInMonth()) {
+                int foMonth = calendar.getMonthFromFo(temporalFinancialObligation.getDate());
+                int thisMonth = calendar.getCurrentMonth();
+                while (dayToPaint < calendar.getNumberOfDaysInCurrentMonth()) {
                     try {
                         if (foMonth <= thisMonth) {
-                            days.add(dayToPaint);
-                            days.add(tempFo.getRgb());
-                            days.add(tempFo.getName());
+                            RepetitiveFinancialObligationsInCurrentMonth.add(dayToPaint);
+                            RepetitiveFinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getRgb());
+                            RepetitiveFinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getName());
                             dayToPaint += 7;
-                            if (!days.contains(dayToPaint)) {
-                                Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
-                                tempDay.setNewObligation(tempFo);
+                            if (!RepetitiveFinancialObligationsInCurrentMonth.contains(dayToPaint)) {
+                                Day tempDay = calendar.getDayByNumberInSpecificMonth(dayToPaint, calendar.getCurrentMonth());
+                                tempDay.setNewFinancialObligation(temporalFinancialObligation);
                             }
                         }
                     } catch (Exception e) {
@@ -111,26 +114,22 @@ public class Model {
                 }
 
             } else { // if is repetitive by month
-                int dayToPaint = cal.getDayFromFo(tempFo.getDate());
-                if (cal.getMonthFromFo(tempFo.getDate()) != cal.getMonth()) {
-                    days.add(dayToPaint);
-                    days.add(tempFo.getRgb());
-                    days.add(tempFo.getName());
-                    Day tempDay = cal.getDayByNumber(dayToPaint, cal.getMonth());
-                    tempDay.setNewObligation(tempFo);
+                int dayToPaint = calendar.getDayFromFo(temporalFinancialObligation.getDate());
+                if (calendar.getMonthFromFo(temporalFinancialObligation.getDate()) != calendar.getCurrentMonth()) {
+                    RepetitiveFinancialObligationsInCurrentMonth.add(dayToPaint);
+                    RepetitiveFinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getRgb());
+                    RepetitiveFinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getName());
+                    Day tempDay = calendar.getDayByNumberInSpecificMonth(dayToPaint, calendar.getCurrentMonth());
+                    tempDay.setNewFinancialObligation(temporalFinancialObligation);
                 }
             }
         }
-        return days;
+        return RepetitiveFinancialObligationsInCurrentMonth;
     }
 
-    public void assignRepetitiveFoToDays() {
-
-    }
-
-    public List getFOsByDay(int day) {
-        Day tempDay = cal.getDayByNumber(day, cal.getMonth());
-        return tempDay.getObligations();
+    public List getFinancialObligationsByDay(int day) {
+        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        return tempDay.getFinancialObligations();
     }
 
 }

@@ -255,7 +255,12 @@ public final class NextPaymentsPanel extends JPanel {
             String date = selectedDate.toString();
 
             if (viewController != null) {
-                viewController.setInfoFo(name, cost, date, selectedColor, isRepetitiveFo, weekOrMonthFo);
+                if (weekOrMonthFo) {
+                    viewController.setInfoFo(name, cost, date, selectedColor, isRepetitiveFo, true, false);
+                } else {
+                    viewController.setInfoFo(name, cost, date, selectedColor, isRepetitiveFo, false, true);
+
+                }
             }
 
             nameFo.setText("");

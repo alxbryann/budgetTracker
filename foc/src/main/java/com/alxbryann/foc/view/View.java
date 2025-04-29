@@ -104,7 +104,7 @@ public final class View extends JFrame {
             }
         };
 
-        viewCalendar = new JPanel[viewController.getDaysInMonth()];
+        viewCalendar = new JPanel[viewController.getDaysInCurrentMonth()];
 
         int x = 30, y = 10;
         for (int i = 1; i < viewCalendar.length + 1; i++) {

@@ -33,21 +33,23 @@ public class FinancialObligation implements Serializable {
     @Basic
     private boolean isRepetitive;
     @Basic
-    private boolean weekOrMonth;
+    private boolean isRepetitiveByWeek;
+    @Basic
+    private boolean isRepetitiveByMonth;
 
     public FinancialObligation() {
 
     }
 
-    public FinancialObligation(int id, String name, Date date, double cost, Color selectedColor, boolean isRepetitive, boolean weekOrMonth) {
-        this.id = id;
-        this.name = name;
+    public FinancialObligation(int id, String name, Date date, double cost, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        this.id = id;        this.name = name;
         this.date = date;
         this.cost = cost;
         rgb += selectedColor.getRed() + ", " + selectedColor.getGreen() + ", "
                 + selectedColor.getBlue();
         this.isRepetitive = isRepetitive;
-        this.weekOrMonth = weekOrMonth;
+        this.isRepetitiveByWeek = isRepetitiveByWeek;
+        this.isRepetitiveByMonth = isRepetitiveByMonth;
     }
 
     public void setId(int id) {
@@ -103,17 +105,24 @@ public class FinancialObligation implements Serializable {
         this.isRepetitive = isRepetitive;
     }
 
-    public boolean isWeekOrMonth() {
-        return weekOrMonth;
+    public boolean isRepetitiveByWeek() {
+        return isRepetitiveByWeek;
+    }
+    
+    public boolean isRepetitiveByMonth() {
+        return isRepetitiveByMonth;
     }
 
-    public void setWeekOrMonth(boolean weekOrMonth) {
-        this.weekOrMonth = weekOrMonth;
+    public void setRepetitiveByWeek(boolean isRepetitiveByWeek) {
+        this.isRepetitiveByWeek = isRepetitiveByWeek;
+    }
+    
+    public void setRepetitiveByMonth(boolean isRepetitiveByMonth) {
+        this.isRepetitiveByMonth = isRepetitiveByMonth;
     }
 
     @Override
     public String toString() {
-        return "FinancialObligation{" + "id=" + id + ", name=" + name + ", date=" + date + ", cost=" + cost + ", rgb=" + rgb + ", isRepetitive=" + isRepetitive + ", weekOrMonth=" + weekOrMonth + '}';
+        return "FinancialObligation{" + "id=" + id + ", name=" + name + ", date=" + date + ", cost=" + cost + ", rgb=" + rgb + ", isRepetitive=" + isRepetitive + ", repetitiveByWeek=" + isRepetitiveByWeek + ", repetitiveByMonth=" + isRepetitiveByMonth + '}';
     }
-    
 }

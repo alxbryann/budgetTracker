@@ -1,7 +1,6 @@
 package com.alxbryann.foc.model;
 
 import com.alxbryann.foc.persistence.PersistenceController;
-import com.alxbryann.foc.view.ViewController;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +12,9 @@ import java.util.List;
 public class Controller {
 
     private PersistenceController pc = new PersistenceController();
-    private ViewController vc = new ViewController();
     private Model model;
 
-    public void createFo(FinancialObligation fo) {
+    public void createFinancialObligation(FinancialObligation fo) {
         try {
             pc.createFo(fo);
             if (fo.isRepetitive()) {
@@ -37,15 +35,15 @@ public class Controller {
         }
     }
 
-    public List findAllRepetitiveFo() {
+    public List findAllRepetitiveFinancialObligations() {
         return pc.findAllRepetitiveFO();
     }
 
-    public List findAllFo() {
+    public List findAllFinancialObligations() {
         return pc.findAllFo();
     }
 
-    public FinancialObligation findFOById(int id) {
+    public FinancialObligation findFinancialObligationById(int id) {
         return pc.findFoById(id);
     }
 
@@ -53,40 +51,36 @@ public class Controller {
         return pc.finAllIncome();
     }
 
-    public void setViewController(ViewController vc) {
-        this.vc = vc;
-    }
-
     public void setModel(Model model) {
         this.model = model;
     }
 
-    public void setInfoFo(String name, String cost, String date, Color selectedColor, boolean isRepetitive, boolean weekOrMonth) {
-        model.setInfoFo(name, cost, date, selectedColor, isRepetitive, weekOrMonth);
+    public void setInfoFinancialObligation(String name, String cost, String date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        model.setInfoFinancialObligation(name, cost, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
     }
 
     public void setInfoIncome(String name, String value, String date) {
         model.setInfoIncome(name, value, date);
     }
 
-    public int getDaysInMonth() {
-        return model.getDaysInMonth();
+    public int getNumberOfDaysInCurrentMonth() {
+        return model.getNumberOfDaysInCurrentMonth();
     }
 
-    public void assignFoToDays() {
-        model.assignFoToDays();
+    public void assignFinancialObligationToDays() {
+        model.assignFinancialObligationToDays();
     }
 
     public ArrayList paintDays() {
-        return model.paintDays();
+        return model.getListOfFinancialObligationsInCurrentMonth();
     }
 
     public ArrayList paintRepetitiveDays() {
-        return model.paintRepetitiveDays();
+        return model.getListOfRepetitiveFinancialObligationsInCurrentMonth();
     }
     
-    public List getFOsByDay(int day){
-        return model.getFOsByDay(day);
+    public List getFinancialObligationsByDay(int day){
+        return model.getFinancialObligationsByDay(day);
     }
 
 }

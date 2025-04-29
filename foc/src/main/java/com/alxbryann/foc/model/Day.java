@@ -16,15 +16,15 @@ public class Day {
         return numberDay;
     }
 
-    public void setNewObligation(FinancialObligation fo) {
+    public void setNewFinancialObligation(FinancialObligation fo) {
         obligations.add(fo);
     }
 
-    public void removeObligation(FinancialObligation fo) {
+    public void removeFinancialObligation(FinancialObligation fo) {
         obligations.remove(fo);
     }
 
-    public ArrayList<FinancialObligation> getObligations() {
+    public ArrayList<FinancialObligation> getFinancialObligations() {
         return obligations;
     }
 

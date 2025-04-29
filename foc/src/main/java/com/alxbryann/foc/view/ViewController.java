@@ -25,8 +25,8 @@ public class ViewController {
         this.vt = vt;
     }
 
-    public void setInfoFo(String name, String price, String date, Color selectedColor, boolean isRepetitive, boolean weekOrMonth) {
-        controller.setInfoFo(name, price, date, selectedColor, isRepetitive, weekOrMonth);
+    public void setInfoFo(String name, String price, String date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        controller.setInfoFinancialObligation(name, price, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
     }
 
     public void setInfoIncome(String name, String value, String date) {
@@ -34,19 +34,19 @@ public class ViewController {
     }
 
     public List getInfoFo() {
-        return controller.findAllFo();
+        return controller.findAllFinancialObligations();
     }
 
     public List getInfoIncome() {
         return controller.findAllIncome();
     }
 
-    public int getDaysInMonth() {
-        return controller.getDaysInMonth();
+    public int getDaysInCurrentMonth() {
+        return controller.getNumberOfDaysInCurrentMonth();
     }
 
     public void assignFoToDays() {
-        controller.assignFoToDays();
+        controller.assignFinancialObligationToDays();
     }
 
     public ArrayList paintDays() {
@@ -62,7 +62,7 @@ public class ViewController {
     }
     
     public List getFOsByDay(int day){
-        return controller.getFOsByDay(day);
+        return controller.getFinancialObligationsByDay(day);
     }
 
 }

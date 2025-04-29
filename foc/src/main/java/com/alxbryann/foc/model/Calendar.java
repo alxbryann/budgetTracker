@@ -8,54 +8,52 @@ import java.util.Date;
 
 public final class Calendar {
 
-    private int daysInMonth;
-    private final ArrayList<Day> days = new ArrayList<>();
-    private final ArrayList<Day> busyDays = new ArrayList<>();
-    private final ArrayList<Months> months = new ArrayList<>();
+    private final ArrayList<Month> months = new ArrayList<>();
 
     public Calendar() {
         for (int i = 0; i < 11; i++) {
-            months.add(new Months(getDaysInMonth(i + 1)));
+            int numberOfDays = getNumberOfDaysInSpecificMonth(i + 1);
+            months.add(new Month(numberOfDays));
         }
     }
 
-    public Day getDayByNumber(int numberDay, int month) {
+    public Day getDayByNumberInSpecificMonth(int numberDay, int month) {
         return months.get(month).getDayByNumber(numberDay);
     }
 
-    public int getDaysInMonth(int numberOfMonth) {
+    public int getNumberOfDaysInSpecificMonth(int numberOfMonth) {
         LocalDate today = LocalDate.now();
         int year = today.getYear();
         int month = numberOfMonth;
 
         YearMonth yearMonth = YearMonth.of(year, month);
-        daysInMonth = yearMonth.lengthOfMonth();
+        int daysInMonth = yearMonth.lengthOfMonth();
         return daysInMonth;
     }
 
-    public int getDaysInMonth() {
+    public int getNumberOfDaysInCurrentMonth() {
         LocalDate today = LocalDate.now();
         int year = today.getYear();
         int month = today.getMonthValue();
         YearMonth yearMonth = YearMonth.of(year, month);
-        daysInMonth = yearMonth.lengthOfMonth();
+        int daysInMonth = yearMonth.lengthOfMonth();
         return daysInMonth;
     }
 
-    public ArrayList<Day> getBusyDays() {
+    public ArrayList<Day> getBusyDaysInCurrentMonth() {
         return months.get(LocalDate.now().getMonthValue()).getBusyDays();
     }
 
-    public void addToBusyDays(Day days, int month) {
+    public void addToBusyDaysInSpecificMonth(Day days, int month) {
         months.get(month).addToBusyDays(days);
     }
 
-    public LocalDate getLocalDate() {
+    public LocalDate getCurrentLocalDate() {
         return LocalDate.now();
     }
 
-    public int getMonth() {
-        return LocalDate.now().getMonthValue(); 
+    public int getCurrentMonth() {
+        return LocalDate.now().getMonthValue();
     }
 
     public int getMonthFromFo(Date date) {
@@ -64,8 +62,8 @@ public final class Calendar {
         return Integer.parseInt(localDateStr.substring(localDateStr.length() - 5, localDateStr.length() - 3));
     }
 
-    public int getDay() {
-        return LocalDate.now().getDayOfMonth(); 
+    public int getCurrentDay() {
+        return LocalDate.now().getDayOfMonth();
     }
 
     public int getDayFromFo(Date date) {

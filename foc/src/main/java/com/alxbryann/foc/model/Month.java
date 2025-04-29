@@ -6,12 +6,12 @@ import java.util.ArrayList;
  *
  * @author barr2
  */
-public class Months {
+public class Month {
 
     private ArrayList<Day> days = new ArrayList<>();
     private ArrayList<Day> busyDays = new ArrayList<>();
 
-    public Months(int numberOfDays) {
+    public Month(int numberOfDays) {
         for (int i = 0; i < numberOfDays; i++) {
             Day temp = new Day();
             temp.setNumberDay(i);
