@@ -1,9 +1,5 @@
 package com.alxbryann.foc.view;
 
-/**
- *
- * @author barr2
- */
 import com.alxbryann.foc.model.FinancialObligation;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;

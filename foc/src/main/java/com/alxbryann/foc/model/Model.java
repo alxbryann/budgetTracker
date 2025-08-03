@@ -36,15 +36,22 @@ public class Model {
         controller.createFinancialObligation(financialObligation);
     }
 
-    public void setInfoIncome(String name, String value, String dateStr) {
+    public void setInfoIncome(String name, String value, String dateStr, Color selectedColor, boolean isRepetitive, boolean repetitiveByWeek, boolean repetitiveByMonth) {
         Income income = new Income();
         income.setName(name);
         double valueDouble = Double.parseDouble(value);
         income.setValue(valueDouble);
+
         LocalDate localDate = LocalDate.parse(dateStr);
         ZoneId defaultZoneId = ZoneId.systemDefault();
         Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
         income.setDate(date);
+
+        income.setColor(selectedColor);
+        income.setIsRepetitive(isRepetitive);
+        income.setRepetitiveByWeek(repetitiveByWeek);
+        income.setRepetitiveByMonth(repetitiveByMonth);
+
         controller.createIncome(income);
     }
 
@@ -67,22 +74,6 @@ public class Model {
 
     public int getNumberOfDaysInCurrentMonth() {
         return calendar.getNumberOfDaysInCurrentMonth();
-    }
-
-    public ArrayList<Integer> getListOfFinancialObligationsInCurrentMonth() {
-        ArrayList FinancialObligationsInCurrentMonth = new ArrayList<>();
-        for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
-            Day temporalDay = calendar.getBusyDaysInCurrentMonth().get(i);
-            for (int j = 0; j < temporalDay.getFinancialObligations().size(); j++) {
-                FinancialObligation temporalFinancialObligation = (FinancialObligation) temporalDay.getFinancialObligations().get(j);
-                if (temporalFinancialObligation.isRepetitiveByMonth()) {
-                    FinancialObligationsInCurrentMonth.add(temporalDay.getNumberDay());
-                    FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getRgb());
-                    FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getName());
-                }
-            }
-        }
-        return FinancialObligationsInCurrentMonth;
     }
 
     public ArrayList<Integer> getListOfRepetitiveFinancialObligationsInCurrentMonth() {
@@ -125,6 +116,104 @@ public class Model {
             }
         }
         return RepetitiveFinancialObligationsInCurrentMonth;
+    }
+
+    public void assignIncomesToDays() {
+        List allIncomes = controller.findAllIncomes();
+        if (!allIncomes.isEmpty()) {
+            for (int i = 0; i < allIncomes.size(); i++) {
+                Income temporalIncome = (Income) allIncomes.get(i);
+                Date date = temporalIncome.getDate();
+                int dayOfIncome = calendar.getDayFromFo(date);
+                int monthOfIncome = calendar.getMonthFromFo(date);
+                Day temporalDay = calendar.getDayByNumberInSpecificMonth(dayOfIncome, monthOfIncome);
+                temporalDay.setNewIncome(temporalIncome);
+                if (!calendar.getBusyDaysInCurrentMonth().contains(temporalDay)) {
+                    calendar.addToBusyDaysInSpecificMonth(temporalDay, monthOfIncome);
+                }
+            }
+        }
+    }
+    
+    public ArrayList<Integer> getListOfFinancialObligationsInCurrentMonth() {
+        ArrayList FinancialObligationsInCurrentMonth = new ArrayList<>();
+        for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
+            Day temporalDay = calendar.getBusyDaysInCurrentMonth().get(i);
+            for (int j = 0; j < temporalDay.getFinancialObligations().size(); j++) {
+                FinancialObligation temporalFinancialObligation = (FinancialObligation) temporalDay.getFinancialObligations().get(j);
+                if (temporalFinancialObligation.isRepetitiveByMonth()) {
+                    FinancialObligationsInCurrentMonth.add(temporalDay.getNumberDay());
+                    FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getRgb());
+                    FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getName());
+                }
+            }
+        }
+        return FinancialObligationsInCurrentMonth;
+    }
+
+
+    public ArrayList<Integer> getListOfIncomesInCurrentMonth() {
+        ArrayList IncomesInCurrentMonth = new ArrayList<>();
+        for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
+            Day temporalDay = calendar.getBusyDaysInCurrentMonth().get(i);
+            for (int j = 0; j < temporalDay.getIncomes().size(); j++) {
+                Income temporalIncome = (Income) temporalDay.getIncomes().get(j);
+                if (temporalIncome.isRepetitiveByMonth()) {
+                    IncomesInCurrentMonth.add(temporalDay.getNumberDay());
+                    IncomesInCurrentMonth.add(temporalIncome.getRgb());
+                    IncomesInCurrentMonth.add(temporalIncome.getName());
+                }
+            }
+        }
+        return IncomesInCurrentMonth;
+    }
+
+// 3. Método para obtener ingresos por día
+    public List getIncomesByDay(int day) {
+        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        return tempDay.getIncomes();
+    }
+
+    
+    public ArrayList<Integer> getListOfRepetitiveIncomesInCurrentMonth() {
+        ArrayList RepetitiveIncomesInCurrentMonth = new ArrayList<>();
+        List<RepetitiveIncome> ri;
+        ri = (List<RepetitiveIncome>) controller.findAllRepetitiveIncomes();
+        for (int i = 0; i < ri.size(); i++) {
+            int id = ri.get(i).getIncomeId();
+            Income temporalIncome = (Income) controller.findIncomeById(id);
+            if (temporalIncome.isRepetitiveByWeek()) { //if is repetitive by week
+                int incomeDay = calendar.getDayFromFo(temporalIncome.getDate());
+                int dayToPaint = incomeDay;
+                int incomeMonth = calendar.getMonthFromFo(temporalIncome.getDate());
+                int thisMonth = calendar.getCurrentMonth();
+                while (dayToPaint < calendar.getNumberOfDaysInCurrentMonth()) {
+                    try {
+                        if (incomeMonth <= thisMonth) {
+                            RepetitiveIncomesInCurrentMonth.add(dayToPaint);
+                            RepetitiveIncomesInCurrentMonth.add(temporalIncome.getRgb());
+                            RepetitiveIncomesInCurrentMonth.add(temporalIncome.getName());
+                            dayToPaint += 7;
+                            if (!RepetitiveIncomesInCurrentMonth.contains(dayToPaint)) {
+                                Day tempDay = calendar.getDayByNumberInSpecificMonth(dayToPaint, calendar.getCurrentMonth());
+                                tempDay.setNewIncome(temporalIncome);
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            } else { // if is repetitive by month
+                int dayToPaint = calendar.getDayFromFo(temporalIncome.getDate());
+                if (calendar.getMonthFromFo(temporalIncome.getDate()) != calendar.getCurrentMonth()) {
+                    RepetitiveIncomesInCurrentMonth.add(dayToPaint);
+                    RepetitiveIncomesInCurrentMonth.add(temporalIncome.getRgb());
+                    RepetitiveIncomesInCurrentMonth.add(temporalIncome.getName());
+                    Day tempDay = calendar.getDayByNumberInSpecificMonth(dayToPaint, calendar.getCurrentMonth());
+                    tempDay.setNewIncome(temporalIncome);
+                }
+            }
+        }
+        return RepetitiveIncomesInCurrentMonth;
     }
 
     public List getFinancialObligationsByDay(int day) {

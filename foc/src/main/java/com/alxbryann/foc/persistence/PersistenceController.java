@@ -3,6 +3,7 @@ package com.alxbryann.foc.persistence;
 import com.alxbryann.foc.model.FinancialObligation;
 import com.alxbryann.foc.model.Income;
 import com.alxbryann.foc.model.RepetitiveFO;
+import com.alxbryann.foc.model.RepetitiveIncome;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ public class PersistenceController {
     private FinancialObligationJpaController foJpa = new FinancialObligationJpaController();
     private IncomeJpaController IncomeJpa = new IncomeJpaController();
     private RepetitiveFoJpaController RepetitiveFoJpa = new RepetitiveFoJpaController();
+    private RepetitiveIncomeJpaController RepetitiveIncomeJpa = new RepetitiveIncomeJpaController();
 
     public void createFo(FinancialObligation fo) {
         foJpa.create(fo);
@@ -33,14 +35,25 @@ public class PersistenceController {
     
     public List findAllRepetitiveFO(){
         return RepetitiveFoJpa.findAll();
-    }
+    } 
 
     public void createIncome(Income income) {
         IncomeJpa.create(income);
     }
-
-    public List finAllIncome() {
-        return IncomeJpa.findAll();
+    
+    public Income findIncomeById(int id) {
+        return IncomeJpa.findIncomeById(id);
     }
 
+    public List findAllIncomes() {
+        return IncomeJpa.findAll();
+    }
+    
+    public void createRepetitiveIncome(RepetitiveIncome ri){
+        RepetitiveIncomeJpa.create(ri);
+    }
+
+    public List findAllRepetitiveIncomes() {
+        return RepetitiveIncomeJpa.findAll();
+    }
 }

@@ -28,12 +28,17 @@ public class Controller {
     }
 
     public void createIncome(Income income) {
-        try {
-            pc.createIncome(income);
-        } catch (Exception e) {
-            System.out.println("Exception");
+    try {
+        pc.createIncome(income);
+        if (income.isRepetitive()) {
+            RepetitiveIncome ri = new RepetitiveIncome();
+            ri.setIncomeId(income.getId());
+            pc.createRepetitiveIncome(ri);
         }
+    } catch (Exception e) {
+        System.out.println("Exception");
     }
+}
 
     public List findAllRepetitiveFinancialObligations() {
         return pc.findAllRepetitiveFO();
@@ -47,8 +52,16 @@ public class Controller {
         return pc.findFoById(id);
     }
 
-    public List findAllIncome() {
-        return pc.finAllIncome();
+    public List findAllRepetitiveIncomes() {
+        return pc.findAllRepetitiveIncomes();
+    }
+    
+    public List findAllIncomes() {
+        return pc.findAllIncomes();
+    }
+    
+    public Income findIncomeById(int id){
+        return pc.findIncomeById(id);
     }
 
     public void setModel(Model model) {
@@ -59,8 +72,8 @@ public class Controller {
         model.setInfoFinancialObligation(name, cost, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
     }
 
-    public void setInfoIncome(String name, String value, String date) {
-        model.setInfoIncome(name, value, date);
+    public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        model.setInfoIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
     }
 
     public int getNumberOfDaysInCurrentMonth() {
@@ -71,12 +84,24 @@ public class Controller {
         model.assignFinancialObligationToDays();
     }
 
-    public ArrayList paintDays() {
+    public void assignIncomesToDays() {
+        model.assignIncomesToDays();
+    }
+    
+    public ArrayList paintFOs() {
         return model.getListOfFinancialObligationsInCurrentMonth();
     }
+    
+    public ArrayList paintINs() {
+        return model.getListOfIncomesInCurrentMonth();
+    }
 
-    public ArrayList paintRepetitiveDays() {
+    public ArrayList paintRepetitiveFinancialObligations() {
         return model.getListOfRepetitiveFinancialObligationsInCurrentMonth();
+    }
+    
+    public ArrayList paintRepetitiveIncomes(){
+        return model.getListOfRepetitiveIncomesInCurrentMonth();
     }
     
     public List getFinancialObligationsByDay(int day){

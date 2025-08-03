@@ -88,7 +88,7 @@ public class FinancialObligation implements Serializable {
         return rgb;
     }
 
-    public void setRgb(String rgb) {
+public void setRgb(String rgb) {
         this.rgb = rgb;
     }
 

@@ -27,6 +27,7 @@ public final class View extends JFrame {
         viewController = new ViewController();
         viewController.setController(controller);
         viewController.assignFoToDays();
+        viewController.assignIncomesToDays();
         viewController.setView(this);
         setUndecorated(false);
         setSize(1280, 720);
@@ -159,12 +160,13 @@ public final class View extends JFrame {
         notifications.add(new NextPaymentsPanel(viewController));
         notifications.add(new NextIncomesPanel(viewController));
         add(notifications);
-        paintDays();
+        paintFOsInView();
+        paintINsInView();
         setVisible(true);
     }
 
-    public void paintDays() {
-        ArrayList<Object[]> daysToPaint = viewController.paintDays();
+    public void paintFOsInView() {
+        ArrayList<Object[]> daysToPaint = viewController.paintFOs();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
@@ -210,9 +212,56 @@ public final class View extends JFrame {
 
         paintRepetitiveFO();
     }
+    public void paintINsInView() {
+        ArrayList<Object[]> daysToPaint = viewController.paintINs();
+        for (int i = 0; i < daysToPaint.size(); i += 3) {
+            Object day = daysToPaint.get(i);
+            Object rgb = daysToPaint.get(i + 1);
+            int intDay = (Integer) day;
+            JPanel tempDay = viewCalendar[intDay - 1];
+            if (!tempDay.getClientProperty("painted").equals("true")) {
+                String strRgb = (String) rgb;
+                int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
+                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
+                int green = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
+                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
+                int blue = Integer.parseInt(strRgb);
+                Object name = daysToPaint.get(i + 2);
+                String strName = (String) name;
+                tempDay.setBackground(new Color(red, green, blue));
+                tempDay.putClientProperty("painted", "true");
+                JLabel nameJLabel = new JLabel(strName);
+                if (strName.length() <= 7) {
+                    nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
+                } else {
+                    if (strName.length() > 7) {
+                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
+                    } else {
+                        if (strName.length() > 10) {
+                            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 10));
+                        }
+                    }
+                }
+
+                nameJLabel.setForeground(Color.BLACK);
+                nameJLabel.setHorizontalAlignment(JLabel.CENTER);
+                nameJLabel.setBounds(0, 40, 100, 50);
+                tempDay.add(nameJLabel);
+            } else {
+                JLabel plus = new JLabel("+");
+                plus.setFont(new Font("Lexend", Font.BOLD, 30));
+                plus.setBounds(65, 6, 50, 30);
+                plus.setForeground(Color.white);
+                tempDay.add(plus);
+            }
+
+        }
+
+        paintRepetitiveIncome();
+    }
 
     public void paintRepetitiveFO() {
-        ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveDays();
+        ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveFinancialObligations();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
@@ -253,6 +302,59 @@ public final class View extends JFrame {
                 nameJLabel.setHorizontalAlignment(JLabel.CENTER);
                 nameJLabel.setBounds(0, 40, 100, 50);
                 tempDay.add(nameJLabel);
+            } else {
+                JLabel plus = new JLabel("+");
+                plus.setFont(new Font("Lexend", Font.BOLD, 30));
+                plus.setBounds(65, 6, 50, 30);
+                plus.setForeground(Color.white);
+                tempDay.add(plus);
+            }
+        }
+    }
+
+    public void paintRepetitiveIncome() {
+        ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveIncomes();
+        for (int i = 0; i < daysToPaint.size(); i += 3) {
+            Object day = daysToPaint.get(i);
+            Object rgb = daysToPaint.get(i + 1);
+            int intDay = (Integer) day;
+            JPanel tempDay = viewCalendar[intDay - 1];
+            if (!tempDay.getClientProperty("painted").equals("true")) {
+                String strRgb = (String) rgb;
+                int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
+                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
+                int green = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
+                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
+                int blue = Integer.parseInt(strRgb);
+                Object name = daysToPaint.get(i + 2);
+                String strName = (String) name;
+                tempDay.removeAll();
+                tempDay.revalidate();
+                tempDay.repaint();
+                tempDay.setBackground(new Color(red, green, blue));
+                JLabel numberDay = new JLabel(String.valueOf(tempDay.getClientProperty("dayNumber")));
+                numberDay.setFont(new Font("Lexend", Font.BOLD, 30));
+                numberDay.setBounds(10, 6, 50, 30);
+                numberDay.setForeground(Color.white);
+                tempDay.add(numberDay);
+                JLabel nameJLabel = new JLabel(strName);
+                if (strName.length() <= 7) {
+                    nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
+                } else {
+                    if (strName.length() > 7) {
+                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
+                    } else {
+                        if (strName.length() > 10) {
+                            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 10));
+                        }
+                    }
+                }
+
+                nameJLabel.setForeground(Color.BLACK);
+                nameJLabel.setHorizontalAlignment(JLabel.CENTER);
+                nameJLabel.setBounds(0, 40, 100, 50);
+                tempDay.add(nameJLabel);
+                tempDay.putClientProperty("painted", "true");
             } else {
                 JLabel plus = new JLabel("+");
                 plus.setFont(new Font("Lexend", Font.BOLD, 30));

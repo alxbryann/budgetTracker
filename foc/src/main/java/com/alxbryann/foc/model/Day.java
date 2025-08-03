@@ -6,6 +6,8 @@ public class Day {
 
     private int numberDay;
     private ArrayList<FinancialObligation> obligations = new ArrayList<>();
+    private ArrayList<Income> incomes = new ArrayList<>();
+
     private double totalCost;
 
     public void setNumberDay(int numberDay) {
@@ -14,6 +16,14 @@ public class Day {
 
     public int getNumberDay() {
         return numberDay;
+    }
+
+    public void setNewIncome(Income in) {
+        incomes.add(in);
+    }
+    
+    public void removeIncome(Income in) {
+        incomes.remove(in);
     }
 
     public void setNewFinancialObligation(FinancialObligation fo) {
@@ -26,6 +36,10 @@ public class Day {
 
     public ArrayList<FinancialObligation> getFinancialObligations() {
         return obligations;
+    }
+    
+    public ArrayList<Income> getIncomes() {
+        return incomes;
     }
 
     public double getTotalCost() {
@@ -40,7 +54,9 @@ public class Day {
 
     @Override
     public String toString() {
-        return "Days{" + "numberDay=" + numberDay + ", obligations=" + obligations + ", totalCost=" + totalCost + '}';
+        return "Day{" + "numberDay=" + numberDay + ", obligations=" + obligations + ", incomes=" + incomes + ", totalCost=" + totalCost + '}';
     }
+
     
+
 }
