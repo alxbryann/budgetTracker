@@ -134,7 +134,7 @@ public class Model {
             }
         }
     }
-    
+
     public ArrayList<Integer> getListOfFinancialObligationsInCurrentMonth() {
         ArrayList FinancialObligationsInCurrentMonth = new ArrayList<>();
         for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
@@ -150,7 +150,6 @@ public class Model {
         }
         return FinancialObligationsInCurrentMonth;
     }
-
 
     public ArrayList<Integer> getListOfIncomesInCurrentMonth() {
         ArrayList IncomesInCurrentMonth = new ArrayList<>();
@@ -168,13 +167,11 @@ public class Model {
         return IncomesInCurrentMonth;
     }
 
-// 3. Método para obtener ingresos por día
     public List getIncomesByDay(int day) {
         Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
         return tempDay.getIncomes();
     }
 
-    
     public ArrayList<Integer> getListOfRepetitiveIncomesInCurrentMonth() {
         ArrayList RepetitiveIncomesInCurrentMonth = new ArrayList<>();
         List<RepetitiveIncome> ri;

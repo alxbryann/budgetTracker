@@ -85,11 +85,26 @@ public final class View extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 JPanel clickedPanel = (JPanel) e.getSource();
                 int clickedDay = (int) clickedPanel.getClientProperty("dayNumber");
-                System.out.println(viewController.getFOsByDay(clickedDay));
+                System.out.println("Day:" + clickedDay);
+                System.out.println("Financial Obligations:");
+                System.out.println(viewController.getFinancialObligationsByDay(clickedDay));
+                System.out.println("Incomes:");
+                System.out.println(viewController.getIncomesByDay(clickedDay));
+                DetailPerDay detailPerDay = new DetailPerDay(viewController);
+                detailPerDay.setVisible(true);
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
+                JPanel clickedPanel = (JPanel) e.getSource();
+                int clickedDay = (int) clickedPanel.getClientProperty("dayNumber");
+                System.out.println("Day:" + clickedDay);
+                System.out.println("Financial Obligations:");
+                System.out.println(viewController.getFinancialObligationsByDay(clickedDay));
+                System.out.println("Incomes:");
+                System.out.println(viewController.getIncomesByDay(clickedDay));
+                DetailPerDay detailPerDay = new DetailPerDay(viewController);
+                detailPerDay.setVisible(true);
             }
 
             @Override
@@ -212,6 +227,7 @@ public final class View extends JFrame {
 
         paintRepetitiveFO();
     }
+
     public void paintINsInView() {
         ArrayList<Object[]> daysToPaint = viewController.paintINs();
         for (int i = 0; i < daysToPaint.size(); i += 3) {

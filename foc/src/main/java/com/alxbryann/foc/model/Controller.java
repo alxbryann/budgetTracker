@@ -28,17 +28,17 @@ public class Controller {
     }
 
     public void createIncome(Income income) {
-    try {
-        pc.createIncome(income);
-        if (income.isRepetitive()) {
-            RepetitiveIncome ri = new RepetitiveIncome();
-            ri.setIncomeId(income.getId());
-            pc.createRepetitiveIncome(ri);
+        try {
+            pc.createIncome(income);
+            if (income.isRepetitive()) {
+                RepetitiveIncome ri = new RepetitiveIncome();
+                ri.setIncomeId(income.getId());
+                pc.createRepetitiveIncome(ri);
+            }
+        } catch (Exception e) {
+            System.out.println("Exception");
         }
-    } catch (Exception e) {
-        System.out.println("Exception");
     }
-}
 
     public List findAllRepetitiveFinancialObligations() {
         return pc.findAllRepetitiveFO();
@@ -55,12 +55,12 @@ public class Controller {
     public List findAllRepetitiveIncomes() {
         return pc.findAllRepetitiveIncomes();
     }
-    
+
     public List findAllIncomes() {
         return pc.findAllIncomes();
     }
-    
-    public Income findIncomeById(int id){
+
+    public Income findIncomeById(int id) {
         return pc.findIncomeById(id);
     }
 
@@ -87,11 +87,11 @@ public class Controller {
     public void assignIncomesToDays() {
         model.assignIncomesToDays();
     }
-    
+
     public ArrayList paintFOs() {
         return model.getListOfFinancialObligationsInCurrentMonth();
     }
-    
+
     public ArrayList paintINs() {
         return model.getListOfIncomesInCurrentMonth();
     }
@@ -99,13 +99,16 @@ public class Controller {
     public ArrayList paintRepetitiveFinancialObligations() {
         return model.getListOfRepetitiveFinancialObligationsInCurrentMonth();
     }
-    
-    public ArrayList paintRepetitiveIncomes(){
+
+    public ArrayList paintRepetitiveIncomes() {
         return model.getListOfRepetitiveIncomesInCurrentMonth();
     }
-    
-    public List getFinancialObligationsByDay(int day){
+
+    public List getFinancialObligationsByDay(int day) {
         return model.getFinancialObligationsByDay(day);
     }
 
+    public List getIncomesByDay(int day) {
+        return model.getIncomesByDay(day);
+    }
 }
