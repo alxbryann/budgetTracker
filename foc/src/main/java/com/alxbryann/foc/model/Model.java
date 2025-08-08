@@ -218,4 +218,12 @@ public class Model {
         return tempDay.getFinancialObligations();
     }
 
+    public String getCurrentMonthInString() {
+        return calendar.getCurrentMonthInString();
+    }
+    
+    public int getCurrentYear() {
+        return calendar.getCurrentYear();
+    }
 }
+

@@ -111,4 +111,12 @@ public class Controller {
     public List getIncomesByDay(int day) {
         return model.getIncomesByDay(day);
     }
+    
+    public String getCurrentMonthInString() {
+        return model.getCurrentMonthInString();
+    }
+    
+    public int getCurrentYear() {
+        return model.getCurrentYear();
+    }
 }

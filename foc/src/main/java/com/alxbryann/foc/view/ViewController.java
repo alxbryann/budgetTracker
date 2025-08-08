@@ -82,4 +82,15 @@ public class ViewController {
         return controller.getIncomesByDay(day);
     }
     
+    public String getCurrentMonthInString() {
+        return controller.getCurrentMonthInString(); 
+    }
+    
+    public int getCurrentYear() {
+        return controller.getCurrentYear();
+    }
+    
+    public int getClickedDay() {
+        return vt.getDayClicked();
+    }
 }

@@ -4,52 +4,49 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  *
  * @author alxbryann
  */
-public class DetailPerDay extends JFrame{
-    
+public class DetailPerDay extends JFrame {
+
     private ViewController viewController;
-    
+    private String currentMonth;
+    private int clickedDay;
+    private int currentYear;
+
     public DetailPerDay(ViewController viewController) {
         this.viewController = viewController;
+        getCurrentMonthInString();
+        getCurrentDay();
+        getCurrentYear();
         initializeUI();
     }
-    
+
     private void initializeUI() {
         setLayout(null);
         setBounds(45, 50, 1280, 720);
-        setBackground(new Color(204, 168, 109, 255));
-
-        JLabel titleNextIncomes = new JLabel("Next Incomes");
-        titleNextIncomes.setFont(new Font("Lexend", Font.PLAIN, 22));
-        titleNextIncomes.setBounds(55, 10, 180, 30);
-        titleNextIncomes.setForeground(Color.BLACK);
-
-        //incomesContainer = new JPanel();
-        //incomesContainer.setLayout(null);
-        //incomesContainer.setBounds(20, 30, 300, 130);
-        //incomesContainer.setOpaque(false);
-
-        //add(incomesContainer);
-        add(titleNextIncomes);
-
-        RoundedButton show = new RoundedButton("Show more", 30);
-        show.setBounds(50, 175, 180, 30);
-        show.setBackground(new Color(86, 60, 16));
-        show.setForeground(Color.WHITE);
-        show.setFont(new Font("Lexend", Font.PLAIN, 15));
-        add(show);
-
-        RoundedButton addNewIncomes = new RoundedButton("Add new incomes", 30);
-        addNewIncomes.setBounds(50, 210, 180, 30);
-        addNewIncomes.setBackground(new Color(86, 60, 16));
-        addNewIncomes.setForeground(Color.WHITE);
-        addNewIncomes.setFont(new Font("Lexend", Font.PLAIN, 15));
-        //addNewIncomes.addActionListener(e -> createNewIncomeDialog());
-        add(addNewIncomes);
+        String date = currentMonth + " " + clickedDay + " " + currentYear;
+        JLabel titleDate = new JLabel(date);
+        titleDate.setFont(new Font("Kantumruy Pro", Font.BOLD, 55));
+        titleDate.setBounds(60, 40, 450, 100);
+        titleDate.setHorizontalAlignment(SwingConstants.CENTER);
+        titleDate.setVerticalAlignment(SwingConstants.CENTER);
+        titleDate.setForeground(Color.BLACK);
+        add(titleDate);
     }
 
+    private void getCurrentMonthInString() {
+        currentMonth = viewController.getCurrentMonthInString();
+    }
+
+    private void getCurrentDay() {
+        clickedDay = viewController.getClickedDay();
+    }
+
+    private void getCurrentYear() {
+        currentYear = viewController.getCurrentYear();
+    }
 }

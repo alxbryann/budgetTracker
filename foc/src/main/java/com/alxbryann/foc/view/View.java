@@ -22,6 +22,7 @@ public final class View extends JFrame {
     private ViewController viewController;
     private JPanel[] viewCalendar;
     private final JPanel notifications;
+    private int clickedDay;
 
     public View(Controller controller) {
         viewController = new ViewController();
@@ -84,7 +85,7 @@ public final class View extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JPanel clickedPanel = (JPanel) e.getSource();
-                int clickedDay = (int) clickedPanel.getClientProperty("dayNumber");
+                clickedDay = (int) clickedPanel.getClientProperty("dayNumber"); 
                 System.out.println("Day:" + clickedDay);
                 System.out.println("Financial Obligations:");
                 System.out.println(viewController.getFinancialObligationsByDay(clickedDay));
@@ -96,15 +97,6 @@ public final class View extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                JPanel clickedPanel = (JPanel) e.getSource();
-                int clickedDay = (int) clickedPanel.getClientProperty("dayNumber");
-                System.out.println("Day:" + clickedDay);
-                System.out.println("Financial Obligations:");
-                System.out.println(viewController.getFinancialObligationsByDay(clickedDay));
-                System.out.println("Incomes:");
-                System.out.println(viewController.getIncomesByDay(clickedDay));
-                DetailPerDay detailPerDay = new DetailPerDay(viewController);
-                detailPerDay.setVisible(true);
             }
 
             @Override
@@ -379,5 +371,9 @@ public final class View extends JFrame {
                 tempDay.add(plus);
             }
         }
+    }
+    
+    public int getDayClicked() {
+        return clickedDay;
     }
 }
