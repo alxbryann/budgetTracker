@@ -265,7 +265,7 @@ public final class NextIncomesPanel extends JPanel {
             colorComboBox.setSelectedIndex(0);
             JOptionPane.showMessageDialog(modal, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             modal.dispose();
-            viewController.assignFoToDays();
+            viewController.assignIncomesToDays();
             viewController.paintDaysInView();
         });
 

@@ -11,7 +11,7 @@ public final class Calendar {
     private final ArrayList<Month> months = new ArrayList<>();
 
     public Calendar() {
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 12; i++) {
             int numberOfDays = getNumberOfDaysInSpecificMonth(i + 1);
             months.add(new Month(numberOfDays));
         }

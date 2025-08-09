@@ -85,12 +85,12 @@ public final class View extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JPanel clickedPanel = (JPanel) e.getSource();
-                clickedDay = (int) clickedPanel.getClientProperty("dayNumber"); 
+                clickedDay = (int) clickedPanel.getClientProperty("dayNumber") - 1; 
                 System.out.println("Day:" + clickedDay);
                 System.out.println("Financial Obligations:");
                 System.out.println(viewController.getFinancialObligationsByDay(clickedDay));
-                System.out.println("Incomes:");
-                System.out.println(viewController.getIncomesByDay(clickedDay));
+                /*System.out.println("Incomes:");
+                System.out.println(viewController.getIncomesByDay(clickedDay));*/
                 DetailPerDay detailPerDay = new DetailPerDay(viewController);
                 detailPerDay.setVisible(true);
             }
@@ -178,7 +178,7 @@ public final class View extends JFrame {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
             int intDay = (Integer) day;
-            JPanel tempDay = viewCalendar[intDay - 1];
+            JPanel tempDay = viewCalendar[intDay];
             if (!tempDay.getClientProperty("painted").equals("true")) {
                 String strRgb = (String) rgb;
                 int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
@@ -226,7 +226,7 @@ public final class View extends JFrame {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
             int intDay = (Integer) day;
-            JPanel tempDay = viewCalendar[intDay - 1];
+            JPanel tempDay = viewCalendar[intDay];
             if (!tempDay.getClientProperty("painted").equals("true")) {
                 String strRgb = (String) rgb;
                 int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
@@ -274,7 +274,7 @@ public final class View extends JFrame {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
             int intDay = (Integer) day;
-            JPanel tempDay = viewCalendar[intDay - 1];
+            JPanel tempDay = viewCalendar[intDay];
             if (!tempDay.getClientProperty("painted").equals("true")) {
                 String strRgb = (String) rgb;
                 int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
@@ -326,7 +326,7 @@ public final class View extends JFrame {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
             int intDay = (Integer) day;
-            JPanel tempDay = viewCalendar[intDay - 1];
+            JPanel tempDay = viewCalendar[intDay];
             if (!tempDay.getClientProperty("painted").equals("true")) {
                 String strRgb = (String) rgb;
                 int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
