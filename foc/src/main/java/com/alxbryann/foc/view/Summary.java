@@ -1,23 +1,29 @@
 package com.alxbryann.foc.view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import javax.swing.JPanel;
 
-public final class DetailContainer extends JPanel {
+/**
+ *
+ * @author alxbryann
+ */
+public class Summary extends JPanel{
 
     private final ViewController viewController;
 
-    public DetailContainer(ViewController viewController) {
+    public Summary(ViewController viewController) {
         this.viewController = viewController;
         initializeUI();
     }
 
     private void initializeUI() {
         setLayout(null);
-        setBounds(60, 70, 360, 450);
+        setBounds(0, 0, 360, 580);
         setBackground(new Color(232, 248, 245));
     }
-    
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -37,4 +43,5 @@ public final class DetailContainer extends JPanel {
     public boolean isOpaque() {
         return false;
     }
+
 }
