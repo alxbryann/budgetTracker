@@ -86,10 +86,10 @@ public final class View extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 JPanel clickedPanel = (JPanel) e.getSource();
                 clickedDay = (int) clickedPanel.getClientProperty("dayNumber") - 1; 
-                System.out.println("Day:" + clickedDay);
+                /*System.out.println("Day:" + clickedDay);
                 System.out.println("Financial Obligations:");
                 System.out.println(viewController.getFinancialObligationsByDay(clickedDay));
-                /*System.out.println("Incomes:");
+                System.out.println("Incomes:");
                 System.out.println(viewController.getIncomesByDay(clickedDay));*/
                 DetailPerDay detailPerDay = new DetailPerDay(viewController);
                 detailPerDay.setVisible(true);

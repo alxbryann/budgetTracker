@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 /**
  *
@@ -35,7 +34,7 @@ public class DetailPerDay extends JFrame {
         titleDate.setBounds(60, 60, 600, 100);
         titleDate.setForeground(Color.BLACK);
         add(titleDate);
-        DetailContainer detailContainer = new DetailContainer(viewController);
+        DetailContainer detailContainer = new DetailContainer(viewController, (clickedDay));
         detailContainer.setBounds(60, 190, 700, 450);
         add(detailContainer);
         Summary summary = new Summary(viewController);

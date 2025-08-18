@@ -2,14 +2,47 @@ package com.alxbryann.foc.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public final class DetailContainer extends JPanel {
 
     private final ViewController viewController;
+    private int dayNumber;
 
-    public DetailContainer(ViewController viewController) {
+    public DetailContainer(ViewController viewController, int dayNumber) {
         this.viewController = viewController;
+        this.dayNumber = dayNumber;
         initializeUI();
+        prepareElementsDetail();
+    }
+
+    private void prepareElementsDetail() {
+        ArrayList incomes = getIncomesByDay();
+        int spaceY = 20;
+        for (int i = 0; i < incomes.size(); i++) {
+            ElementDetail ed = new ElementDetail(false);
+            ed.setBounds(20, spaceY, 600, 80);
+            spaceY += 100;
+            ed.setVisible(true);
+            add(ed);
+        }
+        ArrayList financialObligations = getFinancialObligationsByDay();
+        for (int i = 0; i < financialObligations.size(); i++) {
+            ElementDetail ed = new ElementDetail(true);
+            ed.setBounds(20, spaceY, 600, 80);
+            spaceY += 100;
+            ed.setVisible(true);
+            add(ed);
+        }
+
+    }
+
+    private ArrayList getFinancialObligationsByDay() {
+        return (ArrayList) viewController.getFinancialObligationsByDay(dayNumber);
+    }
+
+    private ArrayList getIncomesByDay() {
+        return (ArrayList) viewController.getIncomesByDay(dayNumber);
     }
 
     private void initializeUI() {
@@ -17,7 +50,6 @@ public final class DetailContainer extends JPanel {
         setBounds(60, 70, 360, 450);
         setBackground(new Color(232, 248, 245));
     }
-    
 
     @Override
     protected void paintComponent(Graphics g) {
