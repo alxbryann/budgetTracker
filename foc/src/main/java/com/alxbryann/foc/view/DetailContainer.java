@@ -1,5 +1,7 @@
 package com.alxbryann.foc.view;
 
+import com.alxbryann.foc.model.FinancialObligation;
+import com.alxbryann.foc.model.Income;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,7 +22,10 @@ public final class DetailContainer extends JPanel {
         ArrayList incomes = getIncomesByDay();
         int spaceY = 20;
         for (int i = 0; i < incomes.size(); i++) {
-            ElementDetail ed = new ElementDetail(false);
+            Income temporalIncome = (Income) incomes.get(i);
+            String name = temporalIncome.getName();
+            double cost = temporalIncome.getValue();
+            ElementDetail ed = new ElementDetail(name, cost, false);
             ed.setBounds(20, spaceY, 600, 80);
             spaceY += 100;
             ed.setVisible(true);
@@ -28,7 +33,10 @@ public final class DetailContainer extends JPanel {
         }
         ArrayList financialObligations = getFinancialObligationsByDay();
         for (int i = 0; i < financialObligations.size(); i++) {
-            ElementDetail ed = new ElementDetail(true);
+            FinancialObligation temporalFinancialObligation = (FinancialObligation) financialObligations.get(i);
+            String name = temporalFinancialObligation.getName();
+            double cost = temporalFinancialObligation.getCost();
+            ElementDetail ed = new ElementDetail(name, cost, true);
             ed.setBounds(20, spaceY, 600, 80);
             spaceY += 100;
             ed.setVisible(true);

@@ -221,9 +221,26 @@ public class Model {
     public String getCurrentMonthInString() {
         return calendar.getCurrentMonthInString();
     }
-    
+
     public int getCurrentYear() {
         return calendar.getCurrentYear();
     }
-}
 
+    public double getTotalCostByDay(int day) {
+        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        double totalCost = tempDay.getTotalCost();
+        return totalCost;
+    }
+
+    public double getTotalIncomeByDay(int day) {
+        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        double totalIncome = tempDay.getTotalIncome();
+        return totalIncome;
+    }
+
+    public double getTotalNetByDay(int day) {
+        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        double totalNet = tempDay.getTotalNet();
+        return totalNet;
+    }
+}

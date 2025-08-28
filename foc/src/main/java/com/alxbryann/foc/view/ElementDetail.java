@@ -1,33 +1,70 @@
 package com.alxbryann.foc.view;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 
-/**
- *
- * @author alxbryann
- */
 public class ElementDetail extends JPanel {
 
-    private boolean isFinancialObligation;
+    private final String name;
+    private final double cost;
+    private final boolean isFinancialObligation;
 
-    public ElementDetail(boolean isFinancialObligation) {
+    private JLabel nameLabel;
+    private JLabel costLabel;
+    private JButton deleteButton;
+    private JButton editButton;
+
+    public ElementDetail(String name, double cost, boolean isFinancialObligation) {
+        this.name = name;
+        this.cost = cost;
+        this.isFinancialObligation = isFinancialObligation;
+
         if (isFinancialObligation) {
-            Color color = new Color(210, 133, 133);
-            initializeUI(color);
+            initializeUI(new Color(210, 133, 133)); 
         } else {
-            Color color = new Color(144, 203, 173);
-            initializeUI(color);
+            initializeUI(new Color(144, 203, 173)); 
         }
     }
 
     private void initializeUI(Color color) {
-        setLayout(null);
-        setBounds(20, 20, 600, 80);
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(600, 80));
         setBackground(color);
+
+        JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 25));
+        textPanel.setOpaque(false);
+
+        nameLabel = new JLabel(name);
+        nameLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
+
+        costLabel = new JLabel("$" + String.format("%,.0f", cost));
+        costLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+
+        textPanel.add(nameLabel);
+        textPanel.add(costLabel);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 20));
+        buttonPanel.setOpaque(false);
+
+        deleteButton = new JButton("🗑"); 
+        editButton = new JButton("✏");  
+
+        styleButton(deleteButton);
+        styleButton(editButton);
+
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(editButton);
+
+        add(textPanel, BorderLayout.WEST);
+        add(buttonPanel, BorderLayout.EAST);
+    }
+
+    private void styleButton(JButton button) {
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     @Override
@@ -41,8 +78,7 @@ public class ElementDetail extends JPanel {
     }
 
     @Override
-    protected void paintBorder(Graphics g) {
-    }
+    protected void paintBorder(Graphics g) {}
 
     @Override
     public boolean isOpaque() {
