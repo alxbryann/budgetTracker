@@ -111,4 +111,24 @@ public class Controller {
     public List getIncomesByDay(int day) {
         return model.getIncomesByDay(day);
     }
+
+    public double getTotalCostByDay(int day) {
+        return model.getTotalCostByDay(day);
+    }
+    
+    public double getTotalIncomeByDay(int day) {
+        return model.getTotalIncomeByDay(day);
+    }
+    
+    public double getTotalNet(int day){
+        return model.getTotalNetByDay(day);
+    }
+
+    public String getCurrentMonthInString() {
+        return model.getCurrentMonthInString();
+    }
+
+    public int getCurrentYear() {
+        return model.getCurrentYear();
+    }
 }

@@ -11,7 +11,7 @@ public final class Calendar {
     private final ArrayList<Month> months = new ArrayList<>();
 
     public Calendar() {
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 12; i++) {
             int numberOfDays = getNumberOfDaysInSpecificMonth(i + 1);
             months.add(new Month(numberOfDays));
         }
@@ -54,6 +54,42 @@ public final class Calendar {
 
     public int getCurrentMonth() {
         return LocalDate.now().getMonthValue();
+    }
+
+    public String getCurrentMonthInString() {
+        int currentMonth = getCurrentMonth();
+        switch (currentMonth) {
+            case 1:
+                return "January";
+            case 2:
+                return "February";
+            case 3:
+                return "March";
+            case 4:
+                return "April";
+            case 5:
+                return "May";
+            case 6:
+                return "June";
+            case 7:
+                return "July";
+            case 8:
+                return "August";
+            case 9:
+                return "September";
+            case 10:
+                return "October";
+            case 11:
+                return "November";
+            case 12:
+                return "December";
+            default:
+                return "Mes inválido";
+        }
+    }
+    
+    public int getCurrentYear() {
+        return LocalDate.now().getYear();
     }
 
     public int getMonthFromFo(Date date) {

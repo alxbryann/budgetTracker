@@ -61,7 +61,7 @@ public class Model {
             for (int i = 0; i < allFinancialObligation.size(); i++) {
                 FinancialObligation temporalFinancialObligation = (FinancialObligation) allFinancialObligation.get(i);
                 Date date = temporalFinancialObligation.getDate();
-                int dayOfFinancialObligation = calendar.getDayFromFo(date);
+                int dayOfFinancialObligation = calendar.getDayFromFo(date) - 1;
                 int monthOfFinancialObligation = calendar.getMonthFromFo(date);
                 Day temporalDay = calendar.getDayByNumberInSpecificMonth(dayOfFinancialObligation, monthOfFinancialObligation);
                 temporalDay.setNewFinancialObligation(temporalFinancialObligation);
@@ -124,7 +124,7 @@ public class Model {
             for (int i = 0; i < allIncomes.size(); i++) {
                 Income temporalIncome = (Income) allIncomes.get(i);
                 Date date = temporalIncome.getDate();
-                int dayOfIncome = calendar.getDayFromFo(date);
+                int dayOfIncome = calendar.getDayFromFo(date) - 1;
                 int monthOfIncome = calendar.getMonthFromFo(date);
                 Day temporalDay = calendar.getDayByNumberInSpecificMonth(dayOfIncome, monthOfIncome);
                 temporalDay.setNewIncome(temporalIncome);
@@ -218,4 +218,29 @@ public class Model {
         return tempDay.getFinancialObligations();
     }
 
+    public String getCurrentMonthInString() {
+        return calendar.getCurrentMonthInString();
+    }
+
+    public int getCurrentYear() {
+        return calendar.getCurrentYear();
+    }
+
+    public double getTotalCostByDay(int day) {
+        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        double totalCost = tempDay.getTotalCost();
+        return totalCost;
+    }
+
+    public double getTotalIncomeByDay(int day) {
+        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        double totalIncome = tempDay.getTotalIncome();
+        return totalIncome;
+    }
+
+    public double getTotalNetByDay(int day) {
+        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        double totalNet = tempDay.getTotalNet();
+        return totalNet;
+    }
 }
