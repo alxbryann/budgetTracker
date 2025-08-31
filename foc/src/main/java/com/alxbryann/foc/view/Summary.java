@@ -46,7 +46,7 @@ public class Summary extends JPanel {
 
         add(Box.createVerticalStrut(20));
 
-        SummaryItem netItem = new SummaryItem("Net total", totalNet, new Color(144, 238, 144));
+        SummaryItem netItem = new SummaryItem("Net total", totalNet, new Color(232,224,190));
         netItem.setAlignmentX(CENTER_ALIGNMENT);
         add(netItem);
     }
