@@ -6,11 +6,16 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
@@ -25,6 +30,27 @@ public final class View extends JFrame {
     private int clickedDay;
 
     public View(Controller controller) {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menuMonthSummary = new JMenu("Month summary");
+        JMenuItem itemMonthSummary = new JMenuItem("Month summary");
+
+        itemMonthSummary.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("Month Summary");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+                frame.setSize(700, 400);
+                frame.setLocationRelativeTo(null); 
+                frame.setContentPane(new MonthSummary()); 
+                frame.setVisible(true);
+            }
+        });
+        
+        menuMonthSummary.add(itemMonthSummary);
+        menuBar.add(menuMonthSummary);
+        setJMenuBar(menuBar);
+
         viewController = new ViewController();
         viewController.setController(controller);
         viewController.assignFoToDays();
@@ -85,7 +111,7 @@ public final class View extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JPanel clickedPanel = (JPanel) e.getSource();
-                clickedDay = (int) clickedPanel.getClientProperty("dayNumber") - 1; 
+                clickedDay = (int) clickedPanel.getClientProperty("dayNumber") - 1;
                 DetailPerDay detailPerDay = new DetailPerDay(viewController);
                 detailPerDay.setVisible(true);
             }
@@ -367,7 +393,7 @@ public final class View extends JFrame {
             }
         }
     }
-    
+
     public int getDayClicked() {
         return clickedDay;
     }
