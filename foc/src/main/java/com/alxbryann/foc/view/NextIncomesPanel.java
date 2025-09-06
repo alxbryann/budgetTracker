@@ -18,6 +18,7 @@ public final class NextIncomesPanel extends JPanel {
         this.viewController = viewController;
         initializeUI();
         updateIncomesContainer();
+        System.out.println("updateIncomesContainer");
     }
 
     private void initializeUI() {
@@ -277,6 +278,7 @@ public final class NextIncomesPanel extends JPanel {
 
     public void updateIncomesContainer() {
         List<Income> incomeList = viewController.getInfoIncome();
+        System.out.println("incomeList: " + incomeList);
         incomesContainer.removeAll();
         if (!incomeList.isEmpty()) {
             Income temp;
@@ -287,7 +289,7 @@ public final class NextIncomesPanel extends JPanel {
                 LocalDate incomeDate = temp.getDate().toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
-                if (incomeDate.getMonthValue() == today.getMonthValue()) {
+                if (true) {
                     JPanel nameContainer = new JPanel() {
                         @Override
                         protected void paintComponent(Graphics g) {
