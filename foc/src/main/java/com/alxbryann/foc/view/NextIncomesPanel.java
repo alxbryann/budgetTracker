@@ -18,7 +18,6 @@ public final class NextIncomesPanel extends JPanel {
         this.viewController = viewController;
         initializeUI();
         updateIncomesContainer();
-        System.out.println("updateIncomesContainer");
     }
 
     private void initializeUI() {
