@@ -287,7 +287,7 @@ public final class NextPaymentsPanel extends JPanel {
                 LocalDate foDate = temp.getDate().toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
-                if (foDate.getMonthValue() == today.getMonthValue()) {
+                if (true) {
                     JPanel nameContainer = new JPanel() {
                         @Override
                         protected void paintComponent(Graphics g) {
