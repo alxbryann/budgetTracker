@@ -214,6 +214,10 @@ public final class NextPaymentsPanel extends JPanel {
             String name = nameFo.getText().trim();
             String cost = costFo.getText().trim();
             LocalDate selectedDate = datePicker.getDate();
+            if (selectedDate.getDayOfMonth() == 31) {
+                selectedDate = selectedDate.withDayOfMonth(30);
+            }
+
             String selectedColorName = (String) colorComboBox.getSelectedItem();
             boolean isRepetitiveFo = false;
             boolean weekOrMonthFo = false;

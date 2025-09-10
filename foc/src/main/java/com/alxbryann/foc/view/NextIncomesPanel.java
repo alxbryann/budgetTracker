@@ -216,6 +216,10 @@ public final class NextIncomesPanel extends JPanel {
             String name = nameIncome.getText().trim();
             String value = valueIncome.getText().trim();
             LocalDate selectedDate = datePicker.getDate();
+            if (selectedDate.getDayOfMonth() == 31) {
+                selectedDate = selectedDate.withDayOfMonth(30);
+            }
+
             String selectedColorName = (String) colorComboBox.getSelectedItem();
             boolean isRepetitiveIncome = false;
             boolean weekOrMonthIncome = false;
