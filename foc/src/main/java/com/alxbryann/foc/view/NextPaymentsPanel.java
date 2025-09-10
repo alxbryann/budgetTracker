@@ -214,6 +214,24 @@ public final class NextPaymentsPanel extends JPanel {
             String name = nameFo.getText().trim();
             String cost = costFo.getText().trim();
             LocalDate selectedDate = datePicker.getDate();
+            if (selectedDate.getDayOfMonth() == 31) {
+                UIManager.put("OptionPane.background", new Color(245, 245, 235));
+                UIManager.put("Panel.background", new Color(245, 245, 235));
+                UIManager.put("OptionPane.messageForeground", new Color(0, 111, 74));
+                UIManager.put("Button.background", new Color(0, 111, 74));
+                UIManager.put("Button.foreground", Color.white);
+                UIManager.put("Button.focus", new Color(0, 90, 60));
+
+                JOptionPane.showMessageDialog(
+                        modal,
+                        "El día 31 no es válido. Se ajustará automáticamente al día 30.",
+                        "Aviso",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                selectedDate = selectedDate.withDayOfMonth(30);
+            }
+
             String selectedColorName = (String) colorComboBox.getSelectedItem();
             boolean isRepetitiveFo = false;
             boolean weekOrMonthFo = false;
@@ -287,7 +305,7 @@ public final class NextPaymentsPanel extends JPanel {
                 LocalDate foDate = temp.getDate().toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
-                if (foDate.getMonthValue() == today.getMonthValue()) {
+                if (true) {
                     JPanel nameContainer = new JPanel() {
                         @Override
                         protected void paintComponent(Graphics g) {
