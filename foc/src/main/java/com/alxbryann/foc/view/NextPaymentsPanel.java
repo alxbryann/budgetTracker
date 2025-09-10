@@ -215,6 +215,20 @@ public final class NextPaymentsPanel extends JPanel {
             String cost = costFo.getText().trim();
             LocalDate selectedDate = datePicker.getDate();
             if (selectedDate.getDayOfMonth() == 31) {
+                UIManager.put("OptionPane.background", new Color(245, 245, 235));
+                UIManager.put("Panel.background", new Color(245, 245, 235));
+                UIManager.put("OptionPane.messageForeground", new Color(0, 111, 74));
+                UIManager.put("Button.background", new Color(0, 111, 74));
+                UIManager.put("Button.foreground", Color.white);
+                UIManager.put("Button.focus", new Color(0, 90, 60));
+
+                JOptionPane.showMessageDialog(
+                        modal,
+                        "El día 31 no es válido. Se ajustará automáticamente al día 30.",
+                        "Aviso",
+                        JOptionPane.WARNING_MESSAGE
+                );
+
                 selectedDate = selectedDate.withDayOfMonth(30);
             }
 
