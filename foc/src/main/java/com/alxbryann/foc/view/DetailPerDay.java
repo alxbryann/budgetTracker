@@ -27,6 +27,8 @@ public class DetailPerDay extends JFrame {
     private void initializeUI() {
         setLayout(null);
         setBounds(0, 0, 1280, 720);
+        setResizable(false);
+        setLocationRelativeTo(null);
         getContentPane().setBackground(Color.WHITE);
         String date = currentMonth + " " + (clickedDay + 1) + " " + currentYear;
         JLabel titleDate = new JLabel(date);

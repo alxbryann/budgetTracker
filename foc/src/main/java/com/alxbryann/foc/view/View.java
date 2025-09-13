@@ -38,12 +38,8 @@ public final class View extends JFrame {
         itemMonthSummary.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("Month Summary");
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-                frame.setSize(700, 400);
-                frame.setLocationRelativeTo(null); 
-                frame.setContentPane(new MonthSummary()); 
-                frame.setVisible(true);
+                MonthSummary monthSummary = new MonthSummary();
+                monthSummary.setVisible(true);
             }
         });
         

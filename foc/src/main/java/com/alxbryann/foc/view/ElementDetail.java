@@ -20,9 +20,9 @@ public class ElementDetail extends JPanel {
         this.isFinancialObligation = isFinancialObligation;
 
         if (isFinancialObligation) {
-            initializeUI(new Color(210, 133, 133)); 
+            initializeUI(new Color(210, 133, 133));
         } else {
-            initializeUI(new Color(144, 203, 173)); 
+            initializeUI(new Color(144, 203, 173));
         }
     }
 
@@ -43,11 +43,21 @@ public class ElementDetail extends JPanel {
         textPanel.add(nameLabel);
         textPanel.add(costLabel);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 20));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 20));
         buttonPanel.setOpaque(false);
 
-        deleteButton = new JButton("🗑"); 
-        editButton = new JButton("✏");  
+        deleteButton = new JButton();
+        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/trash.png"));
+        Image scaledImage = rawIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon trashIcon = new ImageIcon(scaledImage);
+        deleteButton.setIcon(trashIcon);
+        deleteButton.setPreferredSize(new Dimension(40, 40));
+        editButton = new JButton();
+        rawIcon = new ImageIcon(getClass().getResource("/pencil.png"));
+        scaledImage = rawIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon pencilIcon = new ImageIcon(scaledImage);
+        editButton.setIcon(pencilIcon);
+        editButton.setPreferredSize(new Dimension(40, 40));
 
         styleButton(deleteButton);
         styleButton(editButton);
@@ -78,7 +88,8 @@ public class ElementDetail extends JPanel {
     }
 
     @Override
-    protected void paintBorder(Graphics g) {}
+    protected void paintBorder(Graphics g) {
+    }
 
     @Override
     public boolean isOpaque() {
