@@ -1,4 +1,4 @@
-# 📊 FOC — Financial Obligations Calendar  
+# 📊 BudgetTracker
 
 **FOC (Financial Obligations Calendar)** is an open-source **Java Swing desktop application** designed to help users **organize, track, and visualize their financial obligations**.  
 
