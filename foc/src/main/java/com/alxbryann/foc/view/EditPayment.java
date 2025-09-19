@@ -1,59 +1,36 @@
 package com.alxbryann.foc.view;
 
-import com.alxbryann.foc.model.FinancialObligation;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
-public final class NextPaymentsPanel extends JPanel {
+/**
+ *
+ * @author alxbryann
+ */
+public class EditPayment extends JPanel {
 
     private final ViewController viewController;
-    private JPanel foContainer;
 
-    public NextPaymentsPanel(ViewController viewController) {
+    public EditPayment(ViewController viewController) {
         this.viewController = viewController;
-        initializeUI();
-        updateFoContainer();
     }
 
-    private void initializeUI() {
-        setLayout(null);
-        setBounds(45, 350, 270, 260);
-        setBackground(new Color(204, 168, 109, 255));
-
-        JLabel titleNextPayment = new JLabel("Next Payments");
-        titleNextPayment.setFont(new Font("Lexend", Font.PLAIN, 22));
-        titleNextPayment.setBounds(55, 10, 180, 30);
-        titleNextPayment.setForeground(Color.BLACK);
-
-        foContainer = new JPanel();
-        foContainer.setLayout(null);
-        foContainer.setBounds(20, 30, 300, 130);
-        foContainer.setOpaque(false);
-
-        add(foContainer);
-        add(titleNextPayment);
-
-        RoundedButton show = new RoundedButton("Show more", 30);
-        show.setBounds(50, 175, 180, 30);
-        show.setBackground(new Color(86, 60, 16));
-        show.setForeground(Color.WHITE);
-        show.setFont(new Font("Lexend", Font.PLAIN, 15));
-        add(show);
-
-        RoundedButton addNewPayments = new RoundedButton("Add new payments", 30);
-        addNewPayments.setBounds(50, 210, 180, 30);
-        addNewPayments.setBackground(new Color(86, 60, 16));
-        addNewPayments.setForeground(Color.WHITE);
-        addNewPayments.setFont(new Font("Lexend", Font.PLAIN, 15));
-        addNewPayments.addActionListener(e -> createNewPaymentDialog());
-        add(addNewPayments);
-    }
-
-    private void createNewPaymentDialog() {
+    private void editPaymentDialog() {
         RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Create New Financial Obligation", 400, 520, 30);
         modal.setTitle("Create New Financial Obligation");
         modal.setSize(400, 520);
@@ -69,7 +46,7 @@ public final class NextPaymentsPanel extends JPanel {
         addFo.setBackground(Color.WHITE);
         addFo.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true));
 
-        JLabel title = new JLabel("Create New Financial Obligation");
+        JLabel title = new JLabel("Edit a Financial Obligation");
         title.setFont(new Font("Lexend", Font.BOLD, 18));
         title.setBounds(45, 10, 500, 30);
         title.setForeground(new Color(60, 60, 60));
@@ -161,7 +138,7 @@ public final class NextPaymentsPanel extends JPanel {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (index >= 0 && index < pastelColors.length) {
                     Color color = pastelColors[index];
-                    label.setIcon(new ColorIcon(color, 20, 20));
+                    //label.setIcon(new NextPaymentsPanel.ColorIcon(color, 20, 20));
                 }
                 return label;
             }
@@ -290,161 +267,5 @@ public final class NextPaymentsPanel extends JPanel {
         addFo.add(send);
         modal.add(addFo);
         modal.setVisible(true);
-        updateFoContainer();
-    }
-
-    public void updateFoContainer() {
-        java.util.List foList = viewController.getInfoFo();
-        foContainer.removeAll();
-        if (!foList.isEmpty()) {
-            FinancialObligation temp;
-            int y = 30;
-            for (int i = 0; i < foList.size(); i++) {
-                temp = (FinancialObligation) foList.get(i);
-                LocalDate today = LocalDate.now();
-                LocalDate foDate = temp.getDate().toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
-                if (true) {
-                    JPanel nameContainer = new JPanel() {
-                        @Override
-                        protected void paintComponent(Graphics g) {
-                            super.paintComponent(g);
-                            Graphics2D g2 = (Graphics2D) g.create();
-                            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            g2.setColor(getBackground());
-                            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35);
-                            g2.dispose();
-                        }
-
-                        @Override
-                        protected void paintBorder(Graphics g) {
-                        }
-
-                        @Override
-                        public boolean isOpaque() {
-                            return false;
-                        }
-                    };
-                    nameContainer.setBounds(0, y, 120, 40);
-                    nameContainer.setLayout(new GridBagLayout());
-                    String rgb = temp.getRgb();
-                    int red = Integer.parseInt(rgb.substring(0, rgb.indexOf(",")));
-                    rgb = rgb.substring(rgb.indexOf(",") + 2);
-                    int green = Integer.parseInt(rgb.substring(0, rgb.indexOf(",")));
-                    rgb = rgb.substring(rgb.indexOf(",") + 2);
-                    int blue = Integer.parseInt(rgb);
-
-                    nameContainer.setBackground(new Color(red, green, blue));
-                    foContainer.add(nameContainer);
-                    JLabel name = new JLabel(temp.getName());
-                    if (temp.getName().length() <= 7) {
-                        name.setFont(new Font("Lexend", Font.PLAIN, 22));
-                    } else {
-                        if (temp.getName().length() > 7) {
-                            name.setFont(new Font("Lexend", Font.PLAIN, 16));
-                        } else {
-                            if (temp.getName().length() > 10) {
-                                name.setFont(new Font("Lexend", Font.PLAIN, 14));
-                            }
-                        }
-                    }
-                    nameContainer.add(name);
-                    JPanel costContainer = new JPanel() {
-                        @Override
-                        protected void paintComponent(Graphics g) {
-                            super.paintComponent(g);
-                            Graphics2D g2 = (Graphics2D) g.create();
-                            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            g2.setColor(getBackground());
-                            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35);
-                            g2.dispose();
-                        }
-
-                        @Override
-                        protected void paintBorder(Graphics g) {
-                        }
-
-                        @Override
-                        public boolean isOpaque() {
-                            return false;
-                        }
-                    };
-                    costContainer.setBounds(70, y, 165, 40);
-                    foContainer.add(costContainer);
-                    JLabel cost = new JLabel("        " + "$" + String.valueOf(temp.getCost()));
-                    costContainer.setOpaque(true);
-                    costContainer.setBackground(Color.WHITE);
-                    if (String.valueOf(temp.getCost()).length() <= 7) {
-                        cost.setFont(new Font("Lexend", Font.PLAIN, 22));
-                    } else {
-                        if (String.valueOf(temp.getCost()).length() > 7) {
-                            cost.setFont(new Font("Lexend", Font.PLAIN, 16));
-                        } else {
-                            if (String.valueOf(temp.getCost()).length() > 10) {
-                                cost.setFont(new Font("Lexend", Font.PLAIN, 14));
-                            }
-                        }
-                    }
-                    cost.setForeground(Color.BLACK);
-                    cost.setBounds(100, 0, 100, 100);
-                    costContainer.add(cost);
-                    y += 50;
-                }
-
-            }
-            foContainer.revalidate();
-            foContainer.repaint();
-        }
-    }
-
-    public class ColorIcon implements Icon {
-
-        private final Color color;
-        private final int width;
-        private final int height;
-
-        public ColorIcon(Color color, int width, int height) {
-            this.color = color;
-            this.width = width;
-            this.height = height;
-        }
-
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-            g.setColor(color);
-            g.fillRect(x, y, width, height);
-            g.setColor(Color.BLACK);
-            g.drawRect(x, y, width, height);
-        }
-
-        @Override
-        public int getIconWidth() {
-            return width;
-        }
-
-        @Override
-        public int getIconHeight() {
-            return height;
-        }
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
-        g2.dispose();
-    }
-
-    @Override
-    protected void paintBorder(Graphics g) {
-    }
-
-    @Override
-    public boolean isOpaque() {
-        return false;
     }
 }

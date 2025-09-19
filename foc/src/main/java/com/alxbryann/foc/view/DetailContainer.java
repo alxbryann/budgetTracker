@@ -23,9 +23,10 @@ public final class DetailContainer extends JPanel {
         int spaceY = 20;
         for (int i = 0; i < incomes.size(); i++) {
             Income temporalIncome = (Income) incomes.get(i);
+            int id = temporalIncome.getId();
             String name = temporalIncome.getName();
             double cost = temporalIncome.getValue();
-            ElementDetail ed = new ElementDetail(name, cost, false);
+            ElementDetail ed = new ElementDetail(id, name, cost, false);
             ed.setBounds(20, spaceY, 600, 80);
             spaceY += 100;
             ed.setVisible(true);
@@ -34,9 +35,10 @@ public final class DetailContainer extends JPanel {
         ArrayList financialObligations = getFinancialObligationsByDay();
         for (int i = 0; i < financialObligations.size(); i++) {
             FinancialObligation temporalFinancialObligation = (FinancialObligation) financialObligations.get(i);
+            int id = temporalFinancialObligation.getId();
             String name = temporalFinancialObligation.getName();
             double cost = temporalFinancialObligation.getCost();
-            ElementDetail ed = new ElementDetail(name, cost, true);
+            ElementDetail ed = new ElementDetail(id, name, cost, true);
             ed.setBounds(20, spaceY, 600, 80);
             spaceY += 100;
             ed.setVisible(true);

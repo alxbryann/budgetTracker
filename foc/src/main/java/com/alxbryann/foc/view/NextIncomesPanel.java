@@ -147,12 +147,12 @@ public final class NextIncomesPanel extends JPanel {
         };
 
         String[] colorNames = {
-            "Rojo",
-            "Verde",
-            "Gris",
-            "Azul",
-            "Morado",
-            "Cafe"
+            "Red",
+            "Green",
+            "Gray",
+            "Blue",
+            "Purple",
+            "Brown"
         };
 
         JComboBox<String> colorComboBox = new JComboBox<>(colorNames);
@@ -253,17 +253,17 @@ public final class NextIncomesPanel extends JPanel {
 
             Color selectedColor = null;
             switch (selectedColorName) {
-                case "Rojo" ->
+                case "Red" ->
                     selectedColor = pastelColors[0];
-                case "Verde" ->
+                case "Green" ->
                     selectedColor = pastelColors[1];
-                case "Gris" ->
+                case "Gray" ->
                     selectedColor = pastelColors[2];
-                case "Azul" ->
+                case "Blue" ->
                     selectedColor = pastelColors[3];
-                case "Morado" ->
+                case "Purple" ->
                     selectedColor = pastelColors[4];
-                case "Cafe" ->
+                case "Brown" ->
                     selectedColor = pastelColors[5];
             }
 

@@ -1,10 +1,13 @@
 package com.alxbryann.foc.view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class ElementDetail extends JPanel {
 
+    private final int id;
     private final String name;
     private final double cost;
     private final boolean isFinancialObligation;
@@ -14,7 +17,8 @@ public class ElementDetail extends JPanel {
     private JButton deleteButton;
     private JButton editButton;
 
-    public ElementDetail(String name, double cost, boolean isFinancialObligation) {
+    public ElementDetail(int id, String name, double cost, boolean isFinancialObligation) {
+        this.id = id;
         this.name = name;
         this.cost = cost;
         this.isFinancialObligation = isFinancialObligation;
@@ -52,12 +56,29 @@ public class ElementDetail extends JPanel {
         ImageIcon trashIcon = new ImageIcon(scaledImage);
         deleteButton.setIcon(trashIcon);
         deleteButton.setPreferredSize(new Dimension(40, 40));
+        deleteButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("id: " + id);
+            }
+            
+        });
+        
+        
         editButton = new JButton();
         rawIcon = new ImageIcon(getClass().getResource("/pencil.png"));
         scaledImage = rawIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon pencilIcon = new ImageIcon(scaledImage);
         editButton.setIcon(pencilIcon);
         editButton.setPreferredSize(new Dimension(40, 40));
+        editButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("id: " + id);
+            }
+            
+        });
+        
 
         styleButton(deleteButton);
         styleButton(editButton);
