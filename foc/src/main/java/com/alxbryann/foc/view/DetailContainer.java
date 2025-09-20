@@ -26,7 +26,7 @@ public final class DetailContainer extends JPanel {
             int id = temporalIncome.getId();
             String name = temporalIncome.getName();
             double cost = temporalIncome.getValue();
-            ElementDetail ed = new ElementDetail(id, name, cost, false);
+            ElementDetail ed = new ElementDetail(id, name, cost, false, viewController);
             ed.setBounds(20, spaceY, 600, 80);
             spaceY += 100;
             ed.setVisible(true);
@@ -38,7 +38,7 @@ public final class DetailContainer extends JPanel {
             int id = temporalFinancialObligation.getId();
             String name = temporalFinancialObligation.getName();
             double cost = temporalFinancialObligation.getCost();
-            ElementDetail ed = new ElementDetail(id, name, cost, true);
+            ElementDetail ed = new ElementDetail(id, name, cost, true, viewController);
             ed.setBounds(20, spaceY, 600, 80);
             spaceY += 100;
             ed.setVisible(true);

@@ -26,6 +26,25 @@ public class Controller {
             System.out.println("Exception");
         }
     }
+    
+    public void deleteFinancialObligationById(int id) {
+        try {
+            FinancialObligation temporalFinancialObligation = findFinancialObligationById(id);
+            System.out.println("i am here");
+            if (temporalFinancialObligation.isRepetitive()) {
+                System.out.println("first");
+                pc.deleteFo(id);
+                System.out.println("good");
+                pc.deleteRepetitiveFo(id);
+                System.out.println("good 2");
+            } else {
+                System.out.println("second");
+                pc.deleteFo(id);
+            }
+        } catch (Exception e) {
+            System.out.println("Exception");
+        }
+    }
 
     public void createIncome(Income income) {
         try {
@@ -39,6 +58,21 @@ public class Controller {
             System.out.println("Exception");
         }
     }
+    
+    public void deleteIncomeById(int id) {
+        try {
+            Income temporalIncome = findIncomeById(id);
+            if (temporalIncome.isRepetitive()) {
+                pc.deleteIncome(id);
+                pc.deleteRepetitiveIncome(id);
+            } else {
+                pc.deleteIncome(id);
+            }
+        } catch (Exception e) {
+            System.out.println("Exception");
+        }
+    }
+
 
     public List findAllRepetitiveFinancialObligations() {
         return pc.findAllRepetitiveFO();

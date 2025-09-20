@@ -11,17 +11,19 @@ public class ElementDetail extends JPanel {
     private final String name;
     private final double cost;
     private final boolean isFinancialObligation;
+    private final ViewController viewController;
 
     private JLabel nameLabel;
     private JLabel costLabel;
     private JButton deleteButton;
     private JButton editButton;
 
-    public ElementDetail(int id, String name, double cost, boolean isFinancialObligation) {
+    public ElementDetail(int id, String name, double cost, boolean isFinancialObligation, ViewController viewController) {
         this.id = id;
         this.name = name;
         this.cost = cost;
         this.isFinancialObligation = isFinancialObligation;
+        this.viewController = viewController;
 
         if (isFinancialObligation) {
             initializeUI(new Color(210, 133, 133));
@@ -59,7 +61,11 @@ public class ElementDetail extends JPanel {
         deleteButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("id: " + id);
+                if (isFinancialObligation) {
+                   viewController.deleteFinancialObligationById(id);
+                } else {
+                    viewController.deleteIncomeById(id);
+                }
             }
             
         });
@@ -75,7 +81,7 @@ public class ElementDetail extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("id: " + id);
-            }
+            } 
             
         });
         

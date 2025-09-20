@@ -105,4 +105,12 @@ public class ViewController {
     public double getTotalNetByDay(int day) {
         return controller.getTotalNet(day);
     }
+
+    public void deleteFinancialObligationById(int id) {
+        controller.deleteFinancialObligationById(id);
+    }
+    
+    public void deleteIncomeById(int id) {
+        controller.deleteIncomeById(id);
+    }
 }

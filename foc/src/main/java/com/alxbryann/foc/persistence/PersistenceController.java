@@ -11,48 +11,64 @@ import java.util.List;
  * @author barr2
  */
 public class PersistenceController {
-
+    
     private FinancialObligationJpaController foJpa = new FinancialObligationJpaController();
     private IncomeJpaController IncomeJpa = new IncomeJpaController();
     private RepetitiveFoJpaController RepetitiveFoJpa = new RepetitiveFoJpaController();
     private RepetitiveIncomeJpaController RepetitiveIncomeJpa = new RepetitiveIncomeJpaController();
-
+    
     public void createFo(FinancialObligation fo) {
         foJpa.create(fo);
     }
-
+    
     public FinancialObligation findFoById(int id) {
         return foJpa.findFinancialObligation(id);
     }
-
+    
     public List findAllFo() {
         return foJpa.findAll();
     }
-
+    
     public void createRepetitiveFo(RepetitiveFO rf) {
         RepetitiveFoJpa.create(rf);
     }
     
-    public List findAllRepetitiveFO(){
+    public void deleteFo(int id) {
+        foJpa.destroy((long) id);
+    }
+    
+    public void deleteRepetitiveFo(int id) {
+        RepetitiveFoJpa.destroy((long) id);
+    }
+    
+    public List findAllRepetitiveFO() {
         return RepetitiveFoJpa.findAll();
-    } 
-
+    }    
+    
     public void createIncome(Income income) {
         IncomeJpa.create(income);
+    }
+    
+    public void deleteIncome(int id) {
+        IncomeJpa.destroy((long) id);
+    }
+    
+    public void deleteRepetitiveIncome(int id) {
+        RepetitiveIncomeJpa.destroy((long) id);
     }
     
     public Income findIncomeById(int id) {
         return IncomeJpa.findIncomeById(id);
     }
-
+    
     public List findAllIncomes() {
         return IncomeJpa.findAll();
     }
     
-    public void createRepetitiveIncome(RepetitiveIncome ri){
+    public void createRepetitiveIncome(RepetitiveIncome ri) {
         RepetitiveIncomeJpa.create(ri);
     }
-
+    
     public List findAllRepetitiveIncomes() {
         return RepetitiveIncomeJpa.findAll();
     }
