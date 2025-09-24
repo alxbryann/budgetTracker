@@ -42,7 +42,7 @@ public final class View extends JFrame {
                 monthSummary.setVisible(true);
             }
         });
-        
+
         menuMonthSummary.add(itemMonthSummary);
         menuBar.add(menuMonthSummary);
         setJMenuBar(menuBar);
@@ -392,5 +392,25 @@ public final class View extends JFrame {
 
     public int getDayClicked() {
         return clickedDay;
+    }
+
+    public void clearViewCalendar() {
+        for (int i = 0; i < viewCalendar.length; i++) {
+            JPanel day = viewCalendar[i];
+
+            day.removeAll();
+            day.revalidate();
+            day.repaint();
+
+            day.setBackground(new Color(212, 215, 213, 255));
+
+            JLabel numberDay = new JLabel(String.valueOf(day.getClientProperty("dayNumber")));
+            numberDay.setFont(new Font("Lexend", Font.BOLD, 30));
+            numberDay.setBounds(10, 6, 50, 30);
+            numberDay.setForeground(Color.white);
+            day.add(numberDay);
+
+            day.putClientProperty("painted", "false");
+        }
     }
 }

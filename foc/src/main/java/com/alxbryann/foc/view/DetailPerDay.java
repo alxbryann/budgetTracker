@@ -32,7 +32,7 @@ public class DetailPerDay extends JFrame {
         getContentPane().setBackground(Color.WHITE);
         String date = currentMonth + " " + (clickedDay + 1) + " " + currentYear;
         JLabel titleDate = new JLabel(date);
-        titleDate.setFont(new Font("Kantumruy Pro", Font.BOLD, 75));
+        titleDate.setFont(new Font("Kantumruy Pro", Font.BOLD, 60));
         titleDate.setBounds(60, 60, 600, 100);
         titleDate.setForeground(Color.BLACK);
         add(titleDate);

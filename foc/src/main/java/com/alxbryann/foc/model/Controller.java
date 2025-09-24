@@ -30,15 +30,10 @@ public class Controller {
     public void deleteFinancialObligationById(int id) {
         try {
             FinancialObligation temporalFinancialObligation = findFinancialObligationById(id);
-            System.out.println("i am here");
             if (temporalFinancialObligation.isRepetitive()) {
-                System.out.println("first");
                 pc.deleteFo(id);
-                System.out.println("good");
                 pc.deleteRepetitiveFo(id);
-                System.out.println("good 2");
             } else {
-                System.out.println("second");
                 pc.deleteFo(id);
             }
         } catch (Exception e) {

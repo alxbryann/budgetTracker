@@ -38,13 +38,6 @@ public final class NextIncomesPanel extends JPanel {
         add(incomesContainer);
         add(titleNextIncomes);
 
-        RoundedButton show = new RoundedButton("Show more", 30);
-        show.setBounds(50, 175, 180, 30);
-        show.setBackground(new Color(86, 60, 16));
-        show.setForeground(Color.WHITE);
-        show.setFont(new Font("Lexend", Font.PLAIN, 15));
-        add(show);
-
         RoundedButton addNewIncomes = new RoundedButton("Add new incomes", 30);
         addNewIncomes.setBounds(50, 210, 180, 30);
         addNewIncomes.setBackground(new Color(86, 60, 16));
@@ -294,8 +287,7 @@ public final class NextIncomesPanel extends JPanel {
     }
 
     public void updateIncomesContainer() {
-        List<Income> incomeList = viewController.getInfoIncome();
-        System.out.println("incomeList: " + incomeList);
+        List<Income> incomeList = viewController.getInfoIncome();;
         incomesContainer.removeAll();
         if (!incomeList.isEmpty()) {
             Income temp;

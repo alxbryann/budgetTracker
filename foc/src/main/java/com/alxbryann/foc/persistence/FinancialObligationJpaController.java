@@ -15,7 +15,7 @@ public class FinancialObligationJpaController implements Serializable {
     public FinancialObligationJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
     public FinancialObligationJpaController() {
         this.emf = Persistence.createEntityManagerFactory("focPU");
     }
@@ -48,7 +48,7 @@ public class FinancialObligationJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) {
+    public void destroy(int id) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
@@ -58,9 +58,13 @@ public class FinancialObligationJpaController implements Serializable {
                 em.remove(obligation);
             }
             transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            e.printStackTrace();  
         } finally {
             em.close();
         }
+
     }
 
     public FinancialObligation findFinancialObligation(int id) {

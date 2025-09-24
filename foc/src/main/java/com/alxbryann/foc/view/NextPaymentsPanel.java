@@ -37,12 +37,6 @@ public final class NextPaymentsPanel extends JPanel {
         add(foContainer);
         add(titleNextPayment);
 
-        RoundedButton show = new RoundedButton("Show more", 30);
-        show.setBounds(50, 175, 180, 30);
-        show.setBackground(new Color(86, 60, 16));
-        show.setForeground(Color.WHITE);
-        show.setFont(new Font("Lexend", Font.PLAIN, 15));
-        add(show);
 
         RoundedButton addNewPayments = new RoundedButton("Add new payments", 30);
         addNewPayments.setBounds(50, 210, 180, 30);

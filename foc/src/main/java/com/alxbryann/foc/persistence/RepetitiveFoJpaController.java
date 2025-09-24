@@ -48,7 +48,7 @@ public class RepetitiveFoJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) {
+    public void destroy(int id) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
@@ -63,7 +63,7 @@ public class RepetitiveFoJpaController implements Serializable {
         }
     }
 
-    public RepetitiveFO findFinancialObligation(Long id) {
+    public RepetitiveFO findFinancialObligation(int id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(RepetitiveFO.class, id);

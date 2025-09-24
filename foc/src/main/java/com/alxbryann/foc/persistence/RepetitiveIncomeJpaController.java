@@ -48,7 +48,7 @@ public class RepetitiveIncomeJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) {
+    public void destroy(int id) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
@@ -63,7 +63,7 @@ public class RepetitiveIncomeJpaController implements Serializable {
         }
     }
 
-    public RepetitiveIncome findRepetitiveIncome(Long id) {
+    public RepetitiveIncome findRepetitiveIncome(int id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(RepetitiveIncome.class, id);

@@ -113,4 +113,8 @@ public class ViewController {
     public void deleteIncomeById(int id) {
         controller.deleteIncomeById(id);
     }
+    
+    public void clearViewCalendar() {
+        vt.clearViewCalendar();
+    }
 }

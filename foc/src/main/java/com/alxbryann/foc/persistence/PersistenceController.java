@@ -34,11 +34,11 @@ public class PersistenceController {
     }
     
     public void deleteFo(int id) {
-        foJpa.destroy((long) id);
+        foJpa.destroy(id);
     }
     
     public void deleteRepetitiveFo(int id) {
-        RepetitiveFoJpa.destroy((long) id);
+        RepetitiveFoJpa.destroy(id);
     }
     
     public List findAllRepetitiveFO() {
@@ -50,11 +50,11 @@ public class PersistenceController {
     }
     
     public void deleteIncome(int id) {
-        IncomeJpa.destroy((long) id);
+        IncomeJpa.destroy(id);
     }
     
     public void deleteRepetitiveIncome(int id) {
-        RepetitiveIncomeJpa.destroy((long) id);
+        RepetitiveIncomeJpa.destroy(id);
     }
     
     public Income findIncomeById(int id) {

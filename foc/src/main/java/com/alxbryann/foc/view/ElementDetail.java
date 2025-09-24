@@ -58,33 +58,41 @@ public class ElementDetail extends JPanel {
         ImageIcon trashIcon = new ImageIcon(scaledImage);
         deleteButton.setIcon(trashIcon);
         deleteButton.setPreferredSize(new Dimension(40, 40));
-        deleteButton.addActionListener(new ActionListener(){
+        deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isFinancialObligation) {
-                   viewController.deleteFinancialObligationById(id);
+                    viewController.deleteFinancialObligationById(id);
+                    viewController.clearViewCalendar();
+                    viewController.paintFOs();
+                    viewController.paintRepetitiveFinancialObligations();
+                    viewController.paintINs();
+                    viewController.paintRepetitiveIncomes();
                 } else {
                     viewController.deleteIncomeById(id);
+                    viewController.clearViewCalendar();
+                    viewController.paintFOs();
+                    viewController.paintRepetitiveFinancialObligations();
+                    viewController.paintINs();
+                    viewController.paintRepetitiveIncomes();
                 }
             }
-            
+
         });
-        
-        
+
         editButton = new JButton();
         rawIcon = new ImageIcon(getClass().getResource("/pencil.png"));
         scaledImage = rawIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon pencilIcon = new ImageIcon(scaledImage);
         editButton.setIcon(pencilIcon);
         editButton.setPreferredSize(new Dimension(40, 40));
-        editButton.addActionListener(new ActionListener(){
+        editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("id: " + id);
-            } 
-            
+            }
+
         });
-        
 
         styleButton(deleteButton);
         styleButton(editButton);

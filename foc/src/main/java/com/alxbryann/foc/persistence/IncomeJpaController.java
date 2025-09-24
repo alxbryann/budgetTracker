@@ -52,7 +52,7 @@ public class IncomeJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) {
+    public void destroy(int id) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
