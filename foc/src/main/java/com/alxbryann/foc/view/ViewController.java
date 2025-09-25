@@ -117,4 +117,8 @@ public class ViewController {
     public void clearViewCalendar() {
         vt.clearViewCalendar();
     }
+
+    public void updateViewCalendar() {
+        vt.updateViewCalendar();
+    }
 }

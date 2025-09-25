@@ -61,20 +61,12 @@ public class ElementDetail extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                viewController.clearViewCalendar();
+                viewController.updateViewCalendar();
                 if (isFinancialObligation) {
                     viewController.deleteFinancialObligationById(id);
-                    viewController.clearViewCalendar();
-                    viewController.paintFOs();
-                    viewController.paintRepetitiveFinancialObligations();
-                    viewController.paintINs();
-                    viewController.paintRepetitiveIncomes();
                 } else {
                     viewController.deleteIncomeById(id);
-                    viewController.clearViewCalendar();
-                    viewController.paintFOs();
-                    viewController.paintRepetitiveFinancialObligations();
-                    viewController.paintINs();
-                    viewController.paintRepetitiveIncomes();
                 }
             }
 
