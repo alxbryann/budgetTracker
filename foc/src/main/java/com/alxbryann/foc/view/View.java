@@ -412,14 +412,12 @@ public final class View extends JFrame {
 
             day.putClientProperty("painted", "false");
         }
-        System.out.println("Succesfull delete");
     }
 
     public void updateViewCalendar() {
-        paintFOsInView();
-        paintRepetitiveFO();
-        paintINsInView();
-        paintRepetitiveIncome();
-        System.out.println("view updated");
+        viewController.paintFOs();
+        viewController.paintRepetitiveFinancialObligations();
+        viewController.paintINs();
+        viewController.paintRepetitiveIncomes();
     }
 }

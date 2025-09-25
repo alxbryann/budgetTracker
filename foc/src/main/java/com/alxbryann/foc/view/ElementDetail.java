@@ -18,7 +18,8 @@ public class ElementDetail extends JPanel {
     private JButton deleteButton;
     private JButton editButton;
 
-    public ElementDetail(int id, String name, double cost, boolean isFinancialObligation, ViewController viewController) {
+    public ElementDetail(int id, String name, double cost, boolean isFinancialObligation,
+            ViewController viewController) {
         this.id = id;
         this.name = name;
         this.cost = cost;
@@ -61,13 +62,13 @@ public class ElementDetail extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewController.clearViewCalendar();
-                viewController.updateViewCalendar();
                 if (isFinancialObligation) {
                     viewController.deleteFinancialObligationById(id);
                 } else {
                     viewController.deleteIncomeById(id);
                 }
+                viewController.clearViewCalendar();
+                viewController.updateViewCalendar();
             }
 
         });
