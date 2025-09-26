@@ -12,7 +12,9 @@ import java.util.List;
 public class ViewController {
 
     private Controller controller;
-    private View vt;
+    private View view;
+    private NextPaymentsPanel nextPaymentsPanel;
+    private NextIncomesPanel nextIncomesPanel;
 
     public ViewController() {
     }
@@ -21,16 +23,28 @@ public class ViewController {
         this.controller = controller;
     }
 
-    public void setView(View vt) {
-        this.vt = vt;
+    public void setView(View view) {
+        this.view = view;
     }
 
-    public void setInfoFo(String name, String price, String date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        controller.setInfoFinancialObligation(name, price, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
+    public void setNextPaymentsPanel(NextPaymentsPanel nextPaymentsPanel) {
+        this.nextPaymentsPanel = nextPaymentsPanel;
     }
 
-    public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        controller.setInfoIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
+    public void setNextIncomesPanel(NextIncomesPanel nextIncomesPanel) { 
+        this.nextIncomesPanel = nextIncomesPanel;
+    }
+
+    public void setInfoFo(String name, String price, String date, Color selectedColor, boolean isRepetitive,
+            boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        controller.setInfoFinancialObligation(name, price, date, selectedColor, isRepetitive, isRepetitiveByWeek,
+                isRepetitiveByMonth);
+    }
+
+    public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
+            boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        controller.setInfoIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek,
+                isRepetitiveByMonth);
     }
 
     public List getInfoFo() {
@@ -70,8 +84,8 @@ public class ViewController {
     }
 
     public void paintDaysInView() {
-        vt.paintFOsInView();
-        vt.paintINsInView();
+        view.paintFOsInView();
+        view.paintINsInView();
     }
 
     public List getFinancialObligationsByDay(int day) {
@@ -91,7 +105,7 @@ public class ViewController {
     }
 
     public int getClickedDay() {
-        return vt.getDayClicked();
+        return view.getDayClicked();
     }
 
     public double getTotalCostByDay(int day) {
@@ -109,16 +123,24 @@ public class ViewController {
     public void deleteFinancialObligationById(int id) {
         controller.deleteFinancialObligationById(id);
     }
-    
+
     public void deleteIncomeById(int id) {
         controller.deleteIncomeById(id);
     }
-    
+
     public void clearViewCalendar() {
-        vt.clearViewCalendar();
+        view.clearViewCalendar();
     }
 
     public void updateViewCalendar() {
-        vt.updateViewCalendar();
+        view.updateViewCalendar();
+    }
+
+    public void updateNextIncomes() {
+        nextIncomesPanel.updateIncomesContainer();
+    }
+
+    public void updateNextFinancialObligations() {
+        nextPaymentsPanel.updateFoContainer();
     }
 }

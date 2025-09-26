@@ -31,8 +31,8 @@ public class EditPayment extends JPanel {
     }
 
     private void editPaymentDialog() {
-        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Create New Financial Obligation", 400, 520, 30);
-        modal.setTitle("Create New Financial Obligation");
+        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Edio New Financial Obligation", 400, 520, 30);
+        modal.setTitle("Edit a Financial Obligation");
         modal.setSize(400, 520);
         modal.setLayout(null);
         modal.setLocationRelativeTo(null);

@@ -66,9 +66,8 @@ public class ElementDetail extends JPanel {
                     viewController.deleteFinancialObligationById(id);
                 } else {
                     viewController.deleteIncomeById(id);
-                }
-                viewController.clearViewCalendar();
-                viewController.updateViewCalendar();
+                }   
+                updateView();
             }
 
         });
@@ -82,7 +81,8 @@ public class ElementDetail extends JPanel {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("id: " + id);
+                EditPayment editPaymentWindow = new EditPayment(viewController);
+                editPaymentWindow.setVisible(true);
             }
 
         });
@@ -105,6 +105,12 @@ public class ElementDetail extends JPanel {
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
+    public void updateView() {
+        viewController.updateViewCalendar();
+        viewController.updateNextIncomes();
+        viewController.updateNextFinancialObligations();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -123,4 +129,5 @@ public class ElementDetail extends JPanel {
     public boolean isOpaque() {
         return false;
     }
+
 }
