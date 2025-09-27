@@ -420,5 +420,7 @@ public final class View extends JFrame {
         viewController.assignIncomesToDays();
         paintFOsInView();
         paintINsInView();
+        paintRepetitiveFO();
+        paintRepetitiveIncome();
     }
 }

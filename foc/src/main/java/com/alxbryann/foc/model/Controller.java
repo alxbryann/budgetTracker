@@ -160,4 +160,12 @@ public class Controller {
     public int getCurrentYear() {
         return model.getCurrentYear();
     }
+
+    public void removeFinancialObligationFromDayById(int id, int numberDay) {
+        model.removeFinancialObligationFromDayById(id, numberDay);
+    }
+
+    public void removeIncomeFromDayById(int id, int numberDay) {
+        model.removeIncomeFromDayById(id, numberDay);
+    }
 }

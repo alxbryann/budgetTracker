@@ -12,6 +12,7 @@ public class ElementDetail extends JPanel {
     private final double cost;
     private final boolean isFinancialObligation;
     private final ViewController viewController;
+    private final int dayNumber;
 
     private JLabel nameLabel;
     private JLabel costLabel;
@@ -19,12 +20,13 @@ public class ElementDetail extends JPanel {
     private JButton editButton;
 
     public ElementDetail(int id, String name, double cost, boolean isFinancialObligation,
-            ViewController viewController) {
+            ViewController viewController, int dayNumber) {
         this.id = id;
         this.name = name;
         this.cost = cost;
         this.isFinancialObligation = isFinancialObligation;
         this.viewController = viewController;
+        this.dayNumber = dayNumber;
 
         if (isFinancialObligation) {
             initializeUI(new Color(210, 133, 133));
@@ -64,8 +66,10 @@ public class ElementDetail extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (isFinancialObligation) {
                     viewController.deleteFinancialObligationById(id);
+                    viewController.removeFinancialObligationFromDayById(id, dayNumber);
                 } else {
                     viewController.deleteIncomeById(id);
+                    viewController.removeIncomeFromDayById(id, dayNumber);
                 }   
                 updateView();
             }

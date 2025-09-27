@@ -143,4 +143,12 @@ public class ViewController {
     public void updateNextFinancialObligations() {
         nextPaymentsPanel.updateFoContainer();
     }
+
+    public void removeFinancialObligationFromDayById(int id, int numberDay) {
+        controller.removeFinancialObligationFromDayById(id, numberDay);
+    }
+
+    public void removeIncomeFromDayById(int id, int numberDay) {
+        controller.removeIncomeFromDayById(id, numberDay);
+    }
 }
