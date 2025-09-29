@@ -416,8 +416,6 @@ public final class View extends JFrame {
 
     public void updateViewCalendar() {
         clearViewCalendar();
-        viewController.assignFoToDays();
-        viewController.assignIncomesToDays();
         paintFOsInView();
         paintINsInView();
         paintRepetitiveFO();

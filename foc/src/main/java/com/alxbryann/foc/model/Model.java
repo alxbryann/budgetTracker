@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.alxbryann.foc.view.ElementDetail;
+
 /**
  *
  * @author alxbryann
@@ -190,6 +192,9 @@ public class Model {
 
     public List getIncomesByDay(int day) {
         Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
+        for (int i = 0; i < tempDay.getIncomes().size(); i++) {
+            Income temporalIncome = (Income) tempDay.getIncomes().get(i);
+        }
         return tempDay.getIncomes();
     }
 

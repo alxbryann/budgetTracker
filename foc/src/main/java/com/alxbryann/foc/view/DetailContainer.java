@@ -44,7 +44,6 @@ public final class DetailContainer extends JPanel {
             ed.setVisible(true);
             add(ed);
         }
-
     }
 
     private ArrayList getFinancialObligationsByDay() {
