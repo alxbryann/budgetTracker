@@ -44,10 +44,10 @@ public class ElementDetail extends JPanel {
         textPanel.setOpaque(false);
 
         nameLabel = new JLabel(name);
-        nameLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        nameLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 18));
 
         costLabel = new JLabel("$" + String.format("%,.0f", cost));
-        costLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        costLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 18));
 
         textPanel.add(nameLabel);
         textPanel.add(costLabel);
@@ -70,7 +70,7 @@ public class ElementDetail extends JPanel {
                 } else {
                     viewController.deleteIncomeById(id);
                     viewController.removeIncomeFromDayById(id, dayNumber);
-                }   
+                }
                 updateView();
             }
 
@@ -85,8 +85,16 @@ public class ElementDetail extends JPanel {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditPayment editPaymentWindow = new EditPayment(viewController);
-                editPaymentWindow.setVisible(true);
+                if (isFinancialObligation) {
+                    EditPayment editPaymentWindow = new EditPayment(viewController, id, dayNumber);
+                    editPaymentWindow.setVisible(true);
+                    updateView();
+                } else {
+                    EditIncome editIncomeWindow = new EditIncome(viewController, id, dayNumber);
+                    editIncomeWindow.setVisible(true);
+                    updateView();
+                }
+
             }
 
         });

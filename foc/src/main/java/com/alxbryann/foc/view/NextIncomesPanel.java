@@ -346,6 +346,7 @@ public final class NextIncomesPanel extends JPanel {
                             }
                         }
                     }
+                    name.setForeground(Color.BLACK);
                     nameContainer.add(name);
                     JPanel valueContainer = new JPanel() {
                         @Override

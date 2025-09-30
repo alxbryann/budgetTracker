@@ -346,6 +346,7 @@ public final class NextPaymentsPanel extends JPanel {
                             }
                         }
                     }
+                    name.setForeground(Color.BLACK);
                     nameContainer.add(name);
                     JPanel costContainer = new JPanel() {
                         @Override
