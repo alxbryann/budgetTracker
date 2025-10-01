@@ -31,6 +31,14 @@ public class EditPayment extends JPanel {
     private final ViewController viewController;
     private int id;
     private int dayNumber;
+    
+    // Variables para los componentes de la UI
+    private JTextArea nameFo;
+    private JTextArea costFo;
+    private DatePicker datePicker;
+    private ModernCheckBox isRepetitive;
+    private JComboBox<String> colorComboBox;
+    private ModernToggleButton weekOrMonth;
 
     public EditPayment(ViewController viewController, int id, int dayNumber) {
         this.viewController = viewController;
@@ -40,7 +48,7 @@ public class EditPayment extends JPanel {
     }
 
     private void editPaymentDialog() {
-        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Edio New Financial Obligation", 400, 520, 30);
+        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Edit Financial Obligation", 400, 520, 30);
         modal.setTitle("Edit a Financial Obligation");
         modal.setSize(400, 520);
         modal.setLayout(null);
@@ -90,6 +98,7 @@ public class EditPayment extends JPanel {
         nameFo.setBackground(new Color(217, 217, 217));
         nameFo.setForeground(Color.BLACK);
         nameFo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.nameFo = nameFo; // Asignar a variable de instancia
         addFo.add(nameFo);
 
         JLabel priceLabel = new JLabel("Cost:");
@@ -104,6 +113,7 @@ public class EditPayment extends JPanel {
         costFo.setBackground(new Color(217, 217, 217));
         costFo.setForeground(Color.BLACK);
         costFo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.costFo = costFo; // Asignar a variable de instancia
         addFo.add(costFo);
 
         JLabel dateLabel = new JLabel("Date:");
@@ -122,6 +132,7 @@ public class EditPayment extends JPanel {
         dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundValidDate, new Color(217, 217, 217));
         DatePicker datePicker = new DatePicker(dateSettings);
         datePicker.setBounds(45, 205, 300, 40);
+        this.datePicker = datePicker; // Asignar a variable de instancia
         addFo.add(datePicker);
 
         JLabel textIsRepetitive = new JLabel("Is repetitive?");
@@ -129,6 +140,7 @@ public class EditPayment extends JPanel {
         textIsRepetitive.setFont(new Font("Lexend", Font.PLAIN, 14));
         ModernCheckBox isRepetitive = new ModernCheckBox();
         isRepetitive.setBounds(150, 260, 30, 20);
+        this.isRepetitive = isRepetitive; // Asignar a variable de instancia
         addFo.add(textIsRepetitive);
         addFo.add(isRepetitive);
 
@@ -163,13 +175,14 @@ public class EditPayment extends JPanel {
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (index >= 0 && index < pastelColors.length) {
-                    Color color = pastelColors[index];
+                    // Color color = pastelColors[index]; // Comentado porque no se usa
                     //label.setIcon(new NextPaymentsPanel.ColorIcon(color, 20, 20));
                 }
                 return label;
             }
         });
         colorComboBox.setBounds(45, 320, 300, 30);
+        this.colorComboBox = colorComboBox; // Asignar a variable de instancia
         addFo.add(colorComboBox);
 
         RoundedButton closeButton = new RoundedButton("Close", 30);
@@ -180,12 +193,13 @@ public class EditPayment extends JPanel {
         closeButton.addActionListener(e -> modal.dispose());
         addFo.add(closeButton);
 
-        RoundedButton send = new RoundedButton("Create", 30);
+        RoundedButton send = new RoundedButton("Update", 30);
         send.setBounds(120, 370, 150, 40);
         send.setBackground(new Color(86, 60, 16));
         send.setForeground(Color.WHITE);
         send.setFont(new Font("Lexend", Font.PLAIN, 16));
         ModernToggleButton weekOrMonth = new ModernToggleButton();
+        this.weekOrMonth = weekOrMonth; // Asignar a variable de instancia
 
         isRepetitive.addActionListener(e -> {
             if (isRepetitive.isSelected()) {
@@ -272,11 +286,11 @@ public class EditPayment extends JPanel {
             String date = selectedDate.toString();
 
             if (viewController != null) {
+                // Llamar al método de edición en lugar de creación
                 if (weekOrMonthFo) {
-                    viewController.setInfoFo(name, cost, date, selectedColor, isRepetitiveFo, true, false);
+                    viewController.editFinancialObligation(id, name, cost, date, selectedColor, isRepetitiveFo, true, false);
                 } else {
-                    viewController.setInfoFo(name, cost, date, selectedColor, isRepetitiveFo, false, true);
-
+                    viewController.editFinancialObligation(id, name, cost, date, selectedColor, isRepetitiveFo, false, true);
                 }
             }
 
@@ -284,7 +298,7 @@ public class EditPayment extends JPanel {
             costFo.setText("");
             datePicker.clear();
             colorComboBox.setSelectedIndex(0);
-            JOptionPane.showMessageDialog(modal, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(modal, "Updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             modal.dispose();
             viewController.assignFoToDays();
             viewController.paintDaysInView();
@@ -292,10 +306,151 @@ public class EditPayment extends JPanel {
 
         addFo.add(send);
         modal.add(addFo);
+        
+        // Cargar los datos existentes de la obligación financiera
+        loadFinancialObligationInformation(id, dayNumber);
+        
         modal.setVisible(true);
     }
 
     public void loadFinancialObligationInformation(int id, int dayNumber) {
-        //viewController.loadFinancialObligationInformation(id, dayNumber);
+        try {
+            // Obtener la obligación financiera por ID
+            com.alxbryann.foc.model.FinancialObligation fo = viewController.getFinancialObligationById(id);
+            
+            if (fo != null) {
+                // Cargar nombre
+                if (nameFo != null) {
+                    nameFo.setText(fo.getName());
+                }
+                
+                // Cargar costo
+                if (costFo != null) {
+                    costFo.setText(String.valueOf(fo.getCost()));
+                }
+                
+                // Cargar fecha
+                if (datePicker != null && fo.getDate() != null) {
+                    // Convertir Date a LocalDate
+                    java.time.LocalDate localDate = fo.getDate().toInstant()
+                            .atZone(java.time.ZoneId.systemDefault())
+                            .toLocalDate();
+                    datePicker.setDate(localDate);
+                }
+                
+                // Cargar si es repetitivo
+                if (isRepetitive != null) {
+                    isRepetitive.setSelected(fo.isRepetitive());
+                    
+                    // Si es repetitivo, simular el click para mostrar el toggle button
+                    if (fo.isRepetitive() && weekOrMonth != null) {
+                        // Necesitamos activar el ActionListener manualmente para mostrar el componente
+                        weekOrMonth.addActionListener(evt -> {
+                            if (weekOrMonth.isSelected()) {
+                                weekOrMonth.setText("Week");
+                            } else {
+                                weekOrMonth.setText("Month");
+                            }
+                        });
+                        
+                        // Agregar el weekOrMonth al panel y reposicionar elementos
+                        weekOrMonth.setBounds(45, 300, 100, 30);
+                        if (weekOrMonth.getParent() == null) {
+                            // Buscar el panel addFo
+                            java.awt.Container parent = isRepetitive.getParent();
+                            if (parent != null) {
+                                parent.add(weekOrMonth);
+                                
+                                // Reposicionar los elementos como en el ActionListener original
+                                if (colorComboBox != null) {
+                                    colorComboBox.setBounds(45, 380, 300, 30);
+                                }
+                                // Buscar y reposicionar los botones
+                                for (java.awt.Component comp : parent.getComponents()) {
+                                    if (comp instanceof RoundedButton) {
+                                        RoundedButton button = (RoundedButton) comp;
+                                        if ("Update".equals(button.getText())) {
+                                            button.setBounds(120, 420, 150, 40);
+                                        } else if ("Close".equals(button.getText())) {
+                                            button.setBounds(120, 470, 150, 40);
+                                        }
+                                    }
+                                }
+                                parent.revalidate();
+                                parent.repaint();
+                            }
+                        }
+                        
+                        // Configurar el estado del toggle
+                        if (fo.isRepetitiveByWeek()) {
+                            weekOrMonth.setSelected(true);
+                            weekOrMonth.setText("Week");
+                        } else if (fo.isRepetitiveByMonth()) {
+                            weekOrMonth.setSelected(false);
+                            weekOrMonth.setText("Month");
+                        }
+                    }
+                }
+                
+                // Cargar color
+                if (colorComboBox != null && fo.getRgb() != null) {
+                    String rgb = fo.getRgb();
+                    Color foColor = parseColorFromRgb(rgb);
+                    
+                    // Encontrar el color más cercano en la lista
+                    Color[] pastelColors = {
+                        new Color(194, 80, 80), // Rojo
+                        new Color(77, 189, 133), // Verde
+                        new Color(135, 129, 129), // Gris
+                        new Color(86, 141, 242), // Azul 
+                        new Color(69, 74, 183), // Morado
+                        new Color(85, 37, 37) // Cafe
+                    };
+                    
+                    int closestColorIndex = findClosestColorIndex(foColor, pastelColors);
+                    colorComboBox.setSelectedIndex(closestColorIndex);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading financial obligation information: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private Color parseColorFromRgb(String rgb) {
+        try {
+            String[] parts = rgb.split(", ");
+            if (parts.length >= 3) {
+                int r = Integer.parseInt(parts[0].trim());
+                int g = Integer.parseInt(parts[1].trim());
+                int b = Integer.parseInt(parts[2].trim());
+                return new Color(r, g, b);
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Error parsing RGB color: " + rgb);
+        }
+        return new Color(194, 80, 80); // Color por defecto (rojo)
+    }
+    
+    private int findClosestColorIndex(Color targetColor, Color[] colors) {
+        int closestIndex = 0;
+        double minDistance = Double.MAX_VALUE;
+        
+        for (int i = 0; i < colors.length; i++) {
+            double distance = calculateColorDistance(targetColor, colors[i]);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = i;
+            }
+        }
+        
+        return closestIndex;
+    }
+    
+    private double calculateColorDistance(Color c1, Color c2) {
+        int deltaR = c1.getRed() - c2.getRed();
+        int deltaG = c1.getGreen() - c2.getGreen();
+        int deltaB = c1.getBlue() - c2.getBlue();
+        return Math.sqrt(deltaR * deltaR + deltaG * deltaG + deltaB * deltaB);
     }
 }

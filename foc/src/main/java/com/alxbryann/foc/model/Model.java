@@ -22,9 +22,27 @@ public class Model {
         this.controller = controller;
     }
 
-    public void editFinancialObligation(String name, String cost, String dateStr, Color selectedColor,
+    public void editFinancialObligation(int id, String name, String cost, String dateStr, Color selectedColor,
             boolean isRepetitive, boolean repetitiveByWeek, boolean repetitiveByMonth) {
-        controller.findFinancialObligationById(0);
+        try {
+            FinancialObligation existingFo = controller.findFinancialObligationById(id);
+            if (existingFo != null) {
+                existingFo.setName(name);
+                double costDouble = Double.parseDouble(cost);
+                existingFo.setCost(costDouble);
+                LocalDate localDate = LocalDate.parse(dateStr);
+                ZoneId defaultZoneId = ZoneId.systemDefault();
+                Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+                existingFo.setDate(date);
+                existingFo.setColor(selectedColor);
+                existingFo.setIsRepetitive(isRepetitive);
+                existingFo.setRepetitiveByWeek(repetitiveByWeek);
+                existingFo.setRepetitiveByMonth(repetitiveByMonth);
+                controller.editFinancialObligation(existingFo);
+            }
+        } catch (Exception e) {
+            System.err.println("Error editing financial obligation: " + e.getMessage());
+        }
     }
 
     public void setInfoFinancialObligation(String name, String cost, String dateStr, Color selectedColor,

@@ -151,4 +151,32 @@ public class ViewController {
     public void removeIncomeFromDayById(int id, int numberDay) {
         controller.removeIncomeFromDayById(id, numberDay);
     }
+    
+    public com.alxbryann.foc.model.FinancialObligation getFinancialObligationById(int id) {
+        return controller.findFinancialObligationById(id);
+    }
+    
+    public void editFinancialObligation(int id, String name, String price, String date, Color selectedColor, 
+            boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        // Obtener la obligación financiera existente
+        com.alxbryann.foc.model.FinancialObligation existingFo = controller.findFinancialObligationById(id);
+        if (existingFo != null) {
+            try {
+                existingFo.setName(name);
+                double costDouble = Double.parseDouble(price);
+                existingFo.setCost(costDouble);
+                java.time.LocalDate localDate = java.time.LocalDate.parse(date);
+                java.time.ZoneId defaultZoneId = java.time.ZoneId.systemDefault();
+                java.util.Date dateObj = java.util.Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+                existingFo.setDate(dateObj);
+                existingFo.setColor(selectedColor);
+                existingFo.setIsRepetitive(isRepetitive);
+                existingFo.setRepetitiveByWeek(isRepetitiveByWeek);
+                existingFo.setRepetitiveByMonth(isRepetitiveByMonth);
+                controller.editFinancialObligation(existingFo);
+            } catch (Exception e) {
+                System.err.println("Error editing financial obligation: " + e.getMessage());
+            }
+        }
+    }
 }

@@ -40,6 +40,14 @@ public class Controller {
             System.out.println("Exception");
         }
     }
+    
+    public void editFinancialObligation(FinancialObligation fo) {
+        try {
+            pc.editFo(fo);
+        } catch (Exception e) {
+            System.out.println("Exception editing financial obligation: " + e.getMessage());
+        }
+    }
 
     public void createIncome(Income income) {
         try {

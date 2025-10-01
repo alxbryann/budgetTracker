@@ -37,6 +37,10 @@ public class PersistenceController {
         foJpa.destroy(id);
     }
     
+    public void editFo(FinancialObligation fo) {
+        foJpa.edit(fo);
+    }
+    
     public void deleteRepetitiveFo(int id) {
         RepetitiveFoJpa.destroy(id);
     }
