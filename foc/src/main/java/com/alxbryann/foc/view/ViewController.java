@@ -3,6 +3,8 @@ package com.alxbryann.foc.view;
 import com.alxbryann.foc.model.Controller;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ public class ViewController {
         this.nextPaymentsPanel = nextPaymentsPanel;
     }
 
-    public void setNextIncomesPanel(NextIncomesPanel nextIncomesPanel) { 
+    public void setNextIncomesPanel(NextIncomesPanel nextIncomesPanel) {
         this.nextIncomesPanel = nextIncomesPanel;
     }
 
@@ -151,12 +153,12 @@ public class ViewController {
     public void removeIncomeFromDayById(int id, int numberDay) {
         controller.removeIncomeFromDayById(id, numberDay);
     }
-    
-    public com.alxbryann.foc.model.FinancialObligation getFinancialObligationById(int id) {
-        return controller.findFinancialObligationById(id);
+
+    public HashMap getInformationOfFinancialObligation(int id) {
+        return controller.getInformationOfFinancialObligation(id);
     }
-    
-    public void editFinancialObligation(int id, String name, String price, String date, Color selectedColor, 
+
+    public void editFinancialObligation(int id, String name, String price, String date, Color selectedColor,
             boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         // Obtener la obligación financiera existente
         com.alxbryann.foc.model.FinancialObligation existingFo = controller.findFinancialObligationById(id);
@@ -178,5 +180,13 @@ public class ViewController {
                 System.err.println("Error editing financial obligation: " + e.getMessage());
             }
         }
+    }
+
+    public void deleteAllFinancialObligations() {
+        controller.deleteAllFinancialObligations();
+    }
+
+    public void deleteAllIncomes() {
+        controller.deleteAllIncomes();
     }
 }

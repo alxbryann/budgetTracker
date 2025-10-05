@@ -19,6 +19,7 @@ public final class DetailContainer extends JPanel {
     }
 
     private void prepareElementsDetail() {
+        cleanElementsDetail();
         ArrayList incomes = getIncomesByDay();
         int spaceY = 20;
         for (int i = 0; i < incomes.size(); i++) {
@@ -44,6 +45,17 @@ public final class DetailContainer extends JPanel {
             ed.setVisible(true);
             add(ed);
         }
+    }
+
+    private void cleanElementsDetail() {
+        Component[] components = getComponents();
+        for (Component comp : components) {
+            if (comp instanceof ElementDetail) {
+                remove(comp);
+            }
+        }
+        revalidate();
+        repaint();
     }
 
     private ArrayList getFinancialObligationsByDay() {

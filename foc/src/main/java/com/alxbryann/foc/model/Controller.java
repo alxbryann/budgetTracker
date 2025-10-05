@@ -3,6 +3,8 @@ package com.alxbryann.foc.model;
 import com.alxbryann.foc.persistence.PersistenceController;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public class Controller {
             System.out.println("Exception");
         }
     }
-    
+
     public void deleteFinancialObligationById(int id) {
         try {
             FinancialObligation temporalFinancialObligation = findFinancialObligationById(id);
@@ -40,7 +42,7 @@ public class Controller {
             System.out.println("Exception");
         }
     }
-    
+
     public void editFinancialObligation(FinancialObligation fo) {
         try {
             pc.editFo(fo);
@@ -61,7 +63,7 @@ public class Controller {
             System.out.println("Exception");
         }
     }
-    
+
     public void deleteIncomeById(int id) {
         try {
             Income temporalIncome = findIncomeById(id);
@@ -75,7 +77,6 @@ public class Controller {
             System.out.println("Exception");
         }
     }
-
 
     public List findAllRepetitiveFinancialObligations() {
         return pc.findAllRepetitiveFO();
@@ -105,11 +106,14 @@ public class Controller {
         this.model = model;
     }
 
-    public void setInfoFinancialObligation(String name, String cost, String date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        model.setInfoFinancialObligation(name, cost, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
+    public void setInfoFinancialObligation(String name, String cost, String date, Color selectedColor,
+            boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        model.setInfoFinancialObligation(name, cost, date, selectedColor, isRepetitive, isRepetitiveByWeek,
+                isRepetitiveByMonth);
     }
 
-    public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+    public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
+            boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         model.setInfoIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
     }
 
@@ -152,12 +156,12 @@ public class Controller {
     public double getTotalCostByDay(int day) {
         return model.getTotalCostByDay(day);
     }
-    
+
     public double getTotalIncomeByDay(int day) {
         return model.getTotalIncomeByDay(day);
     }
-    
-    public double getTotalNet(int day){
+
+    public double getTotalNet(int day) {
         return model.getTotalNetByDay(day);
     }
 
@@ -175,5 +179,17 @@ public class Controller {
 
     public void removeIncomeFromDayById(int id, int numberDay) {
         model.removeIncomeFromDayById(id, numberDay);
+    }
+
+    public HashMap getInformationOfFinancialObligation(int id) {
+        return model.getInformationOfFinancialObligation(id);
+    }
+
+    public void deleteAllFinancialObligations() {
+        model.deleteFinancialObligationsToDays();
+    }
+
+    public void deleteAllIncomes() {    
+        model.deleteIncomesToDays();
     }
 }

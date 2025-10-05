@@ -10,6 +10,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Locale;
+import java.util.HashMap;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
@@ -32,7 +38,6 @@ public class EditPayment extends JPanel {
     private int id;
     private int dayNumber;
     
-    // Variables para los componentes de la UI
     private JTextArea nameFo;
     private JTextArea costFo;
     private DatePicker datePicker;
@@ -174,15 +179,11 @@ public class EditPayment extends JPanel {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (index >= 0 && index < pastelColors.length) {
-                    // Color color = pastelColors[index]; // Comentado porque no se usa
-                    //label.setIcon(new NextPaymentsPanel.ColorIcon(color, 20, 20));
-                }
                 return label;
             }
         });
         colorComboBox.setBounds(45, 320, 300, 30);
-        this.colorComboBox = colorComboBox; // Asignar a variable de instancia
+        this.colorComboBox = colorComboBox; 
         addFo.add(colorComboBox);
 
         RoundedButton closeButton = new RoundedButton("Close", 30);
@@ -199,7 +200,7 @@ public class EditPayment extends JPanel {
         send.setForeground(Color.WHITE);
         send.setFont(new Font("Lexend", Font.PLAIN, 16));
         ModernToggleButton weekOrMonth = new ModernToggleButton();
-        this.weekOrMonth = weekOrMonth; // Asignar a variable de instancia
+        this.weekOrMonth = weekOrMonth;
 
         isRepetitive.addActionListener(e -> {
             if (isRepetitive.isSelected()) {
@@ -228,7 +229,7 @@ public class EditPayment extends JPanel {
         });
 
         send.addActionListener(e -> {
-            String name = nameFo.getText().trim();
+            String name = nameFo.getText().trim(); 
             String cost = costFo.getText().trim();
             LocalDate selectedDate = datePicker.getDate();
             if (selectedDate.getDayOfMonth() == 31) {
@@ -300,14 +301,10 @@ public class EditPayment extends JPanel {
             colorComboBox.setSelectedIndex(0);
             JOptionPane.showMessageDialog(modal, "Updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             modal.dispose();
-            viewController.assignFoToDays();
-            viewController.paintDaysInView();
         });
 
         addFo.add(send);
         modal.add(addFo);
-        
-        // Cargar los datos existentes de la obligación financiera
         loadFinancialObligationInformation(id, dayNumber);
         
         modal.setVisible(true);
@@ -315,96 +312,92 @@ public class EditPayment extends JPanel {
 
     public void loadFinancialObligationInformation(int id, int dayNumber) {
         try {
-            // Obtener la obligación financiera por ID
-            com.alxbryann.foc.model.FinancialObligation fo = viewController.getFinancialObligationById(id);
-            
-            if (fo != null) {
-                // Cargar nombre
-                if (nameFo != null) {
-                    nameFo.setText(fo.getName());
-                }
-                
-                // Cargar costo
-                if (costFo != null) {
-                    costFo.setText(String.valueOf(fo.getCost()));
-                }
-                
-                // Cargar fecha
-                if (datePicker != null && fo.getDate() != null) {
-                    // Convertir Date a LocalDate
-                    java.time.LocalDate localDate = fo.getDate().toInstant()
-                            .atZone(java.time.ZoneId.systemDefault())
-                            .toLocalDate();
+            HashMap temporalFinancialObligationInformation = viewController.getInformationOfFinancialObligation(id);
+            String name = String.valueOf(temporalFinancialObligationInformation.get("name"));
+            String date = String.valueOf(temporalFinancialObligationInformation.get("date"));
+            String cost = String.valueOf(temporalFinancialObligationInformation.get("cost"));
+            String rgb = String.valueOf(temporalFinancialObligationInformation.get("rgb"));
+            boolean isFinancialObligation = Boolean.parseBoolean(String.valueOf(temporalFinancialObligationInformation.get("isRepetitive")));
+            boolean repetitiveByWeek = Boolean.parseBoolean(String.valueOf(temporalFinancialObligationInformation.get("repetitiveByWeek")));
+            boolean repetitiveByMonth = Boolean.parseBoolean(String.valueOf(temporalFinancialObligationInformation.get("repetitiveByMonth")));
+
+            if (temporalFinancialObligationInformation != null) {
+            if (nameFo != null) {
+                nameFo.setText(name);
+            }
+
+            if (costFo != null) {
+                costFo.setText(String.valueOf(cost));
+            }
+
+            if (datePicker != null && date != null && !date.isEmpty() && !"null".equalsIgnoreCase(date)) {
+                try {
+                    LocalDate localDate = parseDate(date);
                     datePicker.setDate(localDate);
+                } catch (DateTimeParseException ex) {
+                    System.err.println("Error parsing date: " + date + " - " + ex.getMessage());
+                    datePicker.clear();
                 }
-                
-                // Cargar si es repetitivo
-                if (isRepetitive != null) {
-                    isRepetitive.setSelected(fo.isRepetitive());
-                    
-                    // Si es repetitivo, simular el click para mostrar el toggle button
-                    if (fo.isRepetitive() && weekOrMonth != null) {
-                        // Necesitamos activar el ActionListener manualmente para mostrar el componente
-                        weekOrMonth.addActionListener(evt -> {
-                            if (weekOrMonth.isSelected()) {
-                                weekOrMonth.setText("Week");
-                            } else {
-                                weekOrMonth.setText("Month");
-                            }
-                        });
-                        
-                        // Agregar el weekOrMonth al panel y reposicionar elementos
-                        weekOrMonth.setBounds(45, 300, 100, 30);
-                        if (weekOrMonth.getParent() == null) {
-                            // Buscar el panel addFo
-                            java.awt.Container parent = isRepetitive.getParent();
-                            if (parent != null) {
-                                parent.add(weekOrMonth);
-                                
-                                // Reposicionar los elementos como en el ActionListener original
-                                if (colorComboBox != null) {
-                                    colorComboBox.setBounds(45, 380, 300, 30);
-                                }
-                                // Buscar y reposicionar los botones
-                                for (java.awt.Component comp : parent.getComponents()) {
-                                    if (comp instanceof RoundedButton) {
-                                        RoundedButton button = (RoundedButton) comp;
-                                        if ("Update".equals(button.getText())) {
-                                            button.setBounds(120, 420, 150, 40);
-                                        } else if ("Close".equals(button.getText())) {
-                                            button.setBounds(120, 470, 150, 40);
-                                        }
-                                    }
-                                }
-                                parent.revalidate();
-                                parent.repaint();
-                            }
+            } else if (datePicker != null) {
+                datePicker.clear();
+            }
+
+            if (isRepetitive != null) {
+                isRepetitive.setSelected(isFinancialObligation);
+
+                if (isFinancialObligation && weekOrMonth != null) {
+                weekOrMonth.addActionListener(evt -> {
+                    if (weekOrMonth.isSelected()) {
+                    weekOrMonth.setText("Week");
+                    } else {
+                    weekOrMonth.setText("Month");
+                    }
+                });
+
+                weekOrMonth.setBounds(45, 300, 100, 30);
+                if (weekOrMonth.getParent() == null) {
+                    java.awt.Container parent = isRepetitive.getParent();
+                    if (parent != null) {
+                    parent.add(weekOrMonth);
+
+                    if (colorComboBox != null) {
+                        colorComboBox.setBounds(45, 380, 300, 30);
+                    }
+                    for (java.awt.Component comp : parent.getComponents()) {
+                        if (comp instanceof RoundedButton) {
+                        RoundedButton button = (RoundedButton) comp;
+                        if ("Update".equals(button.getText())) {
+                            button.setBounds(120, 420, 150, 40);
+                        } else if ("Close".equals(button.getText())) {
+                            button.setBounds(120, 470, 150, 40);
                         }
-                        
-                        // Configurar el estado del toggle
-                        if (fo.isRepetitiveByWeek()) {
-                            weekOrMonth.setSelected(true);
-                            weekOrMonth.setText("Week");
-                        } else if (fo.isRepetitiveByMonth()) {
-                            weekOrMonth.setSelected(false);
-                            weekOrMonth.setText("Month");
                         }
                     }
+                    parent.revalidate();
+                    parent.repaint();
+                    }
                 }
-                
-                // Cargar color
-                if (colorComboBox != null && fo.getRgb() != null) {
-                    String rgb = fo.getRgb();
+
+                if (repetitiveByWeek) {
+                    weekOrMonth.setSelected(true);
+                    weekOrMonth.setText("Week");
+                } else if (repetitiveByMonth) {
+                    weekOrMonth.setSelected(false);
+                    weekOrMonth.setText("Month");
+                }
+                }
+            }
+                if (colorComboBox != null && rgb != null) {
                     Color foColor = parseColorFromRgb(rgb);
                     
-                    // Encontrar el color más cercano en la lista
+                   
                     Color[] pastelColors = {
-                        new Color(194, 80, 80), // Rojo
-                        new Color(77, 189, 133), // Verde
-                        new Color(135, 129, 129), // Gris
-                        new Color(86, 141, 242), // Azul 
-                        new Color(69, 74, 183), // Morado
-                        new Color(85, 37, 37) // Cafe
+                        new Color(194, 80, 80), 
+                        new Color(77, 189, 133), 
+                        new Color(135, 129, 129), 
+                        new Color(86, 141, 242), 
+                        new Color(69, 74, 183), 
+                        new Color(85, 37, 37) 
                     };
                     
                     int closestColorIndex = findClosestColorIndex(foColor, pastelColors);
@@ -429,7 +422,7 @@ public class EditPayment extends JPanel {
         } catch (NumberFormatException e) {
             System.err.println("Error parsing RGB color: " + rgb);
         }
-        return new Color(194, 80, 80); // Color por defecto (rojo)
+        return new Color(194, 80, 80);
     }
     
     private int findClosestColorIndex(Color targetColor, Color[] colors) {
@@ -453,4 +446,43 @@ public class EditPayment extends JPanel {
         int deltaB = c1.getBlue() - c2.getBlue();
         return Math.sqrt(deltaR * deltaR + deltaG * deltaG + deltaB * deltaB);
     }
+    
+    private LocalDate parseDate(String dateString) throws DateTimeParseException {
+        if (dateString == null || dateString.trim().isEmpty()) {
+            throw new DateTimeParseException("Date string is null or empty", dateString, 0);
+        }
+        
+        String trimmedDate = dateString.trim();
+        
+        DateTimeFormatter[] formatters = {
+            DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+            DateTimeFormatter.ofPattern("yyyy/MM/dd"),
+            DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+            DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+            DateTimeFormatter.ofPattern("MM/dd/yyyy"),
+            DateTimeFormatter.ofPattern("MM-dd-yyyy"),
+            DateTimeFormatter.ISO_LOCAL_DATE,
+
+            DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss 'GMT'XXX yyyy", Locale.ENGLISH),
+            DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH),
+            DateTimeFormatter.RFC_1123_DATE_TIME
+        };
+        
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                if (trimmedDate.contains("GMT") || trimmedDate.contains(":")) {
+                    ZonedDateTime zonedDateTime = ZonedDateTime.parse(trimmedDate, formatter);
+                    return zonedDateTime.toLocalDate();
+                } else {
+                    return LocalDate.parse(trimmedDate, formatter);
+                }
+            } catch (DateTimeParseException e) {
+                continue;
+            }
+        }
+        throw new DateTimeParseException("Unable to parse date: " + trimmedDate + 
+            ". Supported formats: yyyy-MM-dd, yyyy/MM/dd, dd/MM/yyyy, dd-MM-yyyy, MM/dd/yyyy, MM-dd-yyyy, and datetime formats", 
+            trimmedDate, 0);
+    }
+
 }

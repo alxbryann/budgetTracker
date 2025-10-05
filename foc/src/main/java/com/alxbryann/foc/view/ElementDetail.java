@@ -120,7 +120,7 @@ public class ElementDetail extends JPanel {
     public void updateView() {
         viewController.updateViewCalendar();
         viewController.updateNextIncomes();
-        viewController.updateNextFinancialObligations();
+        viewController.updateNextFinancialObligations(); 
     }
 
     @Override

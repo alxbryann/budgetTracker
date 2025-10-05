@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import com.alxbryann.foc.view.ElementDetail;
@@ -170,6 +172,15 @@ public class Model {
         }
     }
 
+    public void deleteIncomesToDays() {
+        for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
+            int numberDay = calendar.getBusyDaysInCurrentMonth().get(i).getNumberDay();
+            int numberMonth = calendar.getCurrentMonth();
+            Day temporalDay = calendar.getDayByNumberInSpecificMonth(numberDay, numberMonth);
+            temporalDay.removeAllIncomes();
+        }
+    }
+
     public void removeIncomeFromDayById(int id, int numberDay) {
         Day temporalDay = calendar.getDayByNumberInSpecificMonth(numberDay, calendar.getCurrentMonth());
         temporalDay.removeIncomeById(id);
@@ -186,6 +197,7 @@ public class Model {
                     FinancialObligationsInCurrentMonth.add(temporalDay.getNumberDay());
                     FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getRgb());
                     FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getName());
+                    System.out.println(temporalFinancialObligation.getName());
                 }
             }
         }
@@ -263,6 +275,15 @@ public class Model {
         return tempDay.getFinancialObligations();
     }
 
+    public void deleteFinancialObligationsToDays() {
+        for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
+            int numberDay = calendar.getBusyDaysInCurrentMonth().get(i).getNumberDay();
+            int numberMonth = calendar.getCurrentMonth();
+            Day temporalDay = calendar.getDayByNumberInSpecificMonth(numberDay, numberMonth);
+            temporalDay.removeAllFinancialObligations();
+        }
+    }
+
     public String getCurrentMonthInString() {
         return calendar.getCurrentMonthInString();
     }
@@ -287,5 +308,27 @@ public class Model {
         Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
         double totalNet = tempDay.getTotalNet();
         return totalNet;
+    }
+
+    public HashMap<String, Object> getInformationOfFinancialObligation(int id) {
+        FinancialObligation temporalFinancialObligation = controller.findFinancialObligationById(id);
+        HashMap<String, Object> financialObligationInformation = new HashMap<>();
+        String name = temporalFinancialObligation.getName();
+        Date date = temporalFinancialObligation.getDate();
+        double cost = temporalFinancialObligation.getCost();
+        String rgb = temporalFinancialObligation.getRgb();
+        boolean isRepetitive = temporalFinancialObligation.isRepetitive();
+        boolean repetitiveByWeek = temporalFinancialObligation.isRepetitiveByWeek();
+        boolean repetitiveByMonth = temporalFinancialObligation.isRepetitiveByMonth();
+        
+        financialObligationInformation.put("name", name);
+        financialObligationInformation.put("date", date);
+        financialObligationInformation.put("cost", cost);
+        financialObligationInformation.put("rgb", rgb);
+        financialObligationInformation.put("isRepetitive", isRepetitive);
+        financialObligationInformation.put("repetitiveByWeek", repetitiveByWeek);
+        financialObligationInformation.put("repetitiveByMonth", repetitiveByMonth);
+        
+        return financialObligationInformation;
     }
 }

@@ -28,6 +28,10 @@ public class Day {
         incomes.removeIf(in -> in.getId() == id);
     }
 
+    public void removeAllIncomes() {
+        incomes = new ArrayList<>();
+    }
+
     public void setNewFinancialObligation(FinancialObligation fo) {
         obligations.add(fo);
     }
@@ -38,6 +42,10 @@ public class Day {
 
     public void removeFinancialObligationById(int id) {
         obligations.removeIf(fo -> fo.getId() == id);
+    }
+
+    public void removeAllFinancialObligations() {
+        obligations = new ArrayList<>();
     }
 
     public ArrayList<FinancialObligation> getFinancialObligations() {

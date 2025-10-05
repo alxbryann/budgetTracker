@@ -190,7 +190,7 @@ public final class View extends JFrame {
     }
 
     public void paintFOsInView() {
-        ArrayList<Object[]> daysToPaint = viewController.paintFOs();
+    ArrayList<Object[]> daysToPaint = viewController.paintFOs();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
@@ -416,6 +416,10 @@ public final class View extends JFrame {
 
     public void updateViewCalendar() {
         clearViewCalendar();
+        viewController.deleteAllFinancialObligations();
+        viewController.deleteAllIncomes();
+        viewController.assignFoToDays();
+        viewController.assignIncomesToDays();
         paintFOsInView();
         paintINsInView();
         paintRepetitiveFO();
