@@ -17,6 +17,7 @@ public class ViewController {
     private View view;
     private NextPaymentsPanel nextPaymentsPanel;
     private NextIncomesPanel nextIncomesPanel;
+    private DetailContainer currentDetailContainer;
 
     public ViewController() {
     }
@@ -35,6 +36,16 @@ public class ViewController {
 
     public void setNextIncomesPanel(NextIncomesPanel nextIncomesPanel) {
         this.nextIncomesPanel = nextIncomesPanel;
+    }
+
+    public void setCurrentDetailContainer(DetailContainer detailContainer) {
+        this.currentDetailContainer = detailContainer;
+    }
+
+    public void updateDetailContainer() {
+        if (currentDetailContainer != null) {
+            currentDetailContainer.refreshElementsDetail();
+        }
     }
 
     public void setInfoFo(String name, String price, String date, Color selectedColor, boolean isRepetitive,

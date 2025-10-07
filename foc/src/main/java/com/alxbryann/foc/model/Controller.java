@@ -186,10 +186,10 @@ public class Controller {
     }
 
     public void deleteAllFinancialObligations() {
-        model.deleteFinancialObligationsToDays();
+        model.deleteFinancialObligationsFromDays();
     }
 
     public void deleteAllIncomes() {    
-        model.deleteIncomesToDays();
+        model.deleteIncomesFromDays();
     }
 }

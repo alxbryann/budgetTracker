@@ -66,6 +66,10 @@ public final class DetailContainer extends JPanel {
         return (ArrayList) viewController.getIncomesByDay(dayNumber);
     }
 
+    public void refreshElementsDetail() {
+        prepareElementsDetail();
+    }
+
     private void initializeUI() {
         setLayout(null);
         setBounds(60, 70, 360, 450);

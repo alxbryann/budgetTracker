@@ -64,14 +64,28 @@ public class ElementDetail extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (isFinancialObligation) {
-                    viewController.deleteFinancialObligationById(id);
-                    viewController.removeFinancialObligationFromDayById(id, dayNumber);
-                } else {
-                    viewController.deleteIncomeById(id);
-                    viewController.removeIncomeFromDayById(id, dayNumber);
+                String elementType = isFinancialObligation ? "Financial Obligation" : "Income";
+                String message = "Are you sure you want to delete " + elementType + " '" + name + "'?";
+                String title = "Confirm delete";
+                
+                int option = JOptionPane.showConfirmDialog(
+                    ElementDetail.this,
+                    message,
+                    title,
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+                );
+                
+                if (option == JOptionPane.YES_OPTION) {
+                    if (isFinancialObligation) {
+                        viewController.deleteFinancialObligationById(id);
+                        viewController.removeFinancialObligationFromDayById(id, dayNumber);
+                    } else {
+                        viewController.deleteIncomeById(id);
+                        viewController.removeIncomeFromDayById(id, dayNumber);
+                    }
+                    updateView();
                 }
-                updateView();
             }
 
         });
@@ -120,7 +134,8 @@ public class ElementDetail extends JPanel {
     public void updateView() {
         viewController.updateViewCalendar();
         viewController.updateNextIncomes();
-        viewController.updateNextFinancialObligations(); 
+        viewController.updateNextFinancialObligations();
+        viewController.updateDetailContainer();
     }
 
     @Override

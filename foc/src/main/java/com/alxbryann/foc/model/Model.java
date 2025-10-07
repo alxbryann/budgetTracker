@@ -172,7 +172,7 @@ public class Model {
         }
     }
 
-    public void deleteIncomesToDays() {
+    public void deleteIncomesFromDays() {
         for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
             int numberDay = calendar.getBusyDaysInCurrentMonth().get(i).getNumberDay();
             int numberMonth = calendar.getCurrentMonth();
@@ -197,7 +197,6 @@ public class Model {
                     FinancialObligationsInCurrentMonth.add(temporalDay.getNumberDay());
                     FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getRgb());
                     FinancialObligationsInCurrentMonth.add(temporalFinancialObligation.getName());
-                    System.out.println(temporalFinancialObligation.getName());
                 }
             }
         }
@@ -275,7 +274,7 @@ public class Model {
         return tempDay.getFinancialObligations();
     }
 
-    public void deleteFinancialObligationsToDays() {
+    public void deleteFinancialObligationsFromDays() {
         for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
             int numberDay = calendar.getBusyDaysInCurrentMonth().get(i).getNumberDay();
             int numberMonth = calendar.getCurrentMonth();

@@ -38,6 +38,7 @@ public class DetailPerDay extends JFrame {
         add(titleDate);
         DetailContainer detailContainer = new DetailContainer(viewController, (clickedDay));
         detailContainer.setBounds(60, 190, 700, 450);
+        viewController.setCurrentDetailContainer(detailContainer);
         add(detailContainer);
         Summary summary = new Summary(viewController, (clickedDay));
         summary.setBounds(800, 60, 360, 580);
