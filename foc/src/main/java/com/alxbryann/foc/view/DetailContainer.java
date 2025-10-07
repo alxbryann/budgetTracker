@@ -19,6 +19,7 @@ public final class DetailContainer extends JPanel {
     }
 
     private void prepareElementsDetail() {
+        cleanElementsDetail();
         ArrayList incomes = getIncomesByDay();
         int spaceY = 20;
         for (int i = 0; i < incomes.size(); i++) {
@@ -26,7 +27,7 @@ public final class DetailContainer extends JPanel {
             int id = temporalIncome.getId();
             String name = temporalIncome.getName();
             double cost = temporalIncome.getValue();
-            ElementDetail ed = new ElementDetail(id, name, cost, false, viewController);
+            ElementDetail ed = new ElementDetail(id, name, cost, false, viewController, dayNumber);
             ed.setBounds(20, spaceY, 600, 80);
             spaceY += 100;
             ed.setVisible(true);
@@ -38,13 +39,23 @@ public final class DetailContainer extends JPanel {
             int id = temporalFinancialObligation.getId();
             String name = temporalFinancialObligation.getName();
             double cost = temporalFinancialObligation.getCost();
-            ElementDetail ed = new ElementDetail(id, name, cost, true, viewController);
+            ElementDetail ed = new ElementDetail(id, name, cost, true, viewController, dayNumber);
             ed.setBounds(20, spaceY, 600, 80);
             spaceY += 100;
             ed.setVisible(true);
             add(ed);
         }
+    }
 
+    private void cleanElementsDetail() {
+        Component[] components = getComponents();
+        for (Component comp : components) {
+            if (comp instanceof ElementDetail) {
+                remove(comp);
+            }
+        }
+        revalidate();
+        repaint();
     }
 
     private ArrayList getFinancialObligationsByDay() {
@@ -53,6 +64,10 @@ public final class DetailContainer extends JPanel {
 
     private ArrayList getIncomesByDay() {
         return (ArrayList) viewController.getIncomesByDay(dayNumber);
+    }
+
+    public void refreshElementsDetail() {
+        prepareElementsDetail();
     }
 
     private void initializeUI() {

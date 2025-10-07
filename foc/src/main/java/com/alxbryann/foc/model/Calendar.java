@@ -48,6 +48,11 @@ public final class Calendar {
         months.get(month).addToBusyDays(days);
     }
 
+    public void removeFromBusyDaysInSpecificMonth(Day days, int month) {
+        months.get(month).addToBusyDays(days);
+    }
+
+
     public LocalDate getCurrentLocalDate() {
         return LocalDate.now();
     }

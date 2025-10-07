@@ -73,7 +73,7 @@ public final class View extends JFrame {
         titleContainer.setOpaque(true);
         color = new Color(41, 130, 75);
         titleContainer.setBackground(color);
-        JLabel title = new JLabel("FINANCIAL OBLIGATIONS CALENDAR");
+        JLabel title = new JLabel("BudgetTracker");
         title.setFont(new Font("Braah One", Font.BOLD, 20));
         title.setForeground(Color.WHITE);
         titleContainer.add(title);
@@ -190,7 +190,7 @@ public final class View extends JFrame {
     }
 
     public void paintFOsInView() {
-        ArrayList<Object[]> daysToPaint = viewController.paintFOs();
+    ArrayList<Object[]> daysToPaint = viewController.paintFOs();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
@@ -415,9 +415,14 @@ public final class View extends JFrame {
     }
 
     public void updateViewCalendar() {
-        viewController.paintFOs();
-        viewController.paintRepetitiveFinancialObligations();
-        viewController.paintINs();
-        viewController.paintRepetitiveIncomes();
+        clearViewCalendar();
+        viewController.deleteAllFinancialObligations();
+        viewController.deleteAllIncomes();
+        viewController.assignFoToDays();
+        viewController.assignIncomesToDays();
+        paintFOsInView();
+        paintINsInView();
+        paintRepetitiveFO();
+        paintRepetitiveIncome();
     }
 }

@@ -1,5 +1,6 @@
 package com.alxbryann.foc.persistence;
 
+import com.alxbryann.foc.model.Day;
 import com.alxbryann.foc.model.FinancialObligation;
 import com.alxbryann.foc.model.Income;
 import com.alxbryann.foc.model.RepetitiveFO;
@@ -16,6 +17,8 @@ public class PersistenceController {
     private IncomeJpaController IncomeJpa = new IncomeJpaController();
     private RepetitiveFoJpaController RepetitiveFoJpa = new RepetitiveFoJpaController();
     private RepetitiveIncomeJpaController RepetitiveIncomeJpa = new RepetitiveIncomeJpaController();
+    private DayJpaController dayJpa = new DayJpaController();
+
     
     public void createFo(FinancialObligation fo) {
         foJpa.create(fo);
@@ -37,6 +40,10 @@ public class PersistenceController {
         foJpa.destroy(id);
     }
     
+    public void editFo(FinancialObligation fo) {
+        foJpa.edit(fo);
+    }
+    
     public void deleteRepetitiveFo(int id) {
         RepetitiveFoJpa.destroy(id);
     }
@@ -51,6 +58,10 @@ public class PersistenceController {
     
     public void deleteIncome(int id) {
         IncomeJpa.destroy(id);
+    }
+    
+    public void editIncome(Income income) {
+        IncomeJpa.edit(income);
     }
     
     public void deleteRepetitiveIncome(int id) {
@@ -71,5 +82,25 @@ public class PersistenceController {
     
     public List findAllRepetitiveIncomes() {
         return RepetitiveIncomeJpa.findAll();
+    }
+
+    public void createDay(Day day) {
+        dayJpa.create(day);
+    }
+
+    public Day findDayById(int id) {
+        return dayJpa.findDayById(id);
+    }
+
+    public List findAllDays() {
+        return dayJpa.findAll();
+    }
+
+    public void editDay(Day day) {
+        dayJpa.edit(day);
+    }
+
+    public void deleteDay(int id) {
+        dayJpa.destroy(id);
     }
 }

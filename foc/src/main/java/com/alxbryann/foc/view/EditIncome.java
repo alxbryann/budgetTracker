@@ -32,29 +32,29 @@ import javax.swing.UIManager;
  *
  * @author alxbryann
  */
-public class EditPayment extends JPanel {
+public class EditIncome extends JPanel {
 
     private final ViewController viewController;
     private int id;
     private int dayNumber;
     
-    private JTextArea nameFo;
-    private JTextArea costFo;
+    private JTextArea nameIncome;
+    private JTextArea amountIncome;
     private DatePicker datePicker;
     private ModernCheckBox isRepetitive;
     private JComboBox<String> colorComboBox;
     private ModernToggleButton weekOrMonth;
 
-    public EditPayment(ViewController viewController, int id, int dayNumber) {
+    public EditIncome(ViewController viewController, int id, int dayNumber) {
         this.viewController = viewController;
         this.id = id;
         this.dayNumber = dayNumber;
-        editPaymentDialog();
+        editIncomeDialog();
     }
 
-    private void editPaymentDialog() {
-        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Edit Financial Obligation", 400, 520, 30);
-        modal.setTitle("Edit a Financial Obligation");
+    private void editIncomeDialog() {
+        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Edit Income", 400, 520, 30);
+        modal.setTitle("Edit an Income");
         modal.setSize(400, 520);
         modal.setLayout(null);
         modal.setLocationRelativeTo(null);
@@ -62,7 +62,7 @@ public class EditPayment extends JPanel {
         modal.setUndecorated(true);
         modal.getContentPane().setBackground(new Color(240, 240, 240));
 
-        JPanel addFo = new JPanel() {
+        JPanel addIncome = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -80,52 +80,52 @@ public class EditPayment extends JPanel {
                 g2.dispose();
             }
         };
-        addFo.setLayout(null);
-        addFo.setBounds(0, 0, 400, 520);
-        addFo.setBackground(Color.WHITE);
-        addFo.setOpaque(false);
+        addIncome.setLayout(null);
+        addIncome.setBounds(0, 0, 400, 520);
+        addIncome.setBackground(Color.WHITE);
+        addIncome.setOpaque(false);
 
-        JLabel title = new JLabel("Edit a Financial Obligation");
+        JLabel title = new JLabel("Edit an Income");
         title.setFont(new Font("Lexend", Font.BOLD, 18));
         title.setBounds(45, 10, 500, 30);
         title.setForeground(new Color(60, 60, 60));
-        addFo.add(title);
+        addIncome.add(title);
 
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
         nameLabel.setBounds(45, 50, 100, 20);
         nameLabel.setForeground(new Color(60, 60, 60));
-        addFo.add(nameLabel);
+        addIncome.add(nameLabel);
 
-        JTextArea nameFo = new JTextArea();
-        nameFo.setBounds(45, 75, 300, 40);
-        nameFo.setFont(new Font("Lexend", Font.PLAIN, 14));
-        nameFo.setBackground(new Color(217, 217, 217));
-        nameFo.setForeground(Color.BLACK);
-        nameFo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        this.nameFo = nameFo; // Asignar a variable de instancia
-        addFo.add(nameFo);
+        JTextArea nameIncome = new JTextArea();
+        nameIncome.setBounds(45, 75, 300, 40);
+        nameIncome.setFont(new Font("Lexend", Font.PLAIN, 14));
+        nameIncome.setBackground(new Color(217, 217, 217));
+        nameIncome.setForeground(Color.BLACK);
+        nameIncome.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.nameIncome = nameIncome; // Asignar a variable de instancia
+        addIncome.add(nameIncome);
 
-        JLabel priceLabel = new JLabel("Cost:");
+        JLabel priceLabel = new JLabel("Amount:");
         priceLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
         priceLabel.setBounds(45, 115, 100, 20);
         priceLabel.setForeground(new Color(60, 60, 60));
-        addFo.add(priceLabel);
+        addIncome.add(priceLabel);
 
-        JTextArea costFo = new JTextArea();
-        costFo.setBounds(45, 140, 300, 40);
-        costFo.setFont(new Font("Lexend", Font.PLAIN, 14));
-        costFo.setBackground(new Color(217, 217, 217));
-        costFo.setForeground(Color.BLACK);
-        costFo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        this.costFo = costFo; // Asignar a variable de instancia
-        addFo.add(costFo);
+        JTextArea amountIncome = new JTextArea();
+        amountIncome.setBounds(45, 140, 300, 40);
+        amountIncome.setFont(new Font("Lexend", Font.PLAIN, 14));
+        amountIncome.setBackground(new Color(217, 217, 217));
+        amountIncome.setForeground(Color.BLACK);
+        amountIncome.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.amountIncome = amountIncome; // Asignar a variable de instancia
+        addIncome.add(amountIncome);
 
         JLabel dateLabel = new JLabel("Date:");
         dateLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
         dateLabel.setBounds(45, 180, 100, 20);
         dateLabel.setForeground(new Color(60, 60, 60));
-        addFo.add(dateLabel);
+        addIncome.add(dateLabel);
 
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFormatForDatesCommonEra("yyyy-MM-dd");
@@ -138,7 +138,7 @@ public class EditPayment extends JPanel {
         DatePicker datePicker = new DatePicker(dateSettings);
         datePicker.setBounds(45, 205, 300, 40);
         this.datePicker = datePicker; // Asignar a variable de instancia
-        addFo.add(datePicker);
+        addIncome.add(datePicker);
 
         JLabel textIsRepetitive = new JLabel("Is repetitive?");
         textIsRepetitive.setBounds(45, 260, 100, 20);
@@ -146,14 +146,14 @@ public class EditPayment extends JPanel {
         ModernCheckBox isRepetitive = new ModernCheckBox();
         isRepetitive.setBounds(150, 260, 30, 20);
         this.isRepetitive = isRepetitive; // Asignar a variable de instancia
-        addFo.add(textIsRepetitive);
-        addFo.add(isRepetitive);
+        addIncome.add(textIsRepetitive);
+        addIncome.add(isRepetitive);
 
         JLabel colorLabel = new JLabel("Color:");
         colorLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
         colorLabel.setBounds(45, 290, 100, 20);
         colorLabel.setForeground(new Color(60, 60, 60));
-        addFo.add(colorLabel);
+        addIncome.add(colorLabel);
 
         // Lista de colores pastel
         Color[] pastelColors = {
@@ -184,7 +184,7 @@ public class EditPayment extends JPanel {
         });
         colorComboBox.setBounds(45, 320, 300, 30);
         this.colorComboBox = colorComboBox; 
-        addFo.add(colorComboBox);
+        addIncome.add(colorComboBox);
 
         RoundedButton closeButton = new RoundedButton("Close", 30);
         closeButton.setBounds(120, 420, 150, 40);
@@ -192,7 +192,7 @@ public class EditPayment extends JPanel {
         closeButton.setForeground(Color.WHITE);
         closeButton.setFont(new Font("Lexend", Font.PLAIN, 16));
         closeButton.addActionListener(e -> modal.dispose());
-        addFo.add(closeButton);
+        addIncome.add(closeButton);
 
         RoundedButton send = new RoundedButton("Update", 30);
         send.setBounds(120, 370, 150, 40);
@@ -212,25 +212,25 @@ public class EditPayment extends JPanel {
                     }
                 });
                 weekOrMonth.setBounds(45, 300, 100, 30);
-                addFo.add(weekOrMonth);
+                addIncome.add(weekOrMonth);
                 colorLabel.setBounds(45, 350, 100, 20);
                 colorComboBox.setBounds(45, 380, 300, 30);
                 send.setBounds(120, 420, 150, 40);
                 closeButton.setBounds(120, 470, 150, 40);
             } else {
-                addFo.remove(weekOrMonth);
+                addIncome.remove(weekOrMonth);
                 colorLabel.setBounds(45, 290, 100, 20);
                 colorComboBox.setBounds(45, 320, 300, 30);
                 send.setBounds(120, 370, 150, 40);
                 closeButton.setBounds(120, 420, 150, 40);
             }
-            addFo.revalidate();
-            addFo.repaint();
+            addIncome.revalidate();
+            addIncome.repaint();
         });
 
         send.addActionListener(e -> {
-            String name = nameFo.getText().trim(); 
-            String cost = costFo.getText().trim();
+            String name = nameIncome.getText().trim(); 
+            String amount = amountIncome.getText().trim();
             LocalDate selectedDate = datePicker.getDate();
             if (selectedDate.getDayOfMonth() == 31) {
                 UIManager.put("OptionPane.background", new Color(245, 245, 235));
@@ -251,19 +251,19 @@ public class EditPayment extends JPanel {
             }
 
             String selectedColorName = (String) colorComboBox.getSelectedItem();
-            boolean isRepetitiveFo = false;
-            boolean weekOrMonthFo = false;
+            boolean isRepetitiveIncome = false;
+            boolean weekOrMonthIncome = false;
 
             if (isRepetitive.isSelected()) {
-                isRepetitiveFo = true;
+                isRepetitiveIncome = true;
                 if (weekOrMonth.isSelected()) {
-                    weekOrMonthFo = true;
+                    weekOrMonthIncome = true;
                 } else {
-                    weekOrMonthFo = false;
+                    weekOrMonthIncome = false;
                 }
             }
 
-            if (name.isEmpty() || cost.isEmpty() || selectedDate == null) {
+            if (name.isEmpty() || amount.isEmpty() || selectedDate == null) {
                 JOptionPane.showMessageDialog(modal, "Please complete all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -288,46 +288,46 @@ public class EditPayment extends JPanel {
 
             if (viewController != null) {
                 // Llamar al método de edición en lugar de creación
-                if (weekOrMonthFo) {
-                    viewController.editFinancialObligation(id, name, cost, date, selectedColor, isRepetitiveFo, true, false);
+                if (weekOrMonthIncome) {
+                    viewController.editIncome(id, name, amount, date, selectedColor, isRepetitiveIncome, true, false);
                 } else {
-                    viewController.editFinancialObligation(id, name, cost, date, selectedColor, isRepetitiveFo, false, true);
+                    viewController.editIncome(id, name, amount, date, selectedColor, isRepetitiveIncome, false, true);
                 }
             }
 
-            nameFo.setText("");
-            costFo.setText("");
+            nameIncome.setText("");
+            amountIncome.setText("");
             datePicker.clear();
             colorComboBox.setSelectedIndex(0);
             JOptionPane.showMessageDialog(modal, "Updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             modal.dispose();
         });
 
-        addFo.add(send);
-        modal.add(addFo);
-        loadFinancialObligationInformation(id, dayNumber);
+        addIncome.add(send);
+        modal.add(addIncome);
+        loadIncomeInformation(id, dayNumber);
         
         modal.setVisible(true);
     }
 
-    public void loadFinancialObligationInformation(int id, int dayNumber) {
+    public void loadIncomeInformation(int id, int dayNumber) {
         try {
-            HashMap temporalFinancialObligationInformation = viewController.getInformationOfFinancialObligation(id);
-            String name = String.valueOf(temporalFinancialObligationInformation.get("name"));
-            String date = String.valueOf(temporalFinancialObligationInformation.get("date"));
-            String cost = String.valueOf(temporalFinancialObligationInformation.get("cost"));
-            String rgb = String.valueOf(temporalFinancialObligationInformation.get("rgb"));
-            boolean isFinancialObligation = Boolean.parseBoolean(String.valueOf(temporalFinancialObligationInformation.get("isRepetitive")));
-            boolean repetitiveByWeek = Boolean.parseBoolean(String.valueOf(temporalFinancialObligationInformation.get("repetitiveByWeek")));
-            boolean repetitiveByMonth = Boolean.parseBoolean(String.valueOf(temporalFinancialObligationInformation.get("repetitiveByMonth")));
+            HashMap<String, Object> temporalIncomeInformation = viewController.getInformationOfIncome(id);
+            String name = String.valueOf(temporalIncomeInformation.get("name"));
+            String date = String.valueOf(temporalIncomeInformation.get("date"));
+            String amount = String.valueOf(temporalIncomeInformation.get("amount"));
+            String rgb = String.valueOf(temporalIncomeInformation.get("rgb"));
+            boolean isIncomeRepetitive = Boolean.parseBoolean(String.valueOf(temporalIncomeInformation.get("isRepetitive")));
+            boolean repetitiveByWeek = Boolean.parseBoolean(String.valueOf(temporalIncomeInformation.get("repetitiveByWeek")));
+            boolean repetitiveByMonth = Boolean.parseBoolean(String.valueOf(temporalIncomeInformation.get("repetitiveByMonth")));
 
-            if (temporalFinancialObligationInformation != null) {
-            if (nameFo != null) {
-                nameFo.setText(name);
+            if (temporalIncomeInformation != null) {
+            if (nameIncome != null) {
+                nameIncome.setText(name);
             }
 
-            if (costFo != null) {
-                costFo.setText(String.valueOf(cost));
+            if (amountIncome != null) {
+                amountIncome.setText(String.valueOf(amount));
             }
 
             if (datePicker != null && date != null && !date.isEmpty() && !"null".equalsIgnoreCase(date)) {
@@ -343,9 +343,9 @@ public class EditPayment extends JPanel {
             }
 
             if (isRepetitive != null) {
-                isRepetitive.setSelected(isFinancialObligation);
+                isRepetitive.setSelected(isIncomeRepetitive);
 
-                if (isFinancialObligation && weekOrMonth != null) {
+                if (isIncomeRepetitive && weekOrMonth != null) {
                 weekOrMonth.addActionListener(evt -> {
                     if (weekOrMonth.isSelected()) {
                     weekOrMonth.setText("Week");
@@ -388,7 +388,7 @@ public class EditPayment extends JPanel {
                 }
             }
                 if (colorComboBox != null && rgb != null) {
-                    Color foColor = parseColorFromRgb(rgb);
+                    Color incomeColor = parseColorFromRgb(rgb);
                     
                    
                     Color[] pastelColors = {
@@ -400,12 +400,12 @@ public class EditPayment extends JPanel {
                         new Color(85, 37, 37) 
                     };
                     
-                    int closestColorIndex = findClosestColorIndex(foColor, pastelColors);
+                    int closestColorIndex = findClosestColorIndex(incomeColor, pastelColors);
                     colorComboBox.setSelectedIndex(closestColorIndex);
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error loading financial obligation information: " + e.getMessage());
+            System.err.println("Error loading income information: " + e.getMessage());
             e.printStackTrace();
         }
     }

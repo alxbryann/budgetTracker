@@ -16,6 +16,7 @@ public final class NextIncomesPanel extends JPanel {
 
     public NextIncomesPanel(ViewController viewController) {
         this.viewController = viewController;
+        viewController.setNextIncomesPanel(this);
         initializeUI();
         updateIncomesContainer();
     }
@@ -48,7 +49,8 @@ public final class NextIncomesPanel extends JPanel {
     }
 
     private void createNewIncomeDialog() {
-        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Create New Income", 400, 520, 30);
+        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Create New Income",
+                400, 520, 30);
         modal.setTitle("Create New Income");
         modal.setSize(400, 520);
         modal.setLayout(null);
@@ -131,28 +133,30 @@ public final class NextIncomesPanel extends JPanel {
 
         // Lista de colores pastel
         Color[] pastelColors = {
-            new Color(194, 80, 80), // Rojo
-            new Color(77, 189, 133), // Verde
-            new Color(135, 129, 129), // Gris
-            new Color(86, 141, 242), // Azul 
-            new Color(69, 74, 183), // Morado
-            new Color(85, 37, 37) // Cafe
+                new Color(194, 80, 80), // Rojo
+                new Color(77, 189, 133), // Verde
+                new Color(135, 129, 129), // Gris
+                new Color(86, 141, 242), // Azul
+                new Color(69, 74, 183), // Morado
+                new Color(85, 37, 37) // Cafe
         };
 
         String[] colorNames = {
-            "Red",
-            "Green",
-            "Gray",
-            "Blue",
-            "Purple",
-            "Brown"
+                "Red",
+                "Green",
+                "Gray",
+                "Blue",
+                "Purple",
+                "Brown"
         };
 
         JComboBox<String> colorComboBox = new JComboBox<>(colorNames);
         colorComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                    boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
+                        cellHasFocus);
                 if (index >= 0 && index < pastelColors.length) {
                     Color color = pastelColors[index];
                     label.setIcon(new ColorIcon(color, 20, 20));
@@ -209,9 +213,9 @@ public final class NextIncomesPanel extends JPanel {
             String value = valueIncome.getText().trim();
             LocalDate selectedDate = datePicker.getDate();
             if (selectedDate.getDayOfMonth() == 31) {
-                UIManager.put("OptionPane.background", new Color(245, 245, 235)); 
+                UIManager.put("OptionPane.background", new Color(245, 245, 235));
                 UIManager.put("Panel.background", new Color(245, 245, 235));
-                UIManager.put("OptionPane.messageForeground", new Color(0, 111, 74)); 
+                UIManager.put("OptionPane.messageForeground", new Color(0, 111, 74));
                 UIManager.put("Button.background", new Color(0, 111, 74));
                 UIManager.put("Button.foreground", Color.white);
                 UIManager.put("Button.focus", new Color(0, 90, 60));
@@ -220,8 +224,7 @@ public final class NextIncomesPanel extends JPanel {
                         modal,
                         "El día 31 no es válido. Se ajustará automáticamente al día 30.",
                         "Aviso",
-                        JOptionPane.WARNING_MESSAGE
-                );
+                        JOptionPane.WARNING_MESSAGE);
 
                 selectedDate = selectedDate.withDayOfMonth(30);
             }
@@ -240,7 +243,8 @@ public final class NextIncomesPanel extends JPanel {
             }
 
             if (name.isEmpty() || value.isEmpty() || selectedDate == null) {
-                JOptionPane.showMessageDialog(modal, "Please complete all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(modal, "Please complete all the fields.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -287,7 +291,7 @@ public final class NextIncomesPanel extends JPanel {
     }
 
     public void updateIncomesContainer() {
-        List<Income> incomeList = viewController.getInfoIncome();;
+        List<Income> incomeList = viewController.getInfoIncome();
         incomesContainer.removeAll();
         if (!incomeList.isEmpty()) {
             Income temp;
@@ -342,6 +346,7 @@ public final class NextIncomesPanel extends JPanel {
                             }
                         }
                     }
+                    name.setForeground(Color.BLACK);
                     nameContainer.add(name);
                     JPanel valueContainer = new JPanel() {
                         @Override
@@ -385,9 +390,9 @@ public final class NextIncomesPanel extends JPanel {
                     y += 50;
                 }
             }
-            incomesContainer.revalidate();
-            incomesContainer.repaint();
         }
+        incomesContainer.revalidate();
+        incomesContainer.repaint();
     }
 
     public class ColorIcon implements Icon {

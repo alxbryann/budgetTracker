@@ -12,6 +12,7 @@ public class ElementDetail extends JPanel {
     private final double cost;
     private final boolean isFinancialObligation;
     private final ViewController viewController;
+    private final int dayNumber;
 
     private JLabel nameLabel;
     private JLabel costLabel;
@@ -19,12 +20,13 @@ public class ElementDetail extends JPanel {
     private JButton editButton;
 
     public ElementDetail(int id, String name, double cost, boolean isFinancialObligation,
-            ViewController viewController) {
+            ViewController viewController, int dayNumber) {
         this.id = id;
         this.name = name;
         this.cost = cost;
         this.isFinancialObligation = isFinancialObligation;
         this.viewController = viewController;
+        this.dayNumber = dayNumber;
 
         if (isFinancialObligation) {
             initializeUI(new Color(210, 133, 133));
@@ -42,10 +44,10 @@ public class ElementDetail extends JPanel {
         textPanel.setOpaque(false);
 
         nameLabel = new JLabel(name);
-        nameLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        nameLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 18));
 
         costLabel = new JLabel("$" + String.format("%,.0f", cost));
-        costLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        costLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 18));
 
         textPanel.add(nameLabel);
         textPanel.add(costLabel);
@@ -62,13 +64,28 @@ public class ElementDetail extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (isFinancialObligation) {
-                    viewController.deleteFinancialObligationById(id);
-                } else {
-                    viewController.deleteIncomeById(id);
+                String elementType = isFinancialObligation ? "Financial Obligation" : "Income";
+                String message = "Are you sure you want to delete " + elementType + " '" + name + "'?";
+                String title = "Confirm delete";
+                
+                int option = JOptionPane.showConfirmDialog(
+                    ElementDetail.this,
+                    message,
+                    title,
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+                );
+                
+                if (option == JOptionPane.YES_OPTION) {
+                    if (isFinancialObligation) {
+                        viewController.deleteFinancialObligationById(id);
+                        viewController.removeFinancialObligationFromDayById(id, dayNumber);
+                    } else {
+                        viewController.deleteIncomeById(id);
+                        viewController.removeIncomeFromDayById(id, dayNumber);
+                    }
+                    updateView();
                 }
-                viewController.clearViewCalendar();
-                viewController.updateViewCalendar();
             }
 
         });
@@ -82,7 +99,16 @@ public class ElementDetail extends JPanel {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("id: " + id);
+                if (isFinancialObligation) {
+                    EditPayment editPaymentWindow = new EditPayment(viewController, id, dayNumber);
+                    editPaymentWindow.setVisible(true);
+                    updateView();
+                } else {
+                    EditIncome editIncomeWindow = new EditIncome(viewController, id, dayNumber);
+                    editIncomeWindow.setVisible(true);
+                    updateView();
+                }
+
             }
 
         });
@@ -105,6 +131,13 @@ public class ElementDetail extends JPanel {
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
+    public void updateView() {
+        viewController.updateViewCalendar();
+        viewController.updateNextIncomes();
+        viewController.updateNextFinancialObligations();
+        viewController.updateDetailContainer();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -123,4 +156,5 @@ public class ElementDetail extends JPanel {
     public boolean isOpaque() {
         return false;
     }
+
 }

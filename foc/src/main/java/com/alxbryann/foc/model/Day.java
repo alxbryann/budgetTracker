@@ -24,12 +24,28 @@ public class Day {
         incomes.remove(in);
     }
 
+    public void removeIncomeById(int id) {
+        incomes.removeIf(in -> in.getId() == id);
+    }
+
+    public void removeAllIncomes() {
+        incomes = new ArrayList<>();
+    }
+
     public void setNewFinancialObligation(FinancialObligation fo) {
         obligations.add(fo);
     }
 
     public void removeFinancialObligation(FinancialObligation fo) {
         obligations.remove(fo);
+    }
+
+    public void removeFinancialObligationById(int id) {
+        obligations.removeIf(fo -> fo.getId() == id);
+    }
+
+    public void removeAllFinancialObligations() {
+        obligations = new ArrayList<>();
     }
 
     public ArrayList<FinancialObligation> getFinancialObligations() {
@@ -61,10 +77,10 @@ public class Day {
         }
         return totalIncome;
     }
-    
+
     public double getTotalNet() {
         double totalNet = 0;
-        totalNet = - getTotalCost() + getTotalIncome();
+        totalNet = -getTotalCost() + getTotalIncome();
         return totalNet;
     }
 

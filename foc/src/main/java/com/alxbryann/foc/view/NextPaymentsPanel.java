@@ -15,6 +15,7 @@ public final class NextPaymentsPanel extends JPanel {
 
     public NextPaymentsPanel(ViewController viewController) {
         this.viewController = viewController;
+        viewController.setNextPaymentsPanel(this);
         initializeUI();
         updateFoContainer();
     }
@@ -37,7 +38,6 @@ public final class NextPaymentsPanel extends JPanel {
         add(foContainer);
         add(titleNextPayment);
 
-
         RoundedButton addNewPayments = new RoundedButton("Add new payments", 30);
         addNewPayments.setBounds(50, 210, 180, 30);
         addNewPayments.setBackground(new Color(86, 60, 16));
@@ -48,7 +48,8 @@ public final class NextPaymentsPanel extends JPanel {
     }
 
     private void createNewPaymentDialog() {
-        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Create New Financial Obligation", 400, 520, 30);
+        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this),
+                "Create New Financial Obligation", 400, 520, 30);
         modal.setTitle("Create New Financial Obligation");
         modal.setSize(400, 520);
         modal.setLayout(null);
@@ -131,28 +132,30 @@ public final class NextPaymentsPanel extends JPanel {
 
         // Lista de colores pastel
         Color[] pastelColors = {
-            new Color(194, 80, 80), // Rojo
-            new Color(77, 189, 133), // Verde
-            new Color(135, 129, 129), // Gris
-            new Color(86, 141, 242), // Azul 
-            new Color(69, 74, 183), // Morado
-            new Color(85, 37, 37) // Cafe
+                new Color(194, 80, 80), // Rojo
+                new Color(77, 189, 133), // Verde
+                new Color(135, 129, 129), // Gris
+                new Color(86, 141, 242), // Azul
+                new Color(69, 74, 183), // Morado
+                new Color(85, 37, 37) // Cafe
         };
 
         String[] colorNames = {
-            "Red",
-            "Green",
-            "Gray",
-            "Blue",
-            "Purple",
-            "Brown"
+                "Red",
+                "Green",
+                "Gray",
+                "Blue",
+                "Purple",
+                "Brown"
         };
 
         JComboBox<String> colorComboBox = new JComboBox<>(colorNames);
         colorComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+                    boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
+                        cellHasFocus);
                 if (index >= 0 && index < pastelColors.length) {
                     Color color = pastelColors[index];
                     label.setIcon(new ColorIcon(color, 20, 20));
@@ -220,8 +223,7 @@ public final class NextPaymentsPanel extends JPanel {
                         modal,
                         "El día 31 no es válido. Se ajustará automáticamente al día 30.",
                         "Aviso",
-                        JOptionPane.WARNING_MESSAGE
-                );
+                        JOptionPane.WARNING_MESSAGE);
 
                 selectedDate = selectedDate.withDayOfMonth(30);
             }
@@ -240,7 +242,8 @@ public final class NextPaymentsPanel extends JPanel {
             }
 
             if (name.isEmpty() || cost.isEmpty() || selectedDate == null) {
-                JOptionPane.showMessageDialog(modal, "Please complete all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(modal, "Please complete all the fields.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -343,6 +346,7 @@ public final class NextPaymentsPanel extends JPanel {
                             }
                         }
                     }
+                    name.setForeground(Color.BLACK);
                     nameContainer.add(name);
                     JPanel costContainer = new JPanel() {
                         @Override
@@ -387,9 +391,9 @@ public final class NextPaymentsPanel extends JPanel {
                 }
 
             }
-            foContainer.revalidate();
-            foContainer.repaint();
         }
+        foContainer.revalidate();
+        foContainer.repaint();
     }
 
     public class ColorIcon implements Icon {
