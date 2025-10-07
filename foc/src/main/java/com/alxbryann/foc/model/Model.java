@@ -330,4 +330,54 @@ public class Model {
         
         return financialObligationInformation;
     }
+
+    public HashMap<String, Object> getInformationOfIncome(int id) {
+        Income temporalIncome = controller.findIncomeById(id);
+        HashMap<String, Object> incomeInformation = new HashMap<>();
+        String name = temporalIncome.getName();
+        Date date = temporalIncome.getDate();
+        double amount = temporalIncome.getValue();
+        String rgb = temporalIncome.getRgb();
+        boolean isRepetitive = temporalIncome.isRepetitive();
+        boolean repetitiveByWeek = temporalIncome.isRepetitiveByWeek();
+        boolean repetitiveByMonth = temporalIncome.isRepetitiveByMonth();
+        
+        incomeInformation.put("name", name);
+        incomeInformation.put("date", date);
+        incomeInformation.put("amount", amount);
+        incomeInformation.put("rgb", rgb);
+        incomeInformation.put("isRepetitive", isRepetitive);
+        incomeInformation.put("repetitiveByWeek", repetitiveByWeek);
+        incomeInformation.put("repetitiveByMonth", repetitiveByMonth);
+        
+        return incomeInformation;
+    }
+
+    public void editIncome(int id, String name, String amount, String dateStr, Color selectedColor,
+            boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        try {
+            Income existingIncome = controller.findIncomeById(id);
+            if (existingIncome != null) {
+                existingIncome.setName(name);
+                double amountDouble = Double.parseDouble(amount);
+                existingIncome.setValue(amountDouble);
+                
+                LocalDate localDate = LocalDate.parse(dateStr);
+                ZoneId defaultZoneId = ZoneId.systemDefault();
+                Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+                existingIncome.setDate(date);
+                
+                String rgb = selectedColor.getRed() + ", " + selectedColor.getGreen() + ", " + selectedColor.getBlue();
+                existingIncome.setRgb(rgb);
+                existingIncome.setColor(selectedColor);
+                existingIncome.setIsRepetitive(isRepetitive);
+                existingIncome.setRepetitiveByWeek(isRepetitiveByWeek);
+                existingIncome.setRepetitiveByMonth(isRepetitiveByMonth);
+                
+                controller.editIncome(existingIncome);
+            }
+        } catch (Exception e) {
+            System.err.println("Error editing income: " + e.getMessage());
+        }
+    }
 }

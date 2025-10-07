@@ -57,6 +57,10 @@ public class PersistenceController {
         IncomeJpa.destroy(id);
     }
     
+    public void editIncome(Income income) {
+        IncomeJpa.edit(income);
+    }
+    
     public void deleteRepetitiveIncome(int id) {
         RepetitiveIncomeJpa.destroy(id);
     }

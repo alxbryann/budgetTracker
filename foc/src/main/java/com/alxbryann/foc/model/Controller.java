@@ -51,6 +51,14 @@ public class Controller {
         }
     }
 
+    public void editIncome(Income income) {
+        try {
+            pc.editIncome(income);
+        } catch (Exception e) {
+            System.out.println("Exception editing income: " + e.getMessage());
+        }
+    }
+
     public void createIncome(Income income) {
         try {
             pc.createIncome(income);
@@ -183,6 +191,10 @@ public class Controller {
 
     public HashMap getInformationOfFinancialObligation(int id) {
         return model.getInformationOfFinancialObligation(id);
+    }
+
+    public HashMap getInformationOfIncome(int id) {
+        return model.getInformationOfIncome(id);
     }
 
     public void deleteAllFinancialObligations() {

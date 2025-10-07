@@ -169,6 +169,34 @@ public class ViewController {
         return controller.getInformationOfFinancialObligation(id);
     }
 
+    public HashMap getInformationOfIncome(int id) {
+        return controller.getInformationOfIncome(id);
+    }
+
+    public void editIncome(int id, String name, String amount, String date, Color selectedColor,
+            boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        // Obtener el ingreso existente
+        com.alxbryann.foc.model.Income existingIncome = controller.findIncomeById(id);
+        if (existingIncome != null) {
+            try {
+                existingIncome.setName(name);
+                double amountDouble = Double.parseDouble(amount);
+                existingIncome.setValue(amountDouble);
+                java.time.LocalDate localDate = java.time.LocalDate.parse(date);
+                java.time.ZoneId defaultZoneId = java.time.ZoneId.systemDefault();
+                java.util.Date dateObj = java.util.Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
+                existingIncome.setDate(dateObj);
+                existingIncome.setColor(selectedColor);
+                existingIncome.setIsRepetitive(isRepetitive);
+                existingIncome.setRepetitiveByWeek(isRepetitiveByWeek);
+                existingIncome.setRepetitiveByMonth(isRepetitiveByMonth);
+                controller.editIncome(existingIncome);
+            } catch (Exception e) {
+                System.err.println("Error editing income: " + e.getMessage());
+            }
+        }
+    }
+
     public void editFinancialObligation(int id, String name, String price, String date, Color selectedColor,
             boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         // Obtener la obligación financiera existente
