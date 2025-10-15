@@ -280,8 +280,6 @@ public final class NextPaymentsPanel extends JPanel {
             colorComboBox.setSelectedIndex(0);
             JOptionPane.showMessageDialog(modal, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             modal.dispose();
-            viewController.assignFoToDays();
-            viewController.paintDaysInView();
         });
 
         addFo.add(send);

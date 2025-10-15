@@ -25,7 +25,7 @@ public class DayJpaController implements Serializable {
         this.emf = Persistence.createEntityManagerFactory("focPU");
     }
     
-    private EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 

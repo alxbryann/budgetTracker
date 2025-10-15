@@ -311,7 +311,7 @@ public class EditIncome extends JPanel {
     }
 
     public void loadIncomeInformation(int id, int dayNumber) {
-        try {
+        /*try { 
             HashMap<String, Object> temporalIncomeInformation = viewController.getInformationOfIncome(id);
             String name = String.valueOf(temporalIncomeInformation.get("name"));
             String date = String.valueOf(temporalIncomeInformation.get("date"));
@@ -407,7 +407,7 @@ public class EditIncome extends JPanel {
         } catch (Exception e) {
             System.err.println("Error loading income information: " + e.getMessage());
             e.printStackTrace();
-        }
+        }*/
     }
     
     private Color parseColorFromRgb(String rgb) {

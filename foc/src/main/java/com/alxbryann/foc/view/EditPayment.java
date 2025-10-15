@@ -311,7 +311,7 @@ public class EditPayment extends JPanel {
     }
 
     public void loadFinancialObligationInformation(int id, int dayNumber) {
-        try {
+        /*try {
             HashMap temporalFinancialObligationInformation = viewController.getInformationOfFinancialObligation(id);
             String name = String.valueOf(temporalFinancialObligationInformation.get("name"));
             String date = String.valueOf(temporalFinancialObligationInformation.get("date"));
@@ -407,7 +407,7 @@ public class EditPayment extends JPanel {
         } catch (Exception e) {
             System.err.println("Error loading financial obligation information: " + e.getMessage());
             e.printStackTrace();
-        }
+        }*/
     }
     
     private Color parseColorFromRgb(String rgb) {

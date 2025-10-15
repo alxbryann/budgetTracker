@@ -20,7 +20,7 @@ public final class DetailContainer extends JPanel {
 
     private void prepareElementsDetail() {
         cleanElementsDetail();
-        ArrayList incomes = getIncomesByDay();
+        /*ArrayList incomes = getIncomesByDay();
         int spaceY = 20;
         for (int i = 0; i < incomes.size(); i++) {
             Income temporalIncome = (Income) incomes.get(i);
@@ -33,7 +33,7 @@ public final class DetailContainer extends JPanel {
             ed.setVisible(true);
             add(ed);
         }
-        ArrayList financialObligations = getFinancialObligationsByDay();
+        /*ArrayList financialObligations = getFinancialObligationsByDay();
         for (int i = 0; i < financialObligations.size(); i++) {
             FinancialObligation temporalFinancialObligation = (FinancialObligation) financialObligations.get(i);
             int id = temporalFinancialObligation.getId();
@@ -44,7 +44,7 @@ public final class DetailContainer extends JPanel {
             spaceY += 100;
             ed.setVisible(true);
             add(ed);
-        }
+        }*/
     }
 
     private void cleanElementsDetail() {
@@ -58,13 +58,13 @@ public final class DetailContainer extends JPanel {
         repaint();
     }
 
-    private ArrayList getFinancialObligationsByDay() {
+    /*private ArrayList getFinancialObligationsByDay() {
         return (ArrayList) viewController.getFinancialObligationsByDay(dayNumber);
     }
 
     private ArrayList getIncomesByDay() {
         return (ArrayList) viewController.getIncomesByDay(dayNumber);
-    }
+    }*/
 
     public void refreshElementsDetail() {
         prepareElementsDetail();

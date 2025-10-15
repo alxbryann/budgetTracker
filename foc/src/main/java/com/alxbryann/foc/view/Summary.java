@@ -14,10 +14,6 @@ public class Summary extends JPanel {
     public Summary(ViewController viewController, int clickedDay) {
         this.viewController = viewController;
         this.clickedDay = clickedDay;
-        setTotalCost();
-        setTotalIncome();
-        setTotalNet();
-
         initializeUI();
     }
 
@@ -49,18 +45,6 @@ public class Summary extends JPanel {
         SummaryItem netItem = new SummaryItem("Net total", totalNet, new Color(232,224,190));
         netItem.setAlignmentX(CENTER_ALIGNMENT);
         add(netItem);
-    }
-
-    private void setTotalCost() {
-        totalCost = viewController.getTotalCostByDay(clickedDay);
-    }
-
-    private void setTotalIncome() {
-        totalIncome = viewController.getTotalIncomeByDay(clickedDay);
-    }
-
-    private void setTotalNet() {
-        totalNet = viewController.getTotalNetByDay(clickedDay);
     }
     
     private static class SummaryItem extends JPanel {

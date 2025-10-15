@@ -7,6 +7,9 @@
     <class>com.alxbryann.foc.model.RepetitiveFO</class>
     <class>com.alxbryann.foc.model.RepetitiveIncome</class>
     <class>com.alxbryann.foc.model.Day</class>
+    <class>com.alxbryann.foc.model.Month</class>
+    <class>com.alxbryann.foc.model.Year</class>
+
     
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/foc_db?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>

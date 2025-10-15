@@ -1,55 +1,70 @@
 package com.alxbryann.foc.model;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
+
+@Entity
 public class Month {
 
-    private ArrayList<Day> days = new ArrayList<>();
-    private ArrayList<Day> busyDays = new ArrayList<>();
+    @Id
+    private int id;
+
+    @OneToMany(mappedBy = "month", cascade = CascadeType.ALL)
+    private List<Day> days = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "year_id")
+    private Year year;
+
+    public Month() {}
 
     public Month(int numberOfDays) {
-        for (int i = 0; i <= numberOfDays; i++) {
-            Day temp = new Day();
-            temp.setNumberDay(i);
-            days.add(temp);
-        }
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<Day> getDays() {
+        return days;
+    }
+
+    public void setDays(List<Day> days) {
+        this.days = days;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
     }
 
     public Day getDayByNumber(int numberDay) {
-        return days.get(numberDay);
-    }
-
-    public ArrayList<Day> getBusyDays() {
-        return busyDays;
-    }
-
-    public void addToBusyDays(Day days) {
-        busyDays.add(days);
-    }
-
-    public double getTotalCost() {
-        if (busyDays.isEmpty()) {
-            return 0;
-        }
-        double totalCost = 0;
-        for (Day day : busyDays) {
-            totalCost += day.getTotalCost();
-        }
-        return totalCost;
-    }
-
-    public double getTotalIncome() {
-        if (busyDays.isEmpty()) {
-            return 0;
-        }
-        double totalIncome = 0;
-        for (Day day : busyDays) {
-            totalIncome += day.getTotalCost();
-        }
-        return totalIncome;
+        return days.stream()
+            .filter(day -> day.getId() == numberDay)
+            .findFirst()
+            .orElse(null);
     }
 }

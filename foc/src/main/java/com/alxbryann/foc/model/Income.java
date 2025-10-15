@@ -8,12 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 @Entity
 public class Income implements Serializable {
@@ -35,6 +37,10 @@ public class Income implements Serializable {
     private boolean isRepetitiveByWeek;
     @Basic
     private boolean isRepetitiveByMonth;
+    
+    @ManyToOne
+    @JoinColumn(name = "day_id")
+    private Day day;
 
     public Income() {
 
@@ -119,6 +125,14 @@ public class Income implements Serializable {
         this.isRepetitiveByMonth = isRepetitiveByMonth;
     }
 
+    public Day getDay() {
+        return day;
+    }
+
+    public void setDay(Day day) {
+        this.day = day;
+    }
+
     @Override
     public String toString() {
         return "Income{" +
@@ -130,6 +144,7 @@ public class Income implements Serializable {
                 ", isRepetitive=" + isRepetitive +
                 ", isRepetitiveByWeek=" + isRepetitiveByWeek +
                 ", isRepetitiveByMonth=" + isRepetitiveByMonth +
+                ", day=" + (day != null ? day.getId() : null) +
                 '}';
     }
 }

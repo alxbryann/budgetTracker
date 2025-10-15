@@ -79,10 +79,8 @@ public class ElementDetail extends JPanel {
                 if (option == JOptionPane.YES_OPTION) {
                     if (isFinancialObligation) {
                         viewController.deleteFinancialObligationById(id);
-                        viewController.removeFinancialObligationFromDayById(id, dayNumber);
                     } else {
                         viewController.deleteIncomeById(id);
-                        viewController.removeIncomeFromDayById(id, dayNumber);
                     }
                     updateView();
                 }

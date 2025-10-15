@@ -60,6 +60,12 @@ public class ViewController {
                 isRepetitiveByMonth);
     }
 
+    public void createIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
+            boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        controller.createIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek,
+                isRepetitiveByMonth);
+    }
+
     public List getInfoFo() {
         return controller.findAllFinancialObligations();
     }
@@ -72,42 +78,44 @@ public class ViewController {
         return controller.getNumberOfDaysInCurrentMonth();
     }
 
-    public void assignFoToDays() {
-        controller.assignFinancialObligationToDays();
-    }
-
-    public void assignIncomesToDays() {
-        controller.assignIncomesToDays();
-    }
-
-    public ArrayList paintFOs() {
-        return controller.paintFOs();
-    }
-
-    public ArrayList paintINs() {
-        return controller.paintINs();
-    }
-
-    public ArrayList paintRepetitiveFinancialObligations() {
-        return controller.paintRepetitiveFinancialObligations();
-    }
-
-    public ArrayList paintRepetitiveIncomes() {
-        return controller.paintRepetitiveIncomes();
-    }
-
-    public void paintDaysInView() {
-        view.paintFOsInView();
-        view.paintINsInView();
-    }
-
-    public List getFinancialObligationsByDay(int day) {
-        return controller.getFinancialObligationsByDay(day);
-    }
-
-    public List getIncomesByDay(int day) {
-        return controller.getIncomesByDay(day);
-    }
+    /*
+     * public void assignFoToDays() {
+     * controller.assignFinancialObligationToDays();
+     * }
+     * 
+     * public void assignIncomesToDays() {
+     * controller.assignIncomesToDays();
+     * }
+     * 
+     * public ArrayList paintFOs() {
+     * return controller.paintFOs();
+     * }
+     * 
+     * public ArrayList paintINs() {
+     * return controller.paintINs();
+     * }
+     * 
+     * public ArrayList paintRepetitiveFinancialObligations() {
+     * return controller.paintRepetitiveFinancialObligations();
+     * }
+     * 
+     * public ArrayList paintRepetitiveIncomes() {
+     * return controller.paintRepetitiveIncomes();
+     * }
+     * 
+     * public void paintDaysInView() {
+     * view.paintFOsInView();
+     * view.paintINsInView();
+     * }
+     * 
+     * public List getFinancialObligationsByDay(int day) {
+     * return controller.getFinancialObligationsByDay(day);
+     * }
+     * 
+     * public List getIncomesByDay(int day) {
+     * return controller.getIncomesByDay(day);
+     * }
+     */
 
     public String getCurrentMonthInString() {
         return controller.getCurrentMonthInString();
@@ -121,17 +129,19 @@ public class ViewController {
         return view.getDayClicked();
     }
 
-    public double getTotalCostByDay(int day) {
-        return controller.getTotalCostByDay(day);
-    }
-
-    public double getTotalIncomeByDay(int day) {
-        return controller.getTotalIncomeByDay(day);
-    }
-
-    public double getTotalNetByDay(int day) {
-        return controller.getTotalNet(day);
-    }
+    /*
+     * public double getTotalCostByDay(int day) {
+     * return controller.getTotalCostByDay(day);
+     * }
+     * 
+     * public double getTotalIncomeByDay(int day) {
+     * return controller.getTotalIncomeByDay(day);
+     * }
+     * 
+     * public double getTotalNetByDay(int day) {
+     * return controller.getTotalNet(day);
+     * }
+     */
 
     public void deleteFinancialObligationById(int id) {
         controller.deleteFinancialObligationById(id);
@@ -157,21 +167,23 @@ public class ViewController {
         nextPaymentsPanel.updateFoContainer();
     }
 
-    public void removeFinancialObligationFromDayById(int id, int numberDay) {
-        controller.removeFinancialObligationFromDayById(id, numberDay);
-    }
-
-    public void removeIncomeFromDayById(int id, int numberDay) {
-        controller.removeIncomeFromDayById(id, numberDay);
-    }
-
-    public HashMap getInformationOfFinancialObligation(int id) {
-        return controller.getInformationOfFinancialObligation(id);
-    }
-
-    public HashMap getInformationOfIncome(int id) {
-        return controller.getInformationOfIncome(id);
-    }
+    /*
+     * public void removeFinancialObligationFromDayById(int id, int numberDay) {
+     * controller.removeFinancialObligationFromDayById(id, numberDay);
+     * }
+     * 
+     * public void removeIncomeFromDayById(int id, int numberDay) {
+     * controller.removeIncomeFromDayById(id, numberDay);
+     * }
+     * 
+     * public HashMap getInformationOfFinancialObligation(int id) {
+     * return controller.getInformationOfFinancialObligation(id);
+     * }
+     * 
+     * public HashMap getInformationOfIncome(int id) {
+     * return controller.getInformationOfIncome(id);
+     * }
+     */
 
     public void editIncome(int id, String name, String amount, String date, Color selectedColor,
             boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
@@ -220,12 +232,13 @@ public class ViewController {
             }
         }
     }
-
-    public void deleteAllFinancialObligations() {
-        controller.deleteAllFinancialObligations();
-    }
-
-    public void deleteAllIncomes() {
-        controller.deleteAllIncomes();
-    }
+    /*
+     * public void deleteAllFinancialObligations() {
+     * controller.deleteAllFinancialObligations();
+     * }
+     * 
+     * public void deleteAllIncomes() {
+     * controller.deleteAllIncomes();
+     * }
+     */
 }

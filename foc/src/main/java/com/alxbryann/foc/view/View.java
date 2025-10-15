@@ -49,8 +49,8 @@ public final class View extends JFrame {
 
         viewController = new ViewController();
         viewController.setController(controller);
-        viewController.assignFoToDays();
-        viewController.assignIncomesToDays();
+        //viewController.assignFoToDays();
+        //viewController.assignIncomesToDays();
         viewController.setView(this);
         setUndecorated(false);
         setSize(1280, 720);
@@ -189,7 +189,7 @@ public final class View extends JFrame {
         setVisible(true);
     }
 
-    public void paintFOsInView() {
+    public void paintFOsInView() {/* 
     ArrayList<Object[]> daysToPaint = viewController.paintFOs();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
@@ -235,9 +235,10 @@ public final class View extends JFrame {
         }
 
         paintRepetitiveFO();
+        */
     }
 
-    public void paintINsInView() {
+    public void paintINsInView() {/* 
         ArrayList<Object[]> daysToPaint = viewController.paintINs();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
@@ -283,9 +284,10 @@ public final class View extends JFrame {
         }
 
         paintRepetitiveIncome();
+        */
     }
 
-    public void paintRepetitiveFO() {
+    public void paintRepetitiveFO() {/* 
         ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveFinancialObligations();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
@@ -335,9 +337,10 @@ public final class View extends JFrame {
                 tempDay.add(plus);
             }
         }
+        */
     }
 
-    public void paintRepetitiveIncome() {
+    public void paintRepetitiveIncome() {/* 
         ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveIncomes();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
@@ -387,7 +390,7 @@ public final class View extends JFrame {
                 plus.setForeground(Color.white);
                 tempDay.add(plus);
             }
-        }
+        }*/
     }
 
     public int getDayClicked() {
@@ -416,10 +419,6 @@ public final class View extends JFrame {
 
     public void updateViewCalendar() {
         clearViewCalendar();
-        viewController.deleteAllFinancialObligations();
-        viewController.deleteAllIncomes();
-        viewController.assignFoToDays();
-        viewController.assignIncomesToDays();
         paintFOsInView();
         paintINsInView();
         paintRepetitiveFO();

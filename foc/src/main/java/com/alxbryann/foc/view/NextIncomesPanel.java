@@ -267,11 +267,13 @@ public final class NextIncomesPanel extends JPanel {
             String date = selectedDate.toString();
 
             if (viewController != null) {
-                if (weekOrMonthIncome) {
+
+                viewController.createIncome(name, value, date, selectedColor, isRepetitiveIncome, true, false);
+                /*if (weekOrMonthIncome) {
                     viewController.setInfoIncome(name, value, date, selectedColor, isRepetitiveIncome, true, false);
                 } else {
                     viewController.setInfoIncome(name, value, date, selectedColor, isRepetitiveIncome, false, true);
-                }
+                }*/
             }
 
             nameIncome.setText("");
@@ -280,8 +282,6 @@ public final class NextIncomesPanel extends JPanel {
             colorComboBox.setSelectedIndex(0);
             JOptionPane.showMessageDialog(modal, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             modal.dispose();
-            viewController.assignIncomesToDays();
-            viewController.paintDaysInView();
         });
 
         addIncome.add(send);

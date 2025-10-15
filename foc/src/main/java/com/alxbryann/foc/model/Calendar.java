@@ -39,11 +39,12 @@ public final class Calendar {
         int daysInMonth = yearMonth.lengthOfMonth();
         return daysInMonth;
     }
-
+    /*
     public ArrayList<Day> getBusyDaysInCurrentMonth() {
         return months.get(LocalDate.now().getMonthValue()).getBusyDays();
     }
 
+    
     public void addToBusyDaysInSpecificMonth(Day days, int month) {
         months.get(month).addToBusyDays(days);
     }
@@ -51,6 +52,7 @@ public final class Calendar {
     public void removeFromBusyDaysInSpecificMonth(Day days, int month) {
         months.get(month).addToBusyDays(days);
     }
+    */
 
 
     public LocalDate getCurrentLocalDate() {

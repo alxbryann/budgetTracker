@@ -83,7 +83,7 @@ public class Model {
 
         controller.createIncome(income);
     }
-
+    /* 
     public void assignFinancialObligationToDays() {
         List allFinancialObligation = controller.findAllFinancialObligations();
         if (!allFinancialObligation.isEmpty()) {
@@ -105,11 +105,13 @@ public class Model {
     public void removeFinancialObligationFromDayById(int id, int numberDay) {
         Day temporalDay = calendar.getDayByNumberInSpecificMonth(numberDay, calendar.getCurrentMonth());
         temporalDay.removeFinancialObligationById(id);
-    }
+    } */
 
     public int getNumberOfDaysInCurrentMonth() {
         return calendar.getNumberOfDaysInCurrentMonth();
     }
+
+    /* 
 
     public ArrayList<Integer> getListOfRepetitiveFinancialObligationsInCurrentMonth() {
         ArrayList RepetitiveFinancialObligationsInCurrentMonth = new ArrayList<>();
@@ -155,6 +157,7 @@ public class Model {
         return RepetitiveFinancialObligationsInCurrentMonth;
     }
 
+    
     public void assignIncomesToDays() {
         List allIncomes = controller.findAllIncomes();
         if (!allIncomes.isEmpty()) {
@@ -281,7 +284,7 @@ public class Model {
             Day temporalDay = calendar.getDayByNumberInSpecificMonth(numberDay, numberMonth);
             temporalDay.removeAllFinancialObligations();
         }
-    }
+    }*/
 
     public String getCurrentMonthInString() {
         return calendar.getCurrentMonthInString();
@@ -290,7 +293,7 @@ public class Model {
     public int getCurrentYear() {
         return calendar.getCurrentYear();
     }
-
+    /* 
     public double getTotalCostByDay(int day) {
         Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
         double totalCost = tempDay.getTotalCost();
@@ -307,7 +310,7 @@ public class Model {
         Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
         double totalNet = tempDay.getTotalNet();
         return totalNet;
-    }
+    }*/
 
     public HashMap<String, Object> getInformationOfFinancialObligation(int id) {
         FinancialObligation temporalFinancialObligation = controller.findFinancialObligationById(id);
