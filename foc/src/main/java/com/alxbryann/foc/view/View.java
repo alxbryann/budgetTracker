@@ -13,9 +13,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 /**
@@ -29,25 +26,7 @@ public final class View extends JFrame {
     private final JPanel notifications;
     private int clickedDay;
 
-    public View(Controller controller) {
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu menuMonthSummary = new JMenu("Month summary");
-        JMenuItem itemMonthSummary = new JMenuItem("Month summary");
-
-        itemMonthSummary.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MonthSummary monthSummary = new MonthSummary();
-                monthSummary.setVisible(true);
-            }
-        });
-
-        menuMonthSummary.add(itemMonthSummary);
-        menuBar.add(menuMonthSummary);
-        setJMenuBar(menuBar);
-
-        viewController = new ViewController();
+    public View(Controller controller) {viewController = new ViewController();
         viewController.setController(controller);
         viewController.assignFoToDays();
         viewController.assignIncomesToDays();
