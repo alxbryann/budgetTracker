@@ -1,6 +1,6 @@
 package com.alxbryann.foc.view;
 
-import com.alxbryann.foc.model.Income;
+import com.alxbryann.foc.model.Transaction;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import javax.swing.*;
@@ -291,10 +291,10 @@ public final class NextIncomesPanel extends JPanel {
     }
 
     public void updateIncomesContainer() {
-        List<Income> incomeList = viewController.getInfoIncome();
+        List<Transaction> incomeList = viewController.getInfoTransaction();
         incomesContainer.removeAll();
         if (!incomeList.isEmpty()) {
-            Income temp;
+            Transaction temp;
             int y = 30;
             for (int i = 0; i < incomeList.size(); i++) {
                 temp = incomeList.get(i);

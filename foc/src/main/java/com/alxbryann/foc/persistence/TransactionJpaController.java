@@ -1,47 +1,51 @@
 package com.alxbryann.foc.persistence;
 
-import com.alxbryann.foc.model.FinancialObligation;
+import com.alxbryann.foc.model.Transaction;
+import java.io.Serializable;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.io.Serializable;
-import java.util.List;
 
-public class FinancialObligationJpaController implements Serializable {
+/**
+ *
+ * @author alxbryann
+ */
+public class TransactionJpaController implements Serializable {
 
     private EntityManagerFactory emf;
 
-    public FinancialObligationJpaController(EntityManagerFactory emf) {
+    public TransactionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
-    public FinancialObligationJpaController() {
+    public TransactionJpaController() {
         this.emf = Persistence.createEntityManagerFactory("focPU");
     }
-
+    
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(FinancialObligation obligation) {
+    public void create(Transaction income) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(obligation);
+            em.persist(income);
             transaction.commit();
         } finally {
             em.close();
         }
     }
 
-    public void edit(FinancialObligation obligation) {
+    public void edit(Transaction income) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.merge(obligation);
+            em.merge(income);
             transaction.commit();
         } finally {
             em.close();
@@ -53,33 +57,29 @@ public class FinancialObligationJpaController implements Serializable {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            FinancialObligation obligation = em.find(FinancialObligation.class, id);
-            if (obligation != null) {
-                em.remove(obligation);
+            Transaction income = em.find(Transaction.class, id);
+            if (income != null) {
+                em.remove(income);
             }
             transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            e.printStackTrace();  
-        } finally {
-            em.close();
-        }
-
-    }
-
-    public FinancialObligation findFinancialObligation(int id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(FinancialObligation.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<FinancialObligation> findAll() {
+    public Transaction findTransactionById(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("SELECT o FROM FinancialObligation o", FinancialObligation.class).getResultList();
+            return em.find(Transaction.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Transaction> findAll() {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery("SELECT o FROM Transaction o", Transaction.class).getResultList();
         } finally {
             em.close();
         }

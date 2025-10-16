@@ -24,49 +24,9 @@ public class Model {
         this.controller = controller;
     }
 
-    public void editFinancialObligation(int id, String name, String cost, String dateStr, Color selectedColor,
-            boolean isRepetitive, boolean repetitiveByWeek, boolean repetitiveByMonth) {
-        try {
-            FinancialObligation existingFo = controller.findFinancialObligationById(id);
-            if (existingFo != null) {
-                existingFo.setName(name);
-                double costDouble = Double.parseDouble(cost);
-                existingFo.setCost(costDouble);
-                LocalDate localDate = LocalDate.parse(dateStr);
-                ZoneId defaultZoneId = ZoneId.systemDefault();
-                Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-                existingFo.setDate(date);
-                existingFo.setColor(selectedColor);
-                existingFo.setIsRepetitive(isRepetitive);
-                existingFo.setRepetitiveByWeek(repetitiveByWeek);
-                existingFo.setRepetitiveByMonth(repetitiveByMonth);
-                controller.editFinancialObligation(existingFo);
-            }
-        } catch (Exception e) {
-            System.err.println("Error editing financial obligation: " + e.getMessage());
-        }
-    }
-
-    public void setInfoFinancialObligation(String name, String cost, String dateStr, Color selectedColor,
-            boolean isRepetitive, boolean repetitiveByWeek, boolean repetitiveByMonth) {
-        FinancialObligation financialObligation = new FinancialObligation();
-        financialObligation.setName(name);
-        double costDouble = Double.parseDouble(cost);
-        financialObligation.setCost(costDouble);
-        LocalDate localDate = LocalDate.parse(dateStr);
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-        financialObligation.setDate(date);
-        financialObligation.setColor(selectedColor);
-        financialObligation.setIsRepetitive(isRepetitive);
-        financialObligation.setRepetitiveByWeek(repetitiveByWeek);
-        financialObligation.setRepetitiveByMonth(repetitiveByMonth);
-        controller.createFinancialObligation(financialObligation);
-    }
-
-    public void setInfoIncome(String name, String value, String dateStr, Color selectedColor, boolean isRepetitive,
+    public void setInfoTransaction(String name, String value, String dateStr, Color selectedColor, boolean isRepetitive,
             boolean repetitiveByWeek, boolean repetitiveByMonth) {
-        Income income = new Income();
+        Transaction income = new Transaction();
         income.setName(name);
         double valueDouble = Double.parseDouble(value);
         income.setValue(valueDouble);
@@ -81,7 +41,7 @@ public class Model {
         income.setRepetitiveByWeek(repetitiveByWeek);
         income.setRepetitiveByMonth(repetitiveByMonth);
 
-        controller.createIncome(income);
+        controller.createTransaction(income);
     }
     /* 
     public void assignFinancialObligationToDays() {
@@ -312,30 +272,9 @@ public class Model {
         return totalNet;
     }*/
 
-    public HashMap<String, Object> getInformationOfFinancialObligation(int id) {
-        FinancialObligation temporalFinancialObligation = controller.findFinancialObligationById(id);
-        HashMap<String, Object> financialObligationInformation = new HashMap<>();
-        String name = temporalFinancialObligation.getName();
-        Date date = temporalFinancialObligation.getDate();
-        double cost = temporalFinancialObligation.getCost();
-        String rgb = temporalFinancialObligation.getRgb();
-        boolean isRepetitive = temporalFinancialObligation.isRepetitive();
-        boolean repetitiveByWeek = temporalFinancialObligation.isRepetitiveByWeek();
-        boolean repetitiveByMonth = temporalFinancialObligation.isRepetitiveByMonth();
-        
-        financialObligationInformation.put("name", name);
-        financialObligationInformation.put("date", date);
-        financialObligationInformation.put("cost", cost);
-        financialObligationInformation.put("rgb", rgb);
-        financialObligationInformation.put("isRepetitive", isRepetitive);
-        financialObligationInformation.put("repetitiveByWeek", repetitiveByWeek);
-        financialObligationInformation.put("repetitiveByMonth", repetitiveByMonth);
-        
-        return financialObligationInformation;
-    }
 
     public HashMap<String, Object> getInformationOfIncome(int id) {
-        Income temporalIncome = controller.findIncomeById(id);
+        Transaction temporalIncome = controller.findTransactionById(id);
         HashMap<String, Object> incomeInformation = new HashMap<>();
         String name = temporalIncome.getName();
         Date date = temporalIncome.getDate();
@@ -359,7 +298,7 @@ public class Model {
     public void editIncome(int id, String name, String amount, String dateStr, Color selectedColor,
             boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         try {
-            Income existingIncome = controller.findIncomeById(id);
+            Transaction existingIncome = controller.findTransactionById(id);
             if (existingIncome != null) {
                 existingIncome.setName(name);
                 double amountDouble = Double.parseDouble(amount);
@@ -377,7 +316,7 @@ public class Model {
                 existingIncome.setRepetitiveByWeek(isRepetitiveByWeek);
                 existingIncome.setRepetitiveByMonth(isRepetitiveByMonth);
                 
-                controller.editIncome(existingIncome);
+                controller.editTransaction(existingIncome);
             }
         } catch (Exception e) {
             System.err.println("Error editing income: " + e.getMessage());

@@ -1,7 +1,6 @@
 package com.alxbryann.foc.view;
 
-import com.alxbryann.foc.model.FinancialObligation;
-import com.alxbryann.foc.model.Income;
+import com.alxbryann.foc.model.Transaction;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;

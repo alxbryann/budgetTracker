@@ -1,10 +1,5 @@
 package com.alxbryann.foc.model;
 
-/**
- *
- * @author alxbryann
- */
-
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.Date;
@@ -13,21 +8,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ *
+ * @author alxbryann
+ */
 @Entity
-public class FinancialObligation implements Serializable {
+public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     @Basic
     private String name;
+    @Basic
+    private double value;
     @Temporal(TemporalType.DATE)
     private Date date;
-    @Basic
-    private double cost;
     @Basic
     private String rgb;
     @Basic
@@ -36,65 +37,69 @@ public class FinancialObligation implements Serializable {
     private boolean isRepetitiveByWeek;
     @Basic
     private boolean isRepetitiveByMonth;
+    
+    @ManyToOne
+    @JoinColumn(name = "day_id")
+    private Day day;
 
-    public FinancialObligation() {
+    public Transaction() {
 
     }
 
-    public FinancialObligation(int id, String name, Date date, double cost, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        this.id = id;        this.name = name;
+    
+    public Transaction(int id, String name, double value, Date date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+        this.id = id;
+        this.name = name;
+        this.value = value;
         this.date = date;
-        this.cost = cost;
-        rgb += selectedColor.getRed() + ", " + selectedColor.getGreen() + ", "
-                + selectedColor.getBlue();
+        this.rgb = selectedColor.getRed() + ", " + selectedColor.getGreen() + ", " + selectedColor.getBlue();
         this.isRepetitive = isRepetitive;
         this.isRepetitiveByWeek = isRepetitiveByWeek;
         this.isRepetitiveByMonth = isRepetitiveByMonth;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-    public double getCost() {
-        return cost;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getRgb() {
         return rgb;
     }
 
-public void setRgb(String rgb) {
+    public void setRgb(String rgb) {
         this.rgb = rgb;
     }
 
     public void setColor(Color color) {
-        rgb = color.getRed() + ", " + color.getGreen() + ", "
-                + color.getBlue();
+        this.rgb = color.getRed() + ", " + color.getGreen() + ", " + color.getBlue();
     }
 
     public boolean isRepetitive() {
@@ -108,21 +113,39 @@ public void setRgb(String rgb) {
     public boolean isRepetitiveByWeek() {
         return isRepetitiveByWeek;
     }
-    
-    public boolean isRepetitiveByMonth() {
-        return isRepetitiveByMonth;
-    }
 
     public void setRepetitiveByWeek(boolean isRepetitiveByWeek) {
         this.isRepetitiveByWeek = isRepetitiveByWeek;
     }
-    
+
+    public boolean isRepetitiveByMonth() {
+        return isRepetitiveByMonth;
+    }
+
     public void setRepetitiveByMonth(boolean isRepetitiveByMonth) {
         this.isRepetitiveByMonth = isRepetitiveByMonth;
     }
 
+    public Day getDay() {
+        return day;
+    }
+
+    public void setDay(Day day) {
+        this.day = day;
+    }
+
     @Override
     public String toString() {
-        return "FinancialObligation{" + "id=" + id + ", name=" + name + ", date=" + date + ", cost=" + cost + ", rgb=" + rgb + ", isRepetitive=" + isRepetitive + ", repetitiveByWeek=" + isRepetitiveByWeek + ", repetitiveByMonth=" + isRepetitiveByMonth + '}';
+        return "Income{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", value=" + value +
+                ", date=" + date +
+                ", rgb='" + rgb + '\'' +
+                ", isRepetitive=" + isRepetitive +
+                ", isRepetitiveByWeek=" + isRepetitiveByWeek +
+                ", isRepetitiveByMonth=" + isRepetitiveByMonth +
+                ", day=" + (day != null ? day.getId() : null) +
+                '}';
     }
 }

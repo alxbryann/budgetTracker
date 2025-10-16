@@ -15,7 +15,6 @@ public class ViewController {
 
     private Controller controller;
     private View view;
-    private NextPaymentsPanel nextPaymentsPanel;
     private NextIncomesPanel nextIncomesPanel;
     private DetailContainer currentDetailContainer;
 
@@ -28,10 +27,6 @@ public class ViewController {
 
     public void setView(View view) {
         this.view = view;
-    }
-
-    public void setNextPaymentsPanel(NextPaymentsPanel nextPaymentsPanel) {
-        this.nextPaymentsPanel = nextPaymentsPanel;
     }
 
     public void setNextIncomesPanel(NextIncomesPanel nextIncomesPanel) {
@@ -48,30 +43,20 @@ public class ViewController {
         }
     }
 
-    public void setInfoFo(String name, String price, String date, Color selectedColor, boolean isRepetitive,
-            boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        controller.setInfoFinancialObligation(name, price, date, selectedColor, isRepetitive, isRepetitiveByWeek,
-                isRepetitiveByMonth);
-    }
-
     public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
             boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        controller.setInfoIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek,
+        controller.setInfoTransaction(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek,
                 isRepetitiveByMonth);
     }
 
     public void createIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
             boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        controller.createIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek,
+        controller.createTransaction(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek,
                 isRepetitiveByMonth);
     }
 
-    public List getInfoFo() {
-        return controller.findAllFinancialObligations();
-    }
-
-    public List getInfoIncome() {
-        return controller.findAllIncomes();
+    public List getInfoTransaction() {
+        return controller.findAllTransactions();
     }
 
     public int getDaysInCurrentMonth() {
@@ -143,12 +128,8 @@ public class ViewController {
      * }
      */
 
-    public void deleteFinancialObligationById(int id) {
-        controller.deleteFinancialObligationById(id);
-    }
-
-    public void deleteIncomeById(int id) {
-        controller.deleteIncomeById(id);
+    public void deleteTransactionById(int id) {
+        controller.deleteTransactionById(id);
     }
 
     public void clearViewCalendar() {
@@ -161,10 +142,6 @@ public class ViewController {
 
     public void updateNextIncomes() {
         nextIncomesPanel.updateIncomesContainer();
-    }
-
-    public void updateNextFinancialObligations() {
-        nextPaymentsPanel.updateFoContainer();
     }
 
     /*
@@ -188,7 +165,7 @@ public class ViewController {
     public void editIncome(int id, String name, String amount, String date, Color selectedColor,
             boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         // Obtener el ingreso existente
-        com.alxbryann.foc.model.Income existingIncome = controller.findIncomeById(id);
+        com.alxbryann.foc.model.Transaction existingIncome = controller.findTransactionById(id);
         if (existingIncome != null) {
             try {
                 existingIncome.setName(name);
@@ -202,36 +179,13 @@ public class ViewController {
                 existingIncome.setIsRepetitive(isRepetitive);
                 existingIncome.setRepetitiveByWeek(isRepetitiveByWeek);
                 existingIncome.setRepetitiveByMonth(isRepetitiveByMonth);
-                controller.editIncome(existingIncome);
+                controller.editTransaction(existingIncome);
             } catch (Exception e) {
                 System.err.println("Error editing income: " + e.getMessage());
             }
         }
     }
 
-    public void editFinancialObligation(int id, String name, String price, String date, Color selectedColor,
-            boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        // Obtener la obligación financiera existente
-        com.alxbryann.foc.model.FinancialObligation existingFo = controller.findFinancialObligationById(id);
-        if (existingFo != null) {
-            try {
-                existingFo.setName(name);
-                double costDouble = Double.parseDouble(price);
-                existingFo.setCost(costDouble);
-                java.time.LocalDate localDate = java.time.LocalDate.parse(date);
-                java.time.ZoneId defaultZoneId = java.time.ZoneId.systemDefault();
-                java.util.Date dateObj = java.util.Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-                existingFo.setDate(dateObj);
-                existingFo.setColor(selectedColor);
-                existingFo.setIsRepetitive(isRepetitive);
-                existingFo.setRepetitiveByWeek(isRepetitiveByWeek);
-                existingFo.setRepetitiveByMonth(isRepetitiveByMonth);
-                controller.editFinancialObligation(existingFo);
-            } catch (Exception e) {
-                System.err.println("Error editing financial obligation: " + e.getMessage());
-            }
-        }
-    }
     /*
      * public void deleteAllFinancialObligations() {
      * controller.deleteAllFinancialObligations();

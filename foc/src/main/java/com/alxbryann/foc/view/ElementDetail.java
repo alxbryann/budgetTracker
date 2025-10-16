@@ -75,15 +75,6 @@ public class ElementDetail extends JPanel {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE
                 );
-                
-                if (option == JOptionPane.YES_OPTION) {
-                    if (isFinancialObligation) {
-                        viewController.deleteFinancialObligationById(id);
-                    } else {
-                        viewController.deleteIncomeById(id);
-                    }
-                    updateView();
-                }
             }
 
         });
@@ -98,9 +89,6 @@ public class ElementDetail extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isFinancialObligation) {
-                    EditPayment editPaymentWindow = new EditPayment(viewController, id, dayNumber);
-                    editPaymentWindow.setVisible(true);
-                    updateView();
                 } else {
                     EditIncome editIncomeWindow = new EditIncome(viewController, id, dayNumber);
                     editIncomeWindow.setVisible(true);
@@ -132,7 +120,6 @@ public class ElementDetail extends JPanel {
     public void updateView() {
         viewController.updateViewCalendar();
         viewController.updateNextIncomes();
-        viewController.updateNextFinancialObligations();
         viewController.updateDetailContainer();
     }
 
