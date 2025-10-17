@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import com.alxbryann.foc.view.glasspanepopup.GlassPanePopup;
+
 public class ElementDetail extends JPanel {
 
     private final int id;
@@ -68,15 +70,7 @@ public class ElementDetail extends JPanel {
                 String message = "Are you sure you want to delete " + elementType + " '" + name + "'?";
                 String title = "Confirm delete";
                 
-                int option = JOptionPane.showConfirmDialog(
-                    ElementDetail.this,
-                    message,
-                    title,
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
-                );
-                
-                if (option == JOptionPane.YES_OPTION) {
+                Runnable onConfirm = () -> {
                     if (isFinancialObligation) {
                         viewController.deleteFinancialObligationById(id);
                         viewController.removeFinancialObligationFromDayById(id, dayNumber);
@@ -85,6 +79,16 @@ public class ElementDetail extends JPanel {
                         viewController.removeIncomeFromDayById(id, dayNumber);
                     }
                     updateView();
+                };
+                
+                Runnable onCancel = () -> {
+                };
+                
+                ConfirmationDialog confirmDialog = new ConfirmationDialog(message, title, onConfirm, onCancel);
+                JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(ElementDetail.this);
+                if (parentFrame != null) {
+                    GlassPanePopup.install(parentFrame);
+                    GlassPanePopup.showPopup(confirmDialog);
                 }
             }
 
