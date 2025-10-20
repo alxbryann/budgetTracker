@@ -30,11 +30,9 @@ public class CalendarTab extends TabbedForm {
     
     private void initializeUI() {
         setLayout(null);
-        setBackground(new Color(101, 164, 118)); // Color de fondo principal
+        setBackground(new Color(101, 164, 118)); 
         setPreferredSize(new Dimension(1280, 720));
         setBounds(0, 0, 1280, 720);
-        
-        // Crear el área del calendario
         JPanel calendarArea = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -55,7 +53,7 @@ public class CalendarTab extends TabbedForm {
             }
         };
         calendarArea.setLayout(null);
-        calendarArea.setBounds(30, 90, 850, 550); // Ajustado para incluir más espacio desde arriba
+        calendarArea.setBounds(30, 90, 850, 550);
         calendarArea.setBackground(new Color(194, 206, 197));
         add(calendarArea);
         
@@ -66,11 +64,9 @@ public class CalendarTab extends TabbedForm {
                 int clickedDay = (int) clickedPanel.getClientProperty("dayNumber") - 1;
                 parentView.setClickedDay(clickedDay);
                 
-                // Crear una nueva pestaña para el día seleccionado
                 DetailPerDayTab detailPerDayTab = new DetailPerDayTab(viewController);
                 String tabTitle = detailPerDayTab.getTabTitle();
                 
-                // Verificar si ya existe una pestaña para este día usando la nueva CustomTitleBar
                 String[] existingTabs = parentView.getTabNames();
                 boolean tabExists = false;
                 for (String existingTab : existingTabs) {
@@ -80,11 +76,9 @@ public class CalendarTab extends TabbedForm {
                     }
                 }
                 
-                // Solo agregar la pestaña si no existe ya
                 if (!tabExists) {
                     parentView.addTab(tabTitle, detailPerDayTab);
                 } else {
-                    // Si ya existe, seleccionar esa pestaña
                     parentView.selectTabByTitle(tabTitle);
                 }
             }
@@ -147,17 +141,15 @@ public class CalendarTab extends TabbedForm {
             }
         }
         
-        // Agregar el panel de notificaciones
         JPanel notifications = new JPanel();
         notifications.setLayout(null);
-        notifications.setBounds(920, 0, 360, 720); // Ajustado para toda la altura
+        notifications.setBounds(920, 0, 360, 720); 
         notifications.setOpaque(true);
         notifications.setBackground(Color.white);
         notifications.add(new NextPaymentsPanel(viewController));
         notifications.add(new NextIncomesPanel(viewController));
         add(notifications);
         
-        // Llamar a los métodos de pintado desde la vista principal
         parentView.paintFOsInCalendarTab(viewCalendar);
         parentView.paintINsInCalendarTab(viewCalendar);
     }
@@ -171,7 +163,6 @@ public class CalendarTab extends TabbedForm {
     
     @Override
     public boolean formClose() {
-        // No permitir cerrar la pestaña del calendario principal
         return false;
     }
     

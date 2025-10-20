@@ -482,14 +482,11 @@ public final class View extends JFrame {
     
     private void configureApplicationIcon() {
         try {
-            // Cargar el icono desde los recursos
             ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("logo.png"));
             Image logoImage = logoIcon.getImage();
             
-            // Configurar el icono para la ventana
             setIconImage(logoImage);
             
-            // Crear una lista de iconos en diferentes tamaños para mejor compatibilidad
             List<Image> iconImages = new ArrayList<>();
             iconImages.add(logoImage.getScaledInstance(16, 16, Image.SCALE_SMOOTH));
             iconImages.add(logoImage.getScaledInstance(32, 32, Image.SCALE_SMOOTH));
@@ -498,10 +495,8 @@ public final class View extends JFrame {
             iconImages.add(logoImage.getScaledInstance(128, 128, Image.SCALE_SMOOTH));
             iconImages.add(logoImage.getScaledInstance(256, 256, Image.SCALE_SMOOTH));
             
-            // Configurar múltiples tamaños de icono para la ventana
             setIconImages(iconImages);
             
-            // Configurar icono para macOS Dock (si está disponible)
             if (Taskbar.isTaskbarSupported()) {
                 Taskbar taskbar = Taskbar.getTaskbar();
                 if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {

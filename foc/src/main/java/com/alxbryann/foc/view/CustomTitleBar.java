@@ -16,10 +16,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Barra de título personalizada que reemplaza la barra nativa del sistema
- * Incluye soporte para pestañas, controles de ventana y arrastre de ventana
- */
 public class CustomTitleBar extends JPanel {
     
     private static final int TITLE_BAR_HEIGHT = 40;
@@ -36,11 +32,10 @@ public class CustomTitleBar extends JPanel {
     private JLabel titleLabel;
     private JScrollPane tabbedScrollPane;
     
-    // Variables para el arrastre de ventana
     private Point initialClick;
     private boolean isDragging = false;
     
-    private final int LIMIT = 5; // -1 para ilimitado
+    private final int LIMIT = 6; 
     private final boolean REMOVE_WHEN_LIMIT = false;
 
     public CustomTitleBar(JFrame frame, JPanel bodyPanel) {
@@ -58,26 +53,21 @@ public class CustomTitleBar extends JPanel {
         setBackground(TITLE_BAR_COLOR);
         setLayout(new BorderLayout());
         
-        // Panel izquierdo con botón de drawer, logo y pestañas
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(TITLE_BAR_COLOR);
         leftPanel.setOpaque(false);
-        
-        // Panel para drawer y logo
+
         JPanel drawerLogoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         drawerLogoPanel.setBackground(TITLE_BAR_COLOR);
         drawerLogoPanel.setOpaque(false);
         
-        // Botón de drawer (menú hamburguesa)
         drawerButton = createDrawerButton();
         
-        // Logo de la aplicación
         JLabel logoLabel = createLogoLabel();
-        
-        drawerLogoPanel.add(drawerButton);
+
         drawerLogoPanel.add(logoLabel);
+        drawerLogoPanel.add(drawerButton);
         
-        // Panel de pestañas
         panelTabbed = new PanelTabbed();
         panelTabbed.setBackground(TITLE_BAR_COLOR);
         panelTabbed.putClientProperty(FlatClientProperties.STYLE, 
@@ -85,19 +75,16 @@ public class CustomTitleBar extends JPanel {
             "foreground:white;" +
             "margin:0,0,0,0");
         
-        // Scroll para las pestañas
         tabbedScrollPane = createTabbedScrollPane(panelTabbed);
         
         leftPanel.add(drawerLogoPanel, BorderLayout.WEST);
         leftPanel.add(tabbedScrollPane, BorderLayout.CENTER);
         
-        // Panel central con título (para arrastre)
         titleLabel = new JLabel("");
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         
-        // Panel derecho con controles de ventana
         JPanel rightPanel = createWindowControlsPanel();
         
         add(leftPanel, BorderLayout.WEST);
@@ -122,7 +109,6 @@ public class CustomTitleBar extends JPanel {
     }
     
     private void setupDragFunctionality() {
-        // Agregar funcionalidad de arrastre a toda la barra de título
         MouseAdapter dragAdapter = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -142,7 +128,6 @@ public class CustomTitleBar extends JPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (isDragging && initialClick != null) {
-                    // Calcular nueva posición de la ventana
                     Point currentLocation = parentFrame.getLocation();
                     int newX = currentLocation.x + e.getX() - initialClick.x;
                     int newY = currentLocation.y + e.getY() - initialClick.y;
@@ -151,7 +136,6 @@ public class CustomTitleBar extends JPanel {
             }
         };
         
-        // Aplicar listeners a componentes que deben permitir arrastre
         addMouseListener(dragAdapter);
         addMouseMotionListener(dragMotionAdapter);
         titleLabel.addMouseListener(dragAdapter);
@@ -166,9 +150,7 @@ public class CustomTitleBar extends JPanel {
         button.setFocusPainted(false);
         button.setBackground(TITLE_BAR_COLOR);
         button.setForeground(Color.WHITE);
-        
-        // Efecto hover
-        button.addMouseListener(new MouseAdapter() {
+                button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 button.setBackground(BUTTON_HOVER_COLOR);
@@ -190,10 +172,8 @@ public class CustomTitleBar extends JPanel {
     
     private JLabel createLogoLabel() {
         try {
-            // Intentar cargar el logo desde los recursos
             ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("logo.png"));
             
-            // Redimensionar la imagen para que se ajuste a la barra de título
             Image img = logoIcon.getImage();
             Image scaledImg = img.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(scaledImg);
@@ -206,7 +186,6 @@ public class CustomTitleBar extends JPanel {
             
             return logoLabel;
         } catch (Exception e) {
-            // Si no se puede cargar la imagen, crear un label con texto
             JLabel logoLabel = new JLabel("FOC");
             logoLabel.setPreferredSize(new Dimension(35, TITLE_BAR_HEIGHT));
             logoLabel.setForeground(Color.WHITE);
@@ -228,7 +207,6 @@ public class CustomTitleBar extends JPanel {
         scroll.setOpaque(false);
         scroll.getViewport().setOpaque(false);
         
-        // Ocultar la barra de desplazamiento horizontal pero mantener funcionalidad
         scroll.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
         scroll.getHorizontalScrollBar().setUnitIncrement(10);
         
@@ -262,8 +240,8 @@ public class CustomTitleBar extends JPanel {
         button.setFocusPainted(false);
         button.setBackground(TITLE_BAR_COLOR);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 18)); // Fuente más clara y grande
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cursor de mano al pasar sobre el botón
+        button.setFont(new Font("Arial", Font.BOLD, 18));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR)); 
         
         // Efecto hover
         button.addMouseListener(new MouseAdapter() {
@@ -289,23 +267,18 @@ public class CustomTitleBar extends JPanel {
     
     private void closeWindow() {
         System.out.println("closeWindow() method called");
-        // Para cerrar la aplicación completa, solo verificamos pestañas que NO sean el calendario principal
         boolean canClose = true;
         for (Component comp : panelTabbed.getComponents()) {
             if (comp instanceof TabbedItem) {
                 TabbedForm form = ((TabbedItem) comp).getComponent();
-                // Solo verificar pestañas que no sean CalendarTab (el calendario principal no debería impedir cerrar la app)
                 if (!(form instanceof CalendarTab) && !form.formClose()) {
                     canClose = false;
                     break;
                 }
             }
         }
-        
-        System.out.println("Can close: " + canClose);
         if (canClose) {
-            System.out.println("Exiting application...");
-            parentFrame.dispose(); // Usar dispose() primero
+            parentFrame.dispose(); 
             System.exit(0);
         }
     }
@@ -318,7 +291,6 @@ public class CustomTitleBar extends JPanel {
         return titleLabel.getText();
     }
     
-    // Métodos para manejar pestañas
     public boolean addTab(String title, TabbedForm component) {
         if (LIMIT != -1 && panelTabbed.getComponentCount() >= LIMIT) {
             if (REMOVE_WHEN_LIMIT) {
@@ -329,11 +301,10 @@ public class CustomTitleBar extends JPanel {
         }
         
         TabbedItem item = new TabbedItem(title, component);
-        item.setTitleBar(this); // Establecer referencia a esta barra de título
+        item.setTitleBar(this); 
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                // Deseleccionar todas las otras pestañas
                 for (Component comp : panelTabbed.getComponents()) {
                     if (comp instanceof TabbedItem && comp != item) {
                         ((TabbedItem) comp).setSelected(false);
@@ -343,7 +314,6 @@ public class CustomTitleBar extends JPanel {
             }
         });
         
-        // Deseleccionar todas las pestañas existentes antes de agregar la nueva
         for (Component comp : panelTabbed.getComponents()) {
             if (comp instanceof TabbedItem) {
                 ((TabbedItem) comp).setSelected(false);
@@ -354,7 +324,6 @@ public class CustomTitleBar extends JPanel {
         showForm(component);
         item.setSelected(true);
         
-        // Actualizar scroll para mostrar la nueva pestaña
         SwingUtilities.invokeLater(() -> {
             JScrollBar horizontalScrollBar = tabbedScrollPane.getHorizontalScrollBar();
             horizontalScrollBar.setValue(horizontalScrollBar.getMaximum());
@@ -379,7 +348,6 @@ public class CustomTitleBar extends JPanel {
             panelTabbed.repaint();
             
             if (removedCurrentView) {
-                // Seleccionar automáticamente otra pestaña
                 int selectedIndex = Math.min(index, panelTabbed.getComponentCount() - 1);
                 if (selectedIndex >= 0) {
                     TabbedItem item = (TabbedItem) panelTabbed.getComponent(selectedIndex);

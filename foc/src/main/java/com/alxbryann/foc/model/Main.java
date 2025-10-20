@@ -9,7 +9,7 @@ public class Main {
         Controller controller = new Controller();
         Model model = new Model(controller);
         controller.setModel(model);
-        View view = new View(controller);
+        new View(controller);
 
     }
 }
