@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 @Entity
 public class Income implements Serializable {

@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 public class IncomeJpaController implements Serializable {
 

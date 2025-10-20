@@ -58,13 +58,24 @@ public class CustomTitleBar extends JPanel {
         setBackground(TITLE_BAR_COLOR);
         setLayout(new BorderLayout());
         
-        // Panel izquierdo con botón de drawer y pestañas
+        // Panel izquierdo con botón de drawer, logo y pestañas
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(TITLE_BAR_COLOR);
         leftPanel.setOpaque(false);
         
+        // Panel para drawer y logo
+        JPanel drawerLogoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        drawerLogoPanel.setBackground(TITLE_BAR_COLOR);
+        drawerLogoPanel.setOpaque(false);
+        
         // Botón de drawer (menú hamburguesa)
         drawerButton = createDrawerButton();
+        
+        // Logo de la aplicación
+        JLabel logoLabel = createLogoLabel();
+        
+        drawerLogoPanel.add(drawerButton);
+        drawerLogoPanel.add(logoLabel);
         
         // Panel de pestañas
         panelTabbed = new PanelTabbed();
@@ -77,7 +88,7 @@ public class CustomTitleBar extends JPanel {
         // Scroll para las pestañas
         tabbedScrollPane = createTabbedScrollPane(panelTabbed);
         
-        leftPanel.add(drawerButton, BorderLayout.WEST);
+        leftPanel.add(drawerLogoPanel, BorderLayout.WEST);
         leftPanel.add(tabbedScrollPane, BorderLayout.CENTER);
         
         // Panel central con título (para arrastre)
@@ -175,6 +186,37 @@ public class CustomTitleBar extends JPanel {
         });
         
         return button;
+    }
+    
+    private JLabel createLogoLabel() {
+        try {
+            // Intentar cargar el logo desde los recursos
+            ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("logo.png"));
+            
+            // Redimensionar la imagen para que se ajuste a la barra de título
+            Image img = logoIcon.getImage();
+            Image scaledImg = img.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImg);
+            
+            JLabel logoLabel = new JLabel(scaledIcon);
+            logoLabel.setPreferredSize(new Dimension(35, TITLE_BAR_HEIGHT));
+            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            logoLabel.setVerticalAlignment(SwingConstants.CENTER);
+            logoLabel.setToolTipText("FOC - Financial Obligation Calendar");
+            
+            return logoLabel;
+        } catch (Exception e) {
+            // Si no se puede cargar la imagen, crear un label con texto
+            JLabel logoLabel = new JLabel("FOC");
+            logoLabel.setPreferredSize(new Dimension(35, TITLE_BAR_HEIGHT));
+            logoLabel.setForeground(Color.WHITE);
+            logoLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            logoLabel.setVerticalAlignment(SwingConstants.CENTER);
+            logoLabel.setToolTipText("FOC - Financial Obligation Calendar");
+            
+            return logoLabel;
+        }
     }
     
     private JScrollPane createTabbedScrollPane(Component component) {

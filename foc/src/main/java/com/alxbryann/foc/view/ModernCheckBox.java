@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 public class ModernCheckBox extends JCheckBox {
 

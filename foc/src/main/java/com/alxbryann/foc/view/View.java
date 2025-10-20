@@ -8,15 +8,19 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.Taskbar;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 public final class View extends JFrame {
 
@@ -33,18 +37,18 @@ public final class View extends JFrame {
         viewController.assignIncomesToDays();
         viewController.setView(this);
         
-        // Configurar ventana sin decoración nativa
         setUndecorated(true);
         setSize(1280, 720);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        configureApplicationIcon();
 
         Color color = new Color(101, 164, 118);
         getContentPane().setBackground(color);
 
-        // Crear un contenedor principal para las pestañas
         JPanel mainTabbedContainer = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -69,19 +73,14 @@ public final class View extends JFrame {
         Color color2 = new Color(194, 206, 197);
         mainTabbedContainer.setBackground(color2);
         
-        // Crear la barra de título personalizada
         customTitleBar = new CustomTitleBar(this, mainTabbedContainer);
-        customTitleBar.setTitle("BudgetTracker");
         
-        // Instalar drawer
         Drawer.getInstance().install(this);
         
-        // Crear la pestaña del calendario
         calendarTab = new CalendarTab(viewController, this);
-        customTitleBar.addTab("Calendario", calendarTab);
+        customTitleBar.addTab("Calendar", calendarTab);
         customTitleBar.showTabbed(true);
 
-        // Agregar componentes a la ventana
         add(customTitleBar, BorderLayout.NORTH);
         add(mainTabbedContainer, BorderLayout.CENTER);
         
@@ -444,8 +443,7 @@ public final class View extends JFrame {
             }
         }
     }
-    
-    // Métodos para acceder a la barra de título personalizada
+
     public CustomTitleBar getCustomTitleBar() {
         return customTitleBar;
     }
@@ -480,5 +478,45 @@ public final class View extends JFrame {
     
     public void selectTabByTitle(String title) {
         customTitleBar.selectTabByTitle(title);
+    }
+    
+    private void configureApplicationIcon() {
+        try {
+            // Cargar el icono desde los recursos
+            ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("logo.png"));
+            Image logoImage = logoIcon.getImage();
+            
+            // Configurar el icono para la ventana
+            setIconImage(logoImage);
+            
+            // Crear una lista de iconos en diferentes tamaños para mejor compatibilidad
+            List<Image> iconImages = new ArrayList<>();
+            iconImages.add(logoImage.getScaledInstance(16, 16, Image.SCALE_SMOOTH));
+            iconImages.add(logoImage.getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+            iconImages.add(logoImage.getScaledInstance(48, 48, Image.SCALE_SMOOTH));
+            iconImages.add(logoImage.getScaledInstance(64, 64, Image.SCALE_SMOOTH));
+            iconImages.add(logoImage.getScaledInstance(128, 128, Image.SCALE_SMOOTH));
+            iconImages.add(logoImage.getScaledInstance(256, 256, Image.SCALE_SMOOTH));
+            
+            // Configurar múltiples tamaños de icono para la ventana
+            setIconImages(iconImages);
+            
+            // Configurar icono para macOS Dock (si está disponible)
+            if (Taskbar.isTaskbarSupported()) {
+                Taskbar taskbar = Taskbar.getTaskbar();
+                if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+                    taskbar.setIconImage(logoImage);
+                }
+            }
+            
+            // Configurar propiedades del sistema para macOS
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "FOC");
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("apple.awt.application.name", "FOC - Financial Obligation Calendar");
+            
+        } catch (Exception e) {
+            System.err.println("No se pudo cargar el icono de la aplicación: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

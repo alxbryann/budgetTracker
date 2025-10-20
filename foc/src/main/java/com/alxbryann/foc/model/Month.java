@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 public class Month {
 

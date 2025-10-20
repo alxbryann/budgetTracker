@@ -1,8 +1,8 @@
 # 📊 BudgetTracker
 
-**FOC (Financial Obligations Calendar)** is an open-source **Java Swing desktop application** designed to help users **organize, track, and visualize their financial obligations**.  
+**BudgetTracker** is an open-source **Java Swing desktop application** designed to help users **organize, track, and visualize their financial obligations, incomes, and budgets**.  
 
-The goal of FOC is to provide a simple yet powerful tool to manage **income, expenses, and commitments**, ensuring better financial planning and avoiding missed payments.  
+The goal of BudgetTracker is to provide a simple yet powerful tool to manage **income, expenses, and commitments**, ensuring better financial planning and avoiding missed payments.  
 
 ---
 
@@ -42,7 +42,7 @@ foc/
 
 ## 🤝 Contributing  
 
-FOC is an **open-source project**, and we welcome contributors of all levels!  
+BudgetTracker is an **open-source project**, and we welcome contributors of all levels!  
 
 ### How to Contribute  
 1. **Fork** the repository.  

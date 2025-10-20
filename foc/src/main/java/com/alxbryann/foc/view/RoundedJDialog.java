@@ -2,7 +2,7 @@ package com.alxbryann.foc.view;
 
 /**
  *
- * @author barr2
+ * @author alxbryann
  */
 import javax.swing.*;
 import java.awt.*;
