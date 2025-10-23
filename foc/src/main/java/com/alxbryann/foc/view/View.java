@@ -46,7 +46,7 @@ public final class View extends JFrame {
         
         configureApplicationIcon();
 
-        Color color = new Color(101, 164, 118);
+        Color color = new Color(122, 168, 144);
         getContentPane().setBackground(color);
 
         JPanel mainTabbedContainer = new JPanel() {
@@ -88,7 +88,10 @@ public final class View extends JFrame {
     }
 
     public void paintFOsInView() {
-    ArrayList<Object[]> daysToPaint = viewController.paintFOs();
+        if (viewCalendar == null) {
+            return;
+        }
+        ArrayList<Object[]> daysToPaint = viewController.paintFOs();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
             Object rgb = daysToPaint.get(i + 1);
@@ -136,6 +139,9 @@ public final class View extends JFrame {
     }
 
     public void paintINsInView() {
+        if (viewCalendar == null) {
+            return;
+        }
         ArrayList<Object[]> daysToPaint = viewController.paintINs();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
@@ -184,6 +190,9 @@ public final class View extends JFrame {
     }
 
     public void paintRepetitiveFO() {
+        if (viewCalendar == null) {
+            return;
+        }
         ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveFinancialObligations();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
@@ -236,6 +245,9 @@ public final class View extends JFrame {
     }
 
     public void paintRepetitiveIncome() {
+        if (viewCalendar == null) {
+            return;
+        }
         ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveIncomes();
         for (int i = 0; i < daysToPaint.size(); i += 3) {
             Object day = daysToPaint.get(i);
@@ -296,7 +308,14 @@ public final class View extends JFrame {
         this.clickedDay = clickedDay;
     }
 
+    public void setViewCalendar(JPanel[] viewCalendar) {
+        this.viewCalendar = viewCalendar;
+    }
+
     public void clearViewCalendar() {
+        if (viewCalendar == null) {
+            return;
+        }
         for (int i = 0; i < viewCalendar.length; i++) {
             JPanel day = viewCalendar[i];
 
@@ -482,7 +501,7 @@ public final class View extends JFrame {
     
     private void configureApplicationIcon() {
         try {
-            ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("logo.png"));
+            ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("img/logo.png"));
             Image logoImage = logoIcon.getImage();
             
             setIconImage(logoImage);

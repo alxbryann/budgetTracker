@@ -58,7 +58,7 @@ public class ElementDetail extends JPanel {
         buttonPanel.setOpaque(false);
 
         deleteButton = new JButton();
-        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/trash.png"));
+        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/trash.png"));
         Image scaledImage = rawIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon trashIcon = new ImageIcon(scaledImage);
         deleteButton.setIcon(trashIcon);
@@ -95,7 +95,7 @@ public class ElementDetail extends JPanel {
         });
 
         editButton = new JButton();
-        rawIcon = new ImageIcon(getClass().getResource("/pencil.png"));
+        rawIcon = new ImageIcon(getClass().getResource("/img/pencil.png"));
         scaledImage = rawIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon pencilIcon = new ImageIcon(scaledImage);
         editButton.setIcon(pencilIcon);

@@ -1,4 +1,7 @@
+
 package com.alxbryann.foc.view.tabbed;
+
+import java.awt.Color;
 
 import com.alxbryann.foc.view.CustomTitleBar;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -31,60 +34,108 @@ public class TabbedItem extends JToggleButton {
     private final TabbedForm component;
     private final String tabbedName;
     private CustomTitleBar titleBar;
+       private JLabel label;
+       private JButton cmd;
 
     public TabbedItem(String name, TabbedForm component) {
         this.tabbedName = name;
         this.component = component;
         init(name);
     }
-    
+
     public void setTitleBar(CustomTitleBar titleBar) {
         this.titleBar = titleBar;
     }
 
     private void init(String name) {
         setLayout(new MigLayout("", "[]10[]"));
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+        setFocusPainted(false);
+        setOpaque(false);
+        setMargin(new java.awt.Insets(0, 6, 0, 4));
         putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
                 + "background:null;"
+                + "selectedBackground:null;"
+                + "hoverBackground:null;"
+                + "pressedBackground:null;"
                 + "arc:5;"
-                + "margin:3,8,3,5;"
+                + "margin:0,6,0,4;"
                 + "foreground:white");
-        JButton cmd = new JButton(new FlatSVGIcon("raven/svg/close.svg", 0.8f));
+
+        label = new JLabel(name);
+        label.setFont(new java.awt.Font("Kantumruy Pro", java.awt.Font.BOLD, 13));
+        label.putClientProperty(FlatClientProperties.STYLE, "foreground:white");
+
+        cmd = new JButton();
+        cmd.setPreferredSize(new java.awt.Dimension(18, 18));
+        cmd.setContentAreaFilled(false);
+        cmd.setBorderPainted(false);
+        cmd.setFocusPainted(false);
         cmd.addActionListener((ae) -> {
             if (titleBar != null) {
                 titleBar.removeTab(this);
             } else {
-                // Fallback al método original si no hay titleBar establecido
                 WindowsTabbed.getInstance().removeTab(this);
             }
         });
         cmd.putClientProperty(FlatClientProperties.STYLE, ""
-                + "margin:2,2,2,2;"
+                + "margin:1,1,1,1;"
                 + "borderWidth:0;"
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
                 + "background:null;"
                 + "arc:999;"
                 + "foreground:white");
-        JLabel label = new JLabel(name);
-        label.putClientProperty(FlatClientProperties.STYLE, ""
-                + "foreground:white");
         add(label);
         add(cmd, BorderLayout.EAST);
     }
 
     @Override
+    public java.awt.Dimension getPreferredSize() {
+        java.awt.Dimension d = super.getPreferredSize();
+        // Hacer la pestaña aún más baja de forma consistente
+        return new java.awt.Dimension(d.width, 22);
+    }
+
+    @Override
     public void paint(Graphics grphcs) {
+        // Determinar si hay más de una pestaña
+        boolean multipleTabs = getParent() != null && getParent().getComponentCount() > 1;
         if (isSelected()) {
-            // Dibujar fondo para pestaña seleccionada
             Graphics2D g2 = (Graphics2D) grphcs.create();
             FlatUIUtils.setRenderingHints(g2);
-            g2.setColor(new java.awt.Color(255, 255, 255, 40)); // Fondo semi-transparente blanco
+            Color bgColor;
+            Color fgColor;
+            if (component.getClass().getSimpleName().equals("CalendarTab")) {
+                bgColor = new Color(101, 164, 118); // Fondo Calendar
+                fgColor = Color.WHITE;
+            } else {
+                bgColor = Color.WHITE; // Fondo día
+                fgColor = Color.BLACK;
+            }
+            g2.setColor(bgColor);
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);
             g2.dispose();
+            label.setForeground(fgColor);
+            label.setFont(new java.awt.Font("Kantumruy Pro", java.awt.Font.BOLD, 13));
+            // Botón de cerrar para pestaña activa
+            cmd.setIcon(new FlatSVGIcon("raven/svg/close.svg", 0.75f));
+            cmd.setBackground(new Color(0,0,0,0));
+        } else if (multipleTabs) {
+            // Pestaña inactiva con fondo negro y botón de cerrar blanco
+            Graphics2D g2 = (Graphics2D) grphcs.create();
+            FlatUIUtils.setRenderingHints(g2);
+            g2.setColor(Color.BLACK);
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 5, 5);
+            g2.dispose();
+            label.setForeground(Color.WHITE);
+            label.setFont(new java.awt.Font("Kantumruy Pro", java.awt.Font.BOLD, 13));
+            cmd.setIcon(new FlatSVGIcon("raven/svg/close-white.svg", 0.75f));
+            cmd.setBackground(Color.BLACK);
         }
         super.paint(grphcs);
         if (!isSelected() && getParent().getComponentZOrder(this) != getParent().getComponentCount() - 1) {
