@@ -146,7 +146,7 @@ public class CalendarTab extends TabbedForm {
         notifications.setBounds(920, 0, 360, 720); 
         notifications.setOpaque(true);
         notifications.setBackground(Color.white);
-        notifications.add(new NextIncomesPanel(viewController));
+        notifications.add(new NextTransactionsPanel(viewController));
         add(notifications);
         
     parentView.setViewCalendar(viewCalendar);

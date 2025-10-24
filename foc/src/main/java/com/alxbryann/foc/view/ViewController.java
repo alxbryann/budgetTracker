@@ -4,7 +4,6 @@ import com.alxbryann.foc.model.Controller;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public class ViewController {
     private Controller controller;
     private View view;
     // Removed NextPaymentsPanel (payments) support
-    private NextIncomesPanel nextIncomesPanel;
+    private NextTransactionsPanel nextTransactionsPanel;
     private DetailContainer currentDetailContainer;
 
     public ViewController() {
@@ -32,8 +31,8 @@ public class ViewController {
 
     // Removed setter for NextPaymentsPanel
 
-    public void setNextIncomesPanel(NextIncomesPanel nextIncomesPanel) {
-        this.nextIncomesPanel = nextIncomesPanel;
+    public void setNextTransactionsPanel(NextTransactionsPanel nextTransactionsPanel) {
+        this.nextTransactionsPanel = nextTransactionsPanel;
     }
 
     public void setCurrentDetailContainer(DetailContainer detailContainer) {
@@ -127,7 +126,7 @@ public class ViewController {
     }
 
     public void updateNextIncomes() {
-        nextIncomesPanel.updateIncomesContainer();
+        nextTransactionsPanel.updateTransactionsContainer();
     }
 
     // Removed: update next financial obligations panel

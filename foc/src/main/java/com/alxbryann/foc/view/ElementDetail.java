@@ -32,31 +32,33 @@ public class ElementDetail extends JPanel {
     }
 
     private void initializeUI(Color color) {
-        setLayout(new BorderLayout());
+        setLayout(null);
         setPreferredSize(new Dimension(600, 80));
         setBackground(color);
+        
+        // Añadir listener para ajustar posiciones cuando cambie el tamaño
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                ElementDetail.this.updatePositions();
+            }
+        });
 
-        JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 25));
-        textPanel.setOpaque(false);
-
+        // Nombre en posición proporcional
         nameLabel = new JLabel(name);
-        nameLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 18));
+        nameLabel.setFont(new Font("Kantumruy Pro Medium", Font.PLAIN, 13));
 
+        // Costo en posición proporcional
         costLabel = new JLabel("$" + String.format("%,.0f", cost));
-        costLabel.setFont(new Font("Kantumruy Pro", Font.BOLD, 18));
+        costLabel.setFont(new Font("Kantumruy Pro Medium", Font.PLAIN, 13));
 
-        textPanel.add(nameLabel);
-        textPanel.add(costLabel);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 20));
-        buttonPanel.setOpaque(false);
+        add(nameLabel);
+        add(costLabel);
 
         deleteButton = new JButton();
         ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/trash.png"));
-        Image scaledImage = rawIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        Image scaledImage = rawIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         ImageIcon trashIcon = new ImageIcon(scaledImage);
         deleteButton.setIcon(trashIcon);
-        deleteButton.setPreferredSize(new Dimension(40, 40));
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,10 +86,9 @@ public class ElementDetail extends JPanel {
 
         editButton = new JButton();
         rawIcon = new ImageIcon(getClass().getResource("/img/pencil.png"));
-        scaledImage = rawIcon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        scaledImage = rawIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
         ImageIcon pencilIcon = new ImageIcon(scaledImage);
         editButton.setIcon(pencilIcon);
-        editButton.setPreferredSize(new Dimension(40, 40));
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,11 +103,77 @@ public class ElementDetail extends JPanel {
         styleButton(deleteButton);
         styleButton(editButton);
 
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(editButton);
-
-        add(textPanel, BorderLayout.WEST);
-        add(buttonPanel, BorderLayout.EAST);
+        add(deleteButton);
+        add(editButton);
+        
+        // Establecer posiciones iniciales
+        updatePositions();
+    }
+    
+    private void updatePositions() {
+        int width = getPreferredSize().width;
+        int height = getPreferredSize().height;
+        
+        // Calcular el tamaño de fuente basado en la altura del componente
+        // Para altura 80px usa 20pt, para altura 40px usa 12pt
+        int fontSize;
+        if (height >= 70) {
+            fontSize = 20; // Fuente más grande para DetailPerDay
+        } else if (height >= 50) {
+            fontSize = 15; // Fuente media
+        } else {
+            fontSize = 12; // Fuente pequeña para NextTransactionsPanel
+        }
+        Font currentFont = new Font("Kantumruy Pro Medium", Font.PLAIN, fontSize);
+        nameLabel.setFont(currentFont);
+        costLabel.setFont(currentFont);
+        
+        // Calcular el tamaño de los botones basado en la altura
+        int buttonSize = (int) (height * 0.35);
+        buttonSize = Math.max(20, Math.min(buttonSize, 28)); // Entre 20 y 28 px
+        
+        // Calcular posiciones proporcionalmente basadas en el ancho
+        // Columna 1 (Nombre): 4% del ancho, ocupa ~32% del ancho
+        int nameX = (int) (width * 0.04);
+        int nameWidth = (int) (width * 0.32);
+        
+        // Columna 2 (Costo): 38% del ancho, ocupa ~36% del ancho
+        int costX = (int) (width * 0.38);
+        int costWidth = (int) (width * 0.36);
+        
+        // Columna 3 (Botones): comienzan al 76% del ancho
+        int buttonsX = (int) (width * 0.76);
+        int buttonSpacing = (int) (width * 0.12); // Espacio entre botones: 12% del ancho
+        
+        // Altura vertical centrada
+        int labelY = (int) (height * 0.3);
+        int buttonY = (int) ((height - buttonSize) / 2);
+        
+        // Altura de labels ajustada al tamaño de fuente
+        int labelHeight = fontSize + 5;
+        
+        // Actualizar iconos de botones si es necesario
+        updateButtonIcons(buttonSize);
+        
+        // Aplicar posiciones
+        nameLabel.setBounds(nameX, labelY, nameWidth, labelHeight);
+        costLabel.setBounds(costX, labelY, costWidth, labelHeight);
+        deleteButton.setBounds(buttonsX, buttonY, buttonSize, buttonSize);
+        editButton.setBounds(buttonsX + buttonSpacing, buttonY, buttonSize, buttonSize);
+    }
+    
+    private void updateButtonIcons(int size) {
+        // Actualizar icono del botón de eliminar
+        ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/trash.png"));
+        Image scaledImage = rawIcon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);
+        ImageIcon trashIcon = new ImageIcon(scaledImage);
+        deleteButton.setIcon(trashIcon);
+        
+        // Actualizar icono del botón de editar
+        rawIcon = new ImageIcon(getClass().getResource("/img/pencil.png"));
+        scaledImage = rawIcon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);
+        ImageIcon pencilIcon = new ImageIcon(scaledImage);
+        editButton.setIcon(pencilIcon);
     }
 
     private void styleButton(JButton button) {
@@ -129,7 +196,7 @@ public class ElementDetail extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
         g2.dispose();
     }
 

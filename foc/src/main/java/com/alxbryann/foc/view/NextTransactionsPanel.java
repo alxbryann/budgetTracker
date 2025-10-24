@@ -9,38 +9,38 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-public final class NextIncomesPanel extends JPanel {
+public final class NextTransactionsPanel extends JPanel {
 
     private final ViewController viewController;
-    private JPanel incomesContainer;
+    private JPanel transactionsContainer;
 
-    public NextIncomesPanel(ViewController viewController) {
+    public NextTransactionsPanel(ViewController viewController) {
         this.viewController = viewController;
-        viewController.setNextIncomesPanel(this);
+        viewController.setNextTransactionsPanel(this);
         initializeUI();
-        updateIncomesContainer();
+        updateTransactionsContainer();
     }
 
     private void initializeUI() {
         setLayout(null);
-        setBounds(45, 50, 270, 260);
-        setBackground(new Color(204, 168, 109, 255));
+        setBounds(30, 50, 300, 460);
+        setBackground(new Color(0xE8E0BE));
 
-        JLabel titleNextIncomes = new JLabel("Next Incomes");
-        titleNextIncomes.setFont(new Font("Lexend", Font.PLAIN, 22));
-        titleNextIncomes.setBounds(55, 10, 180, 30);
-        titleNextIncomes.setForeground(Color.BLACK);
+        JLabel titleNextTransactions = new JLabel("Next Transactions");
+        titleNextTransactions.setFont(new Font("Kantumruy Pro", Font.BOLD, 22));
+        titleNextTransactions.setBounds(60, 10, 250, 30);
+        titleNextTransactions.setForeground(Color.BLACK);
 
-        incomesContainer = new JPanel();
-        incomesContainer.setLayout(null);
-        incomesContainer.setBounds(20, 30, 300, 130);
-        incomesContainer.setOpaque(false);
+        transactionsContainer = new JPanel();
+        transactionsContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        transactionsContainer.setBounds(10, 45, 280, 155);
+        transactionsContainer.setOpaque(false);
 
-        add(incomesContainer);
-        add(titleNextIncomes);
+        add(transactionsContainer);
+        add(titleNextTransactions);
 
-        RoundedButton addNewIncomes = new RoundedButton("Add new incomes", 30);
-        addNewIncomes.setBounds(50, 210, 180, 30);
+        RoundedButton addNewIncomes = new RoundedButton("Add new income", 30);
+        addNewIncomes.setBounds(75, 210, 180, 30);
         addNewIncomes.setBackground(new Color(86, 60, 16));
         addNewIncomes.setForeground(Color.WHITE);
         addNewIncomes.setFont(new Font("Lexend", Font.PLAIN, 15));
@@ -287,112 +287,38 @@ public final class NextIncomesPanel extends JPanel {
         addIncome.add(send);
         modal.add(addIncome);
         modal.setVisible(true);
-        updateIncomesContainer();
+        updateTransactionsContainer();
     }
 
-    public void updateIncomesContainer() {
+    public void updateTransactionsContainer() {
         List<Transaction> incomeList = viewController.getInfoIncome();
-        incomesContainer.removeAll();
+        transactionsContainer.removeAll();
+        
         if (!incomeList.isEmpty()) {
-            Transaction temp;
-            int y = 30;
-            for (int i = 0; i < incomeList.size(); i++) {
-                temp = incomeList.get(i);
-                LocalDate today = LocalDate.now();
-                LocalDate incomeDate = temp.getDate().toInstant()
+            for (Transaction transaction : incomeList) {
+                // Get the day number from the transaction date
+                LocalDate incomeDate = transaction.getDate().toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
-                if (true) {
-                    JPanel nameContainer = new JPanel() {
-                        @Override
-                        protected void paintComponent(Graphics g) {
-                            super.paintComponent(g);
-                            Graphics2D g2 = (Graphics2D) g.create();
-                            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            g2.setColor(getBackground());
-                            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35);
-                            g2.dispose();
-                        }
-
-                        @Override
-                        protected void paintBorder(Graphics g) {
-                        }
-
-                        @Override
-                        public boolean isOpaque() {
-                            return false;
-                        }
-                    };
-                    nameContainer.setBounds(0, y, 120, 40);
-                    nameContainer.setLayout(new GridBagLayout());
-                    String rgb = temp.getRgb();
-                    int red = Integer.parseInt(rgb.substring(0, rgb.indexOf(",")));
-                    rgb = rgb.substring(rgb.indexOf(",") + 2);
-                    int green = Integer.parseInt(rgb.substring(0, rgb.indexOf(",")));
-                    rgb = rgb.substring(rgb.indexOf(",") + 2);
-                    int blue = Integer.parseInt(rgb);
-
-                    nameContainer.setBackground(new Color(red, green, blue));
-                    incomesContainer.add(nameContainer);
-                    JLabel name = new JLabel(temp.getName());
-                    if (temp.getName().length() <= 7) {
-                        name.setFont(new Font("Lexend", Font.PLAIN, 22));
-                    } else {
-                        if (temp.getName().length() > 7) {
-                            name.setFont(new Font("Lexend", Font.PLAIN, 16));
-                        } else {
-                            if (temp.getName().length() > 10) {
-                                name.setFont(new Font("Lexend", Font.PLAIN, 14));
-                            }
-                        }
-                    }
-                    name.setForeground(Color.BLACK);
-                    nameContainer.add(name);
-                    JPanel valueContainer = new JPanel() {
-                        @Override
-                        protected void paintComponent(Graphics g) {
-                            super.paintComponent(g);
-                            Graphics2D g2 = (Graphics2D) g.create();
-                            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            g2.setColor(getBackground());
-                            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 35, 35);
-                            g2.dispose();
-                        }
-
-                        @Override
-                        protected void paintBorder(Graphics g) {
-                        }
-
-                        @Override
-                        public boolean isOpaque() {
-                            return false;
-                        }
-                    };
-                    valueContainer.setBounds(70, y, 165, 40);
-                    incomesContainer.add(valueContainer);
-                    JLabel value = new JLabel("        " + "$" + String.valueOf(temp.getValue()));
-                    valueContainer.setOpaque(true);
-                    valueContainer.setBackground(Color.WHITE);
-                    if (String.valueOf(temp.getValue()).length() <= 7) {
-                        value.setFont(new Font("Lexend", Font.PLAIN, 22));
-                    } else {
-                        if (String.valueOf(temp.getValue()).length() > 7) {
-                            value.setFont(new Font("Lexend", Font.PLAIN, 16));
-                        } else {
-                            if (String.valueOf(temp.getValue()).length() > 10) {
-                                value.setFont(new Font("Lexend", Font.PLAIN, 14));
-                            }
-                        }
-                    }
-                    value.setForeground(Color.BLACK);
-                    value.setBounds(100, 0, 100, 100);
-                    valueContainer.add(value);
-                    y += 50;
-                }
+                int dayNumber = incomeDate.getDayOfMonth();
+                
+                // Create ElementDetail for each transaction
+                ElementDetail elementDetail = new ElementDetail(
+                        transaction.getId(),
+                        transaction.getName(),
+                        transaction.getValue(),
+                        viewController,
+                        dayNumber
+                );
+                
+                // Set smaller size to fit in the container
+                elementDetail.setPreferredSize(new Dimension(250, 40));
+                transactionsContainer.add(elementDetail);
             }
         }
-        incomesContainer.revalidate();
-        incomesContainer.repaint();
+        
+        transactionsContainer.revalidate();
+        transactionsContainer.repaint();
     }
 
     public class ColorIcon implements Icon {

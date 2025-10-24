@@ -21,13 +21,17 @@ public final class DetailContainer extends JPanel {
         cleanElementsDetail();
         ArrayList incomes = getIncomesByDay();
         int spaceY = 20;
+        int elementWidth = 600;
+        int elementHeight = 80;
+        int containerWidth = 640; // ancho del DetailContainer
+        int x = (containerWidth - elementWidth) / 2;
         for (int i = 0; i < incomes.size(); i++) {
             Transaction temporalIncome = (Transaction) incomes.get(i);
             int id = temporalIncome.getId();
             String name = temporalIncome.getName();
             double cost = temporalIncome.getValue();
             ElementDetail ed = new ElementDetail(id, name, cost, viewController, dayNumber);
-            ed.setBounds(20, spaceY, 600, 80);
+            ed.setBounds(x, spaceY, elementWidth, elementHeight);
             spaceY += 100;
             ed.setVisible(true);
             add(ed);
@@ -55,7 +59,7 @@ public final class DetailContainer extends JPanel {
 
     private void initializeUI() {
         setLayout(null);
-        setBounds(60, 70, 360, 450);
+        setBounds(60, 70, 640, 450);
         setBackground(new Color(232, 248, 245));
     }
 
