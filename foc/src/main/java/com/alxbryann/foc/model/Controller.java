@@ -16,52 +16,18 @@ public class Controller {
     private PersistenceController pc = new PersistenceController();
     private Model model;
 
-    public void createFinancialObligation(FinancialObligation fo) {
-        try {
-            pc.createFo(fo);
-            if (fo.isRepetitive()) {
-                RepetitiveFO rf = new RepetitiveFO();
-                rf.setFo_id(fo.getId());
-                pc.createRepetitiveFo(rf);
-            }
-        } catch (Exception e) {
-            System.out.println("Exception");
-        }
-    }
 
-    public void deleteFinancialObligationById(int id) {
+    public void editTransaction(Transaction income) {
         try {
-            FinancialObligation temporalFinancialObligation = findFinancialObligationById(id);
-            if (temporalFinancialObligation.isRepetitive()) {
-                pc.deleteFo(id);
-                pc.deleteRepetitiveFo(id);
-            } else {
-                pc.deleteFo(id);
-            }
-        } catch (Exception e) {
-            System.out.println("Exception");
-        }
-    }
-
-    public void editFinancialObligation(FinancialObligation fo) {
-        try {
-            pc.editFo(fo);
-        } catch (Exception e) {
-            System.out.println("Exception editing financial obligation: " + e.getMessage());
-        }
-    }
-
-    public void editIncome(Income income) {
-        try {
-            pc.editIncome(income);
+            pc.editTransaction(income);
         } catch (Exception e) {
             System.out.println("Exception editing income: " + e.getMessage());
         }
     }
 
-    public void createIncome(Income income) {
+    public void createIncome(Transaction income) {
         try {
-            pc.createIncome(income);
+            pc.createTransaction(income);
             if (income.isRepetitive()) {
                 RepetitiveIncome ri = new RepetitiveIncome();
                 ri.setIncomeId(income.getId());
@@ -72,53 +38,39 @@ public class Controller {
         }
     }
 
-    public void deleteIncomeById(int id) {
+    public void deleteTransactionById(int id) {
         try {
-            Income temporalIncome = findIncomeById(id);
+            Transaction temporalIncome = findTransactionById(id);
             if (temporalIncome.isRepetitive()) {
-                pc.deleteIncome(id);
+                pc.deleteTransaction(id);
                 pc.deleteRepetitiveIncome(id);
             } else {
-                pc.deleteIncome(id);
+                pc.deleteTransaction(id);
             }
         } catch (Exception e) {
             System.out.println("Exception");
         }
     }
 
-    public List findAllRepetitiveFinancialObligations() {
-        return pc.findAllRepetitiveFO();
-    }
-
-    public List findAllFinancialObligations() {
-        return pc.findAllFo();
-    }
-
-    public FinancialObligation findFinancialObligationById(int id) {
-        return pc.findFoById(id);
-    }
+    // Removed financial obligation methods
 
     public List findAllRepetitiveIncomes() {
         return pc.findAllRepetitiveIncomes();
     }
 
-    public List findAllIncomes() {
-        return pc.findAllIncomes();
+    public List findAllTransactions() {
+        return pc.findAllTransactions();
     }
 
-    public Income findIncomeById(int id) {
-        return pc.findIncomeById(id);
+    public Transaction findTransactionById(int id) {
+        return pc.findTransactionById(id);
     }
 
     public void setModel(Model model) {
         this.model = model;
     }
 
-    public void setInfoFinancialObligation(String name, String cost, String date, Color selectedColor,
-            boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        model.setInfoFinancialObligation(name, cost, date, selectedColor, isRepetitive, isRepetitiveByWeek,
-                isRepetitiveByMonth);
-    }
+    // Removed: set info for financial obligation
 
     public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
             boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
@@ -129,40 +81,28 @@ public class Controller {
         return model.getNumberOfDaysInCurrentMonth();
     }
 
-    public void assignFinancialObligationToDays() {
-        model.assignFinancialObligationToDays();
+    // Removed: assign financial obligations to days
+
+    public void assignTransactionToDays() {
+        model.assignTransactionToDays();
     }
 
-    public void assignIncomesToDays() {
-        model.assignIncomesToDays();
-    }
-
-    public ArrayList paintFOs() {
-        return model.getListOfFinancialObligationsInCurrentMonth();
-    }
+    // Removed: paint financial obligations
 
     public ArrayList paintINs() {
         return model.getListOfIncomesInCurrentMonth();
     }
 
-    public ArrayList paintRepetitiveFinancialObligations() {
-        return model.getListOfRepetitiveFinancialObligationsInCurrentMonth();
-    }
+    // Removed: paint repetitive financial obligations
 
     public ArrayList paintRepetitiveIncomes() {
         return model.getListOfRepetitiveIncomesInCurrentMonth();
     }
 
-    public List getFinancialObligationsByDay(int day) {
-        return model.getFinancialObligationsByDay(day);
-    }
+    // Removed: get financial obligations by day
 
     public List getIncomesByDay(int day) {
         return model.getIncomesByDay(day);
-    }
-
-    public double getTotalCostByDay(int day) {
-        return model.getTotalCostByDay(day);
     }
 
     public double getTotalIncomeByDay(int day) {
@@ -181,25 +121,19 @@ public class Controller {
         return model.getCurrentYear();
     }
 
-    public void removeFinancialObligationFromDayById(int id, int numberDay) {
-        model.removeFinancialObligationFromDayById(id, numberDay);
-    }
+    // Removed: remove financial obligation from day
 
     public void removeIncomeFromDayById(int id, int numberDay) {
         model.removeIncomeFromDayById(id, numberDay);
     }
 
-    public HashMap getInformationOfFinancialObligation(int id) {
-        return model.getInformationOfFinancialObligation(id);
-    }
+    // Removed: get information of financial obligation
 
     public HashMap getInformationOfIncome(int id) {
         return model.getInformationOfIncome(id);
     }
 
-    public void deleteAllFinancialObligations() {
-        model.deleteFinancialObligationsFromDays();
-    }
+    // Removed: delete all financial obligations
 
     public void deleteAllIncomes() {    
         model.deleteIncomesFromDays();

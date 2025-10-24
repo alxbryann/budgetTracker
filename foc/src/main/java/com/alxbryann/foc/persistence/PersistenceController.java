@@ -1,9 +1,7 @@
 package com.alxbryann.foc.persistence;
 
 import com.alxbryann.foc.model.Day;
-import com.alxbryann.foc.model.FinancialObligation;
-import com.alxbryann.foc.model.Income;
-import com.alxbryann.foc.model.RepetitiveFO;
+import com.alxbryann.foc.model.Transaction;
 import com.alxbryann.foc.model.RepetitiveIncome;
 import java.util.List;
 
@@ -13,75 +11,42 @@ import java.util.List;
  */
 public class PersistenceController {
     
-    private FinancialObligationJpaController foJpa = new FinancialObligationJpaController();
-    private IncomeJpaController IncomeJpa = new IncomeJpaController();
-    private RepetitiveFoJpaController RepetitiveFoJpa = new RepetitiveFoJpaController();
-    private RepetitiveIncomeJpaController RepetitiveIncomeJpa = new RepetitiveIncomeJpaController();
+    private TransactionJpaController transactionJpa = new TransactionJpaController();
+    private RepetitiveIncomeJpaController repetitiveIncomeJpa = new RepetitiveIncomeJpaController();
     private DayJpaController dayJpa = new DayJpaController();
 
+    // Removed FinancialObligation and RepetitiveFO persistence methods
     
-    public void createFo(FinancialObligation fo) {
-        foJpa.create(fo);
+    public void createTransaction(Transaction transaction) {
+        transactionJpa.create(transaction);
     }
     
-    public FinancialObligation findFoById(int id) {
-        return foJpa.findFinancialObligation(id);
+    public void deleteTransaction(int id) {
+        transactionJpa.destroy(id);
     }
     
-    public List findAllFo() {
-        return foJpa.findAll();
-    }
-    
-    public void createRepetitiveFo(RepetitiveFO rf) {
-        RepetitiveFoJpa.create(rf);
-    }
-    
-    public void deleteFo(int id) {
-        foJpa.destroy(id);
-    }
-    
-    public void editFo(FinancialObligation fo) {
-        foJpa.edit(fo);
-    }
-    
-    public void deleteRepetitiveFo(int id) {
-        RepetitiveFoJpa.destroy(id);
-    }
-    
-    public List findAllRepetitiveFO() {
-        return RepetitiveFoJpa.findAll();
-    }    
-    
-    public void createIncome(Income income) {
-        IncomeJpa.create(income);
-    }
-    
-    public void deleteIncome(int id) {
-        IncomeJpa.destroy(id);
-    }
-    
-    public void editIncome(Income income) {
-        IncomeJpa.edit(income);
+    public void editTransaction(Transaction transaction) {
+        transactionJpa.edit(transaction);
     }
     
     public void deleteRepetitiveIncome(int id) {
-        RepetitiveIncomeJpa.destroy(id);
+        repetitiveIncomeJpa.destroy(id);
     }
     
-    public Income findIncomeById(int id) {
-        return IncomeJpa.findIncomeById(id);
+    public Transaction findTransactionById(int id) {
+        return transactionJpa.findTransactionById(id);
     }
     
-    public List findAllIncomes() {
-        return IncomeJpa.findAll();
+    public List findAllTransactions() {
+        return transactionJpa.findAll();
     }
     
     public void createRepetitiveIncome(RepetitiveIncome ri) {
-        RepetitiveIncomeJpa.create(ri);
+        repetitiveIncomeJpa.create(ri);
     }
     
     public List findAllRepetitiveIncomes() {
-        return RepetitiveIncomeJpa.findAll();
+        return repetitiveIncomeJpa.findAll();
     }
 
     public void createDay(Day day) {

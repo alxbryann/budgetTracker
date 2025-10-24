@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
  * @author alxbryann
  */
 @Entity
-public class Income implements Serializable {
+public class Transaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,11 +36,11 @@ public class Income implements Serializable {
     @Basic
     private boolean isRepetitiveByMonth;
 
-    public Income() {
+    public Transaction() {
 
     }
 
-    public Income(int id, String name, double value, Date date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+    public Transaction(int id, String name, double value, Date date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         this.id = id;
         this.name = name;
         this.value = value;

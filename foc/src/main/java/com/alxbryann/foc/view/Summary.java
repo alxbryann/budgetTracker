@@ -52,7 +52,7 @@ public class Summary extends JPanel {
     }
 
     private void setTotalCost() {
-        totalCost = viewController.getTotalCostByDay(clickedDay);
+        //totalCost = viewController.getTotalCostByDay(clickedDay);
     }
 
     private void setTotalIncome() {

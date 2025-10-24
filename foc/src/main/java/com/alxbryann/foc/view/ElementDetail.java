@@ -12,7 +12,6 @@ public class ElementDetail extends JPanel {
     private final int id;
     private final String name;
     private final double cost;
-    private final boolean isFinancialObligation;
     private final ViewController viewController;
     private final int dayNumber;
 
@@ -21,20 +20,15 @@ public class ElementDetail extends JPanel {
     private JButton deleteButton;
     private JButton editButton;
 
-    public ElementDetail(int id, String name, double cost, boolean isFinancialObligation,
-            ViewController viewController, int dayNumber) {
+    public ElementDetail(int id, String name, double cost, ViewController viewController, int dayNumber) {
         this.id = id;
         this.name = name;
         this.cost = cost;
-        this.isFinancialObligation = isFinancialObligation;
         this.viewController = viewController;
         this.dayNumber = dayNumber;
 
-        if (isFinancialObligation) {
-            initializeUI(new Color(210, 133, 133));
-        } else {
-            initializeUI(new Color(144, 203, 173));
-        }
+        // Only incomes are supported now
+        initializeUI(new Color(144, 203, 173));
     }
 
     private void initializeUI(Color color) {
@@ -66,18 +60,12 @@ public class ElementDetail extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String elementType = isFinancialObligation ? "Financial Obligation" : "Income";
-                String message = "Are you sure you want to delete " + elementType + " '" + name + "'?";
+                String message = "Are you sure you want to delete Income '" + name + "'?";
                 String title = "Confirm delete";
                 
                 Runnable onConfirm = () -> {
-                    if (isFinancialObligation) {
-                        viewController.deleteFinancialObligationById(id);
-                        viewController.removeFinancialObligationFromDayById(id, dayNumber);
-                    } else {
-                        viewController.deleteIncomeById(id);
-                        viewController.removeIncomeFromDayById(id, dayNumber);
-                    }
+                    viewController.deleteTransactionById(id);
+                    viewController.removeIncomeFromDayById(id, dayNumber);
                     updateView();
                 };
                 
@@ -103,15 +91,9 @@ public class ElementDetail extends JPanel {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (isFinancialObligation) {
-                    EditPayment editPaymentWindow = new EditPayment(viewController, id, dayNumber);
-                    editPaymentWindow.setVisible(true);
-                    updateView();
-                } else {
-                    EditIncome editIncomeWindow = new EditIncome(viewController, id, dayNumber);
-                    editIncomeWindow.setVisible(true);
-                    updateView();
-                }
+                EditIncome editIncomeWindow = new EditIncome(viewController, id, dayNumber);
+                editIncomeWindow.setVisible(true);
+                updateView();
 
             }
 
@@ -138,7 +120,6 @@ public class ElementDetail extends JPanel {
     public void updateView() {
         viewController.updateViewCalendar();
         viewController.updateNextIncomes();
-        viewController.updateNextFinancialObligations();
         viewController.updateDetailContainer();
     }
 

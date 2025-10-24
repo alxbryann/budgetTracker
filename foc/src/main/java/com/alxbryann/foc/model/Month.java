@@ -30,26 +30,4 @@ public class Month {
     public void addToBusyDays(Day days) {
         busyDays.add(days);
     }
-
-    public double getTotalCost() {
-        if (busyDays.isEmpty()) {
-            return 0;
-        }
-        double totalCost = 0;
-        for (Day day : busyDays) {
-            totalCost += day.getTotalCost();
-        }
-        return totalCost;
-    }
-
-    public double getTotalIncome() {
-        if (busyDays.isEmpty()) {
-            return 0;
-        }
-        double totalIncome = 0;
-        for (Day day : busyDays) {
-            totalIncome += day.getTotalCost();
-        }
-        return totalIncome;
-    }
 }

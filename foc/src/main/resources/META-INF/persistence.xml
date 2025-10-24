@@ -3,7 +3,7 @@
   <persistence-unit name="focPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.alxbryann.foc.model.FinancialObligation</class>
-    <class>com.alxbryann.foc.model.Income</class>
+    <class>com.alxbryann.foc.model.Transaction</class>
     <class>com.alxbryann.foc.model.RepetitiveFO</class>
     <class>com.alxbryann.foc.model.RepetitiveIncome</class>
     <class>com.alxbryann.foc.model.Day</class>

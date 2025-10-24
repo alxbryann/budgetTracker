@@ -141,17 +141,15 @@ public class CalendarTab extends TabbedForm {
             }
         }
         
-        JPanel notifications = new JPanel();
+    JPanel notifications = new JPanel();
         notifications.setLayout(null);
         notifications.setBounds(920, 0, 360, 720); 
         notifications.setOpaque(true);
         notifications.setBackground(Color.white);
-        notifications.add(new NextPaymentsPanel(viewController));
         notifications.add(new NextIncomesPanel(viewController));
         add(notifications);
         
-        parentView.setViewCalendar(viewCalendar);
-        parentView.paintFOsInCalendarTab(viewCalendar);
+    parentView.setViewCalendar(viewCalendar);
         parentView.paintINsInCalendarTab(viewCalendar);
     }
     

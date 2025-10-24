@@ -15,7 +15,7 @@ public class ViewController {
 
     private Controller controller;
     private View view;
-    private NextPaymentsPanel nextPaymentsPanel;
+    // Removed NextPaymentsPanel (payments) support
     private NextIncomesPanel nextIncomesPanel;
     private DetailContainer currentDetailContainer;
 
@@ -30,9 +30,7 @@ public class ViewController {
         this.view = view;
     }
 
-    public void setNextPaymentsPanel(NextPaymentsPanel nextPaymentsPanel) {
-        this.nextPaymentsPanel = nextPaymentsPanel;
-    }
+    // Removed setter for NextPaymentsPanel
 
     public void setNextIncomesPanel(NextIncomesPanel nextIncomesPanel) {
         this.nextIncomesPanel = nextIncomesPanel;
@@ -48,11 +46,7 @@ public class ViewController {
         }
     }
 
-    public void setInfoFo(String name, String price, String date, Color selectedColor, boolean isRepetitive,
-            boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        controller.setInfoFinancialObligation(name, price, date, selectedColor, isRepetitive, isRepetitiveByWeek,
-                isRepetitiveByMonth);
-    }
+    // Removed: FinancialObligation creation
 
     public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
             boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
@@ -60,50 +54,39 @@ public class ViewController {
                 isRepetitiveByMonth);
     }
 
-    public List getInfoFo() {
-        return controller.findAllFinancialObligations();
-    }
+    // Removed: FinancialObligation listing
 
     public List getInfoIncome() {
-        return controller.findAllIncomes();
+        return controller.findAllTransactions();
     }
 
     public int getDaysInCurrentMonth() {
         return controller.getNumberOfDaysInCurrentMonth();
     }
 
-    public void assignFoToDays() {
-        controller.assignFinancialObligationToDays();
-    }
+    // Removed: assign financial obligations to days
 
     public void assignIncomesToDays() {
-        controller.assignIncomesToDays();
+        controller.assignTransactionToDays();
     }
 
-    public ArrayList paintFOs() {
-        return controller.paintFOs();
-    }
+    // Removed: paint financial obligations
 
     public ArrayList paintINs() {
         return controller.paintINs();
     }
 
-    public ArrayList paintRepetitiveFinancialObligations() {
-        return controller.paintRepetitiveFinancialObligations();
-    }
+    // Removed: paint repetitive financial obligations
 
     public ArrayList paintRepetitiveIncomes() {
         return controller.paintRepetitiveIncomes();
     }
 
     public void paintDaysInView() {
-        view.paintFOsInView();
         view.paintINsInView();
     }
 
-    public List getFinancialObligationsByDay(int day) {
-        return controller.getFinancialObligationsByDay(day);
-    }
+    // Removed: get financial obligations by day
 
     public List getIncomesByDay(int day) {
         return controller.getIncomesByDay(day);
@@ -120,11 +103,7 @@ public class ViewController {
     public int getClickedDay() {
         return view.getDayClicked();
     }
-
-    public double getTotalCostByDay(int day) {
-        return controller.getTotalCostByDay(day);
-    }
-
+    
     public double getTotalIncomeByDay(int day) {
         return controller.getTotalIncomeByDay(day);
     }
@@ -133,12 +112,10 @@ public class ViewController {
         return controller.getTotalNet(day);
     }
 
-    public void deleteFinancialObligationById(int id) {
-        controller.deleteFinancialObligationById(id);
-    }
+    // Removed: delete financial obligation
 
-    public void deleteIncomeById(int id) {
-        controller.deleteIncomeById(id);
+    public void deleteTransactionById(int id) {
+        controller.deleteTransactionById(id);
     }
 
     public void clearViewCalendar() {
@@ -153,21 +130,15 @@ public class ViewController {
         nextIncomesPanel.updateIncomesContainer();
     }
 
-    public void updateNextFinancialObligations() {
-        nextPaymentsPanel.updateFoContainer();
-    }
+    // Removed: update next financial obligations panel
 
-    public void removeFinancialObligationFromDayById(int id, int numberDay) {
-        controller.removeFinancialObligationFromDayById(id, numberDay);
-    }
+    // Removed: remove financial obligation from a day
 
     public void removeIncomeFromDayById(int id, int numberDay) {
         controller.removeIncomeFromDayById(id, numberDay);
     }
 
-    public HashMap getInformationOfFinancialObligation(int id) {
-        return controller.getInformationOfFinancialObligation(id);
-    }
+    // Removed: get information of a financial obligation
 
     public HashMap getInformationOfIncome(int id) {
         return controller.getInformationOfIncome(id);
@@ -176,7 +147,7 @@ public class ViewController {
     public void editIncome(int id, String name, String amount, String date, Color selectedColor,
             boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         // Obtener el ingreso existente
-        com.alxbryann.foc.model.Income existingIncome = controller.findIncomeById(id);
+        com.alxbryann.foc.model.Transaction existingIncome = controller.findTransactionById(id);
         if (existingIncome != null) {
             try {
                 existingIncome.setName(name);
@@ -190,40 +161,16 @@ public class ViewController {
                 existingIncome.setIsRepetitive(isRepetitive);
                 existingIncome.setRepetitiveByWeek(isRepetitiveByWeek);
                 existingIncome.setRepetitiveByMonth(isRepetitiveByMonth);
-                controller.editIncome(existingIncome);
+                controller.editTransaction(existingIncome);
             } catch (Exception e) {
                 System.err.println("Error editing income: " + e.getMessage());
             }
         }
     }
 
-    public void editFinancialObligation(int id, String name, String price, String date, Color selectedColor,
-            boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        // Obtener la obligación financiera existente
-        com.alxbryann.foc.model.FinancialObligation existingFo = controller.findFinancialObligationById(id);
-        if (existingFo != null) {
-            try {
-                existingFo.setName(name);
-                double costDouble = Double.parseDouble(price);
-                existingFo.setCost(costDouble);
-                java.time.LocalDate localDate = java.time.LocalDate.parse(date);
-                java.time.ZoneId defaultZoneId = java.time.ZoneId.systemDefault();
-                java.util.Date dateObj = java.util.Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-                existingFo.setDate(dateObj);
-                existingFo.setColor(selectedColor);
-                existingFo.setIsRepetitive(isRepetitive);
-                existingFo.setRepetitiveByWeek(isRepetitiveByWeek);
-                existingFo.setRepetitiveByMonth(isRepetitiveByMonth);
-                controller.editFinancialObligation(existingFo);
-            } catch (Exception e) {
-                System.err.println("Error editing financial obligation: " + e.getMessage());
-            }
-        }
-    }
+    // Removed: edit financial obligation
 
-    public void deleteAllFinancialObligations() {
-        controller.deleteAllFinancialObligations();
-    }
+    // Removed: delete all financial obligations
 
     public void deleteAllIncomes() {
         controller.deleteAllIncomes();

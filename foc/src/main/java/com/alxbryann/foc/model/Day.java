@@ -5,8 +5,7 @@ import java.util.ArrayList;
 public class Day {
 
     private int numberDay;
-    private ArrayList<FinancialObligation> obligations = new ArrayList<>();
-    private ArrayList<Income> incomes = new ArrayList<>();
+    private ArrayList<Transaction> incomes = new ArrayList<>();
 
     public void setNumberDay(int numberDay) {
         this.numberDay = numberDay;
@@ -16,11 +15,11 @@ public class Day {
         return numberDay;
     }
 
-    public void setNewIncome(Income in) {
+    public void setNewTransaction(Transaction in) {
         incomes.add(in);
     }
 
-    public void removeIncome(Income in) {
+    public void removeIncome(Transaction in) {
         incomes.remove(in);
     }
 
@@ -32,39 +31,8 @@ public class Day {
         incomes = new ArrayList<>();
     }
 
-    public void setNewFinancialObligation(FinancialObligation fo) {
-        obligations.add(fo);
-    }
-
-    public void removeFinancialObligation(FinancialObligation fo) {
-        obligations.remove(fo);
-    }
-
-    public void removeFinancialObligationById(int id) {
-        obligations.removeIf(fo -> fo.getId() == id);
-    }
-
-    public void removeAllFinancialObligations() {
-        obligations = new ArrayList<>();
-    }
-
-    public ArrayList<FinancialObligation> getFinancialObligations() {
-        return obligations;
-    }
-
-    public ArrayList<Income> getIncomes() {
+    public ArrayList<Transaction> getIncomes() {
         return incomes;
-    }
-
-    public double getTotalCost() {
-        double totalCost = 0;
-        if (obligations.isEmpty()) {
-            return 0;
-        }
-        for (FinancialObligation fo : obligations) {
-            totalCost += fo.getCost();
-        }
-        return totalCost;
     }
 
     public double getTotalIncome() {
@@ -72,7 +40,7 @@ public class Day {
         if (incomes.isEmpty()) {
             return 0;
         }
-        for (Income in : incomes) {
+        for (Transaction in : incomes) {
             totalIncome += in.getValue();
         }
         return totalIncome;
@@ -80,7 +48,7 @@ public class Day {
 
     public double getTotalNet() {
         double totalNet = 0;
-        totalNet = -getTotalCost() + getTotalIncome();
+        totalNet = getTotalIncome();
         return totalNet;
     }
 

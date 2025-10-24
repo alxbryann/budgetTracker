@@ -1,6 +1,6 @@
 package com.alxbryann.foc.persistence;
 
-import com.alxbryann.foc.model.Income;
+import com.alxbryann.foc.model.Transaction;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -12,15 +12,15 @@ import javax.persistence.Persistence;
  *
  * @author alxbryann
  */
-public class IncomeJpaController implements Serializable {
+public class TransactionJpaController implements Serializable {
 
     private EntityManagerFactory emf;
 
-    public IncomeJpaController(EntityManagerFactory emf) {
+    public TransactionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
-    public IncomeJpaController() {
+    public TransactionJpaController() {
         this.emf = Persistence.createEntityManagerFactory("focPU");
     }
     
@@ -28,24 +28,24 @@ public class IncomeJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Income income) {
+    public void create(Transaction tran) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(income);
+            em.persist(tran);
             transaction.commit();
         } finally {
             em.close();
         }
     }
 
-    public void edit(Income income) {
+    public void edit(Transaction tran) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.merge(income);
+            em.merge(tran);
             transaction.commit();
         } finally {
             em.close();
@@ -57,9 +57,9 @@ public class IncomeJpaController implements Serializable {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            Income income = em.find(Income.class, id);
-            if (income != null) {
-                em.remove(income);
+            Transaction tran = em.find(Transaction.class, id);
+            if (tran != null) {
+                em.remove(tran);
             }
             transaction.commit();
         } finally {
@@ -67,19 +67,19 @@ public class IncomeJpaController implements Serializable {
         }
     }
 
-    public Income findIncomeById(int id) {
+    public Transaction findTransactionById(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Income.class, id);
+            return em.find(Transaction.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<Income> findAll() {
+    public List<Transaction> findAll() {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("SELECT o FROM Income o", Income.class).getResultList();
+            return em.createQuery("SELECT o FROM Transaction o", Transaction.class).getResultList();
         } finally {
             em.close();
         }
