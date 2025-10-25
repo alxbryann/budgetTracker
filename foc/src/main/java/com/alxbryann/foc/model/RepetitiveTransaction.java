@@ -12,22 +12,22 @@ import javax.persistence.Id;
  * @author alxbryann
  */
 @Entity
-public class RepetitiveIncome implements Serializable {
+public class RepetitiveTransaction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     
     @Basic
-    private int income_id;
+    private int repetitiveTransaction_id;
 
-    public RepetitiveIncome() {
+    public RepetitiveTransaction() {
 
     }
 
-    public RepetitiveIncome(int id, int income_id) {
+    public RepetitiveTransaction(int id, int repetitiveTransaction_id) {
         this.id = id;
-        this.income_id = income_id;
+        this.repetitiveTransaction_id = repetitiveTransaction_id;
     }
 
     public int getId() {
@@ -38,12 +38,12 @@ public class RepetitiveIncome implements Serializable {
         this.id = id;
     }
 
-    public int getIncomeId() {
-        return income_id;
+    public int getRepetitiveTransaction_id() {
+        return repetitiveTransaction_id;
     }
 
-    public void setIncomeId(int income_id) {
-        this.income_id = income_id;
+    public void setRepetitiveTransaction_id(int repetitiveTransaction_id) {
+        this.repetitiveTransaction_id = repetitiveTransaction_id;
     }
 
 }

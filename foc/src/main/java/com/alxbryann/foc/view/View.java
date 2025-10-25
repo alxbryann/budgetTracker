@@ -33,7 +33,7 @@ public final class View extends JFrame {
     public View(Controller controller) {
         viewController = new ViewController();
         viewController.setController(controller);
-        viewController.assignIncomesToDays();
+        //viewController.assignTransactionToDays();
         viewController.setView(this);
         
         setUndecorated(true);
@@ -86,117 +86,6 @@ public final class View extends JFrame {
         setVisible(true);
     }
 
-    // Removed: painting financial obligations in view
-
-    public void paintINsInView() {
-        if (viewCalendar == null) {
-            return;
-        }
-        ArrayList<Object[]> daysToPaint = viewController.paintINs();
-        for (int i = 0; i < daysToPaint.size(); i += 3) {
-            Object day = daysToPaint.get(i);
-            Object rgb = daysToPaint.get(i + 1);
-            int intDay = (Integer) day;
-            JPanel tempDay = viewCalendar[intDay];
-            if (!tempDay.getClientProperty("painted").equals("true")) {
-                String strRgb = (String) rgb;
-                int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
-                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
-                int green = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
-                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
-                int blue = Integer.parseInt(strRgb);
-                Object name = daysToPaint.get(i + 2);
-                String strName = (String) name;
-                tempDay.setBackground(new Color(red, green, blue));
-                tempDay.putClientProperty("painted", "true");
-                JLabel nameJLabel = new JLabel(strName);
-                if (strName.length() <= 7) {
-                    nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
-                } else {
-                    if (strName.length() > 7) {
-                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
-                    } else {
-                        if (strName.length() > 10) {
-                            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 10));
-                        }
-                    }
-                }
-
-                nameJLabel.setForeground(Color.BLACK);
-                nameJLabel.setHorizontalAlignment(JLabel.CENTER);
-                nameJLabel.setBounds(0, 40, 100, 50);
-                tempDay.add(nameJLabel);
-            } else {
-                JLabel plus = new JLabel("+");
-                plus.setFont(new Font("Lexend", Font.BOLD, 30));
-                plus.setBounds(65, 6, 50, 30);
-                plus.setForeground(Color.white);
-                tempDay.add(plus);
-            }
-
-        }
-
-        paintRepetitiveIncome();
-    }
-
-    // Removed: painting repetitive financial obligations
-
-    public void paintRepetitiveIncome() {
-        if (viewCalendar == null) {
-            return;
-        }
-        ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveIncomes();
-        for (int i = 0; i < daysToPaint.size(); i += 3) {
-            Object day = daysToPaint.get(i);
-            Object rgb = daysToPaint.get(i + 1);
-            int intDay = (Integer) day;
-            JPanel tempDay = viewCalendar[intDay];
-            if (!tempDay.getClientProperty("painted").equals("true")) {
-                String strRgb = (String) rgb;
-                int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
-                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
-                int green = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
-                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
-                int blue = Integer.parseInt(strRgb);
-                Object name = daysToPaint.get(i + 2);
-                String strName = (String) name;
-                tempDay.removeAll();
-                tempDay.revalidate();
-                tempDay.repaint();
-                tempDay.setBackground(new Color(red, green, blue));
-                JLabel numberDay = new JLabel(String.valueOf(tempDay.getClientProperty("dayNumber")));
-                numberDay.setFont(new Font("Lexend", Font.BOLD, 30));
-                numberDay.setBounds(10, 6, 50, 30);
-                numberDay.setForeground(Color.white);
-                tempDay.add(numberDay);
-                JLabel nameJLabel = new JLabel(strName);
-                if (strName.length() <= 7) {
-                    nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
-                } else {
-                    if (strName.length() > 7) {
-                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
-                    } else {
-                        if (strName.length() > 10) {
-                            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 10));
-                        }
-                    }
-                }
-
-                nameJLabel.setForeground(Color.BLACK);
-                nameJLabel.setHorizontalAlignment(JLabel.CENTER);
-                nameJLabel.setBounds(0, 40, 100, 50);
-                tempDay.add(nameJLabel);
-                tempDay.putClientProperty("painted", "true");
-            } else {
-                JLabel plus = new JLabel("+");
-                plus.setFont(new Font("Lexend", Font.BOLD, 30));
-                plus.setBounds(65, 6, 50, 30);
-                plus.setForeground(Color.white);
-                tempDay.add(plus);
-            }
-        }
-    }
-
     public int getDayClicked() {
         return clickedDay;
     }
@@ -232,20 +121,10 @@ public final class View extends JFrame {
         }
     }
 
-    public void updateViewCalendar() {
-        clearViewCalendar();
-        viewController.deleteAllIncomes();
-        viewController.assignIncomesToDays();
-        paintINsInView();
-        paintRepetitiveIncome();
-    }
-
-    // Removed: painting financial obligations in calendar tab
-
-    public void paintINsInCalendarTab(JPanel[] calendarDays) {
-        ArrayList<Object[]> daysToPaint = viewController.paintINs();
+    public void paintTransactionsInCalendarTab(JPanel[] calendarDays) {
+        ArrayList<Object[]> daysToPaint = viewController.getDaysToPaint();
         paintDaysWithData(daysToPaint, calendarDays);
-        paintRepetitiveIncomeInCalendarTab(calendarDays);
+        paintRepetitiveTransactionsInCalendarTab(calendarDays);
     }
 
     private void paintDaysWithData(ArrayList<Object[]> daysToPaint, JPanel[] calendarDays) {
@@ -291,10 +170,8 @@ public final class View extends JFrame {
         }
     }
 
-    // Removed: painting repetitive FO in calendar tab
-
-    private void paintRepetitiveIncomeInCalendarTab(JPanel[] calendarDays) {
-        ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveIncomes();
+    private void paintRepetitiveTransactionsInCalendarTab(JPanel[] calendarDays) {
+        ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveTransactions();
         paintRepetitiveDataInCalendarTab(daysToPaint, calendarDays);
     }
 

@@ -53,18 +53,19 @@ public class Model {
 
     public void assignTransactionToDays() {
         List<Transaction> allTransactions = controller.findAllTransactions();
-        if (allTransactions.isEmpty()) {
+
+        if (allTransactions.isEmpty())
             return;
-        }
+
         for (int i = 0; i < allTransactions.size(); i++) {
-            Transaction temporalIncome = (Transaction) allTransactions.get(i);
-            Date date = temporalIncome.getDate();
-            int dayOfIncome = calendar.getDayFromFo(date) - 1;
-            int monthOfIncome = calendar.getMonthFromFo(date);
-            Day temporalDay = calendar.getDayByNumberInSpecificMonth(dayOfIncome, monthOfIncome);
-            temporalDay.setNewTransaction(temporalIncome);
+            Transaction temporalTransaction = (Transaction) allTransactions.get(i);
+            Date date = temporalTransaction.getDate();
+            int dayOfTransaction = calendar.getDayFromTransaction(date) - 1;
+            int monthOfTransaction = calendar.getMonthFromTransaction(date);
+            Day temporalDay = calendar.getDayByNumberInSpecificMonth(dayOfTransaction, monthOfTransaction);
+            temporalDay.setNewTransaction(temporalTransaction);
             if (!calendar.getBusyDaysInCurrentMonth().contains(temporalDay)) {
-                calendar.addToBusyDaysInSpecificMonth(temporalDay, monthOfIncome);
+                calendar.addToBusyDaysInSpecificMonth(temporalDay, monthOfTransaction);
             }
         }
 
@@ -84,23 +85,24 @@ public class Model {
         temporalDay.removeIncomeById(id);
     }
 
-    // Removed: financial obligations in current month list
+    public ArrayList<Integer> getListOfTransactionsInCurrentMonth() {
+        ArrayList transactionsInCurrentMonth = new ArrayList<>();
+        for (int i = 0; i < controller.getListOfTransactionsCurrentMonth().size(); i++) {
+            Transaction temporalTransaction = controller.getListOfTransactionsCurrentMonth().get(i);
 
-    public ArrayList<Integer> getListOfIncomesInCurrentMonth() {
-        ArrayList IncomesInCurrentMonth = new ArrayList<>();
-        for (int i = 0; i < calendar.getBusyDaysInCurrentMonth().size(); i++) {
-            Day temporalDay = calendar.getBusyDaysInCurrentMonth().get(i);
-            for (int j = 0; j < temporalDay.getIncomes().size(); j++) {
-                Transaction temporalIncome = (Transaction) temporalDay.getIncomes().get(j);
-                if (temporalIncome.isRepetitiveByMonth()) {
-                    IncomesInCurrentMonth.add(temporalDay.getNumberDay());
-                    IncomesInCurrentMonth.add(temporalIncome.getRgb());
-                    IncomesInCurrentMonth.add(temporalIncome.getName());
-                }
-            }
+            Date transactionDate = temporalTransaction.getDate();
+            // Transaction day -1 because of index in viewCalendar
+            int transactionDay = calendar.getDayFromTransaction(transactionDate) - 1;
+            String transactionName = temporalTransaction.getName();
+            String transactionRgb = temporalTransaction.getRgb();
+            transactionsInCurrentMonth.add(transactionDay);
+            transactionsInCurrentMonth.add(transactionRgb);
+            transactionsInCurrentMonth.add(transactionName);
+
         }
-        return IncomesInCurrentMonth;
-    }
+
+        return transactionsInCurrentMonth;
+    }    
 
     public List getIncomesByDay(int day) {
         Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
@@ -110,17 +112,17 @@ public class Model {
         return tempDay.getIncomes();
     }
 
-    public ArrayList<Integer> getListOfRepetitiveIncomesInCurrentMonth() {
+    public ArrayList<Integer> getListOfRepetitiveTransactionsInCurrentMonth() {
         ArrayList RepetitiveIncomesInCurrentMonth = new ArrayList<>();
-        List<RepetitiveIncome> ri;
-        ri = (List<RepetitiveIncome>) controller.findAllRepetitiveIncomes();
+        List<RepetitiveTransaction> ri;
+        ri = (List<RepetitiveTransaction>) controller.findAllRepetitiveIncomes();
         for (int i = 0; i < ri.size(); i++) {
-            int id = ri.get(i).getIncomeId();
+            int id = ri.get(i).getRepetitiveTransaction_id();
             Transaction temporalIncome = (Transaction) controller.findTransactionById(id);
             if (temporalIncome.isRepetitiveByWeek()) { // if is repetitive by week
-                int incomeDay = calendar.getDayFromFo(temporalIncome.getDate());
+                int incomeDay = calendar.getDayFromTransaction(temporalIncome.getDate());
                 int dayToPaint = incomeDay;
-                int incomeMonth = calendar.getMonthFromFo(temporalIncome.getDate());
+                int incomeMonth = calendar.getMonthFromTransaction(temporalIncome.getDate());
                 int thisMonth = calendar.getCurrentMonth();
                 while (dayToPaint < calendar.getNumberOfDaysInCurrentMonth()) {
                     try {
@@ -139,8 +141,8 @@ public class Model {
                     }
                 }
             } else { // if is repetitive by month
-                int dayToPaint = calendar.getDayFromFo(temporalIncome.getDate());
-                if (calendar.getMonthFromFo(temporalIncome.getDate()) != calendar.getCurrentMonth()) {
+                int dayToPaint = calendar.getDayFromTransaction(temporalIncome.getDate());
+                if (calendar.getMonthFromTransaction(temporalIncome.getDate()) != calendar.getCurrentMonth()) {
                     RepetitiveIncomesInCurrentMonth.add(dayToPaint);
                     RepetitiveIncomesInCurrentMonth.add(temporalIncome.getRgb());
                     RepetitiveIncomesInCurrentMonth.add(temporalIncome.getName());
@@ -163,7 +165,7 @@ public class Model {
     public int getCurrentYear() {
         return calendar.getCurrentYear();
     }
-    
+
     public double getTotalIncomeByDay(int day) {
         Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
         double totalIncome = tempDay.getTotalIncome();

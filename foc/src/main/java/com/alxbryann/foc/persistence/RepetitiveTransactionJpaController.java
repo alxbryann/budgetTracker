@@ -1,52 +1,47 @@
 package com.alxbryann.foc.persistence;
 
-import java.io.Serializable;
-import java.util.List;
+import com.alxbryann.foc.model.RepetitiveTransaction;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.io.Serializable;
+import java.util.List;
 
-import com.alxbryann.foc.model.Day;
-
-/**
- *
- * @author alxbryann
- */
-public class DayJpaController implements Serializable {
+public class RepetitiveTransactionJpaController implements Serializable {
 
     private EntityManagerFactory emf;
 
-    public DayJpaController(EntityManagerFactory emf) {
+    public RepetitiveTransactionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
-    public DayJpaController() {
+    public RepetitiveTransactionJpaController() {
         this.emf = Persistence.createEntityManagerFactory("focPU");
     }
-    
+
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public void create(Day day) {
+    public void create(RepetitiveTransaction ri) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(day);
+            em.persist(ri);
             transaction.commit();
         } finally {
             em.close();
         }
     }
 
-    public void edit(Day day) {
+    public void edit(RepetitiveTransaction ri) {
         EntityManager em = getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.merge(day);
+            em.merge(ri);
             transaction.commit();
         } finally {
             em.close();
@@ -58,9 +53,9 @@ public class DayJpaController implements Serializable {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            Day day = em.find(Day.class, id);
-            if (day != null) {
-                em.remove(day);
+            RepetitiveTransaction ri = em.find(RepetitiveTransaction.class, id);
+            if (ri != null) {
+                em.remove(ri);
             }
             transaction.commit();
         } finally {
@@ -68,19 +63,19 @@ public class DayJpaController implements Serializable {
         }
     }
 
-    public Day findDayById(int id) {
+    public RepetitiveTransaction findRepetitiveIncome(int id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Day.class, id);
+            return em.find(RepetitiveTransaction.class, id);
         } finally {
             em.close();
         }
     }
 
-    public List<Day> findAll() {
+    public List<RepetitiveTransaction> findAll() {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("SELECT o FROM Day o", Day.class).getResultList();
+            return em.createQuery("SELECT o FROM RepetitiveTransaction o", RepetitiveTransaction.class).getResultList();
         } finally {
             em.close();
         }

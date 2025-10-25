@@ -1,8 +1,7 @@
 package com.alxbryann.foc.persistence;
 
-import com.alxbryann.foc.model.Day;
 import com.alxbryann.foc.model.Transaction;
-import com.alxbryann.foc.model.RepetitiveIncome;
+import com.alxbryann.foc.model.RepetitiveTransaction;
 import java.util.List;
 
 /**
@@ -12,8 +11,7 @@ import java.util.List;
 public class PersistenceController {
     
     private TransactionJpaController transactionJpa = new TransactionJpaController();
-    private RepetitiveIncomeJpaController repetitiveIncomeJpa = new RepetitiveIncomeJpaController();
-    private DayJpaController dayJpa = new DayJpaController();
+    private RepetitiveTransactionJpaController repetitiveTransactionJpa = new RepetitiveTransactionJpaController();
 
     // Removed FinancialObligation and RepetitiveFO persistence methods
     
@@ -29,8 +27,8 @@ public class PersistenceController {
         transactionJpa.edit(transaction);
     }
     
-    public void deleteRepetitiveIncome(int id) {
-        repetitiveIncomeJpa.destroy(id);
+    public void deleteRepetitiveTransaction(int id) {
+        repetitiveTransactionJpa.destroy(id);
     }
     
     public Transaction findTransactionById(int id) {
@@ -41,31 +39,15 @@ public class PersistenceController {
         return transactionJpa.findAll();
     }
     
-    public void createRepetitiveIncome(RepetitiveIncome ri) {
-        repetitiveIncomeJpa.create(ri);
+    public void createRepetitiveTransaction(RepetitiveTransaction ri) {
+        repetitiveTransactionJpa.create(ri);
     }
     
-    public List findAllRepetitiveIncomes() {
-        return repetitiveIncomeJpa.findAll();
+    public List findAllRepetitiveTransaction() {
+        return repetitiveTransactionJpa.findAll();
     }
 
-    public void createDay(Day day) {
-        dayJpa.create(day);
-    }
-
-    public Day findDayById(int id) {
-        return dayJpa.findDayById(id);
-    }
-
-    public List findAllDays() {
-        return dayJpa.findAll();
-    }
-
-    public void editDay(Day day) {
-        dayJpa.edit(day);
-    }
-
-    public void deleteDay(int id) {
-        dayJpa.destroy(id);
+    public List<Transaction> findAllTransactionsForCurrentMonth() {
+        return transactionJpa.findAllTransactionsForCurrentMonth();
     }
 }

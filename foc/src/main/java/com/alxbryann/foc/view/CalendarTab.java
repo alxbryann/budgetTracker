@@ -150,7 +150,7 @@ public class CalendarTab extends TabbedForm {
         add(notifications);
         
     parentView.setViewCalendar(viewCalendar);
-        parentView.paintINsInCalendarTab(viewCalendar);
+        parentView.paintTransactionsInCalendarTab(viewCalendar);
     }
     
     @Override

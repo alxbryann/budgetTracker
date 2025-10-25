@@ -84,4 +84,26 @@ public class TransactionJpaController implements Serializable {
             em.close();
         }
     }
+
+    public List<Transaction> findAllTransactionsForCurrentMonth() {
+        EntityManager em = getEntityManager();
+        try {
+            // Use a portable date range query instead of YEAR/MONTH functions to avoid provider/dialect issues
+            java.time.LocalDate now = java.time.LocalDate.now();
+            java.time.LocalDate startOfMonth = now.withDayOfMonth(1);
+            java.time.LocalDate startOfNextMonth = startOfMonth.plusMonths(1);
+
+            java.util.Date start = java.util.Date.from(startOfMonth.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+            java.util.Date end = java.util.Date.from(startOfNextMonth.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+
+            return em.createQuery(
+                    "SELECT o FROM Transaction o WHERE o.date >= :start AND o.date < :end",
+                    Transaction.class)
+                .setParameter("start", start, javax.persistence.TemporalType.DATE)
+                .setParameter("end", end, javax.persistence.TemporalType.DATE)
+                .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

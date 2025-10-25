@@ -280,8 +280,8 @@ public final class NextTransactionsPanel extends JPanel {
             colorComboBox.setSelectedIndex(0);
             JOptionPane.showMessageDialog(modal, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             modal.dispose();
-            viewController.assignIncomesToDays();
-            viewController.paintDaysInView();
+            viewController.assignTransactionToDays();
+            //viewController.paintTransactionsInView();
         });
 
         addIncome.add(send);

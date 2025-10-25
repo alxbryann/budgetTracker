@@ -4,7 +4,6 @@ import com.alxbryann.foc.persistence.PersistenceController;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -17,21 +16,21 @@ public class Controller {
     private Model model;
 
 
-    public void editTransaction(Transaction income) {
+    public void editTransaction(Transaction transaction) {
         try {
-            pc.editTransaction(income);
+            pc.editTransaction(transaction);
         } catch (Exception e) {
             System.out.println("Exception editing income: " + e.getMessage());
         }
     }
 
-    public void createIncome(Transaction income) {
+    public void createIncome(Transaction transaction) {
         try {
-            pc.createTransaction(income);
-            if (income.isRepetitive()) {
-                RepetitiveIncome ri = new RepetitiveIncome();
-                ri.setIncomeId(income.getId());
-                pc.createRepetitiveIncome(ri);
+            pc.createTransaction(transaction);
+            if (transaction.isRepetitive()) {
+                RepetitiveTransaction ri = new RepetitiveTransaction();
+                ri.setRepetitiveTransaction_id(transaction.getId());
+                pc.createRepetitiveTransaction(ri);
             }
         } catch (Exception e) {
             System.out.println("Exception");
@@ -43,7 +42,7 @@ public class Controller {
             Transaction temporalIncome = findTransactionById(id);
             if (temporalIncome.isRepetitive()) {
                 pc.deleteTransaction(id);
-                pc.deleteRepetitiveIncome(id);
+                pc.deleteRepetitiveTransaction(id);
             } else {
                 pc.deleteTransaction(id);
             }
@@ -52,10 +51,8 @@ public class Controller {
         }
     }
 
-    // Removed financial obligation methods
-
     public List findAllRepetitiveIncomes() {
-        return pc.findAllRepetitiveIncomes();
+        return pc.findAllRepetitiveTransaction();
     }
 
     public List findAllTransactions() {
@@ -70,8 +67,6 @@ public class Controller {
         this.model = model;
     }
 
-    // Removed: set info for financial obligation
-
     public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
             boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         model.setInfoIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek, isRepetitiveByMonth);
@@ -81,25 +76,21 @@ public class Controller {
         return model.getNumberOfDaysInCurrentMonth();
     }
 
-    // Removed: assign financial obligations to days
 
     public void assignTransactionToDays() {
         model.assignTransactionToDays();
     }
 
-    // Removed: paint financial obligations
 
-    public ArrayList paintINs() {
-        return model.getListOfIncomesInCurrentMonth();
+    public ArrayList getDaysToPaint() {
+        return model.getListOfTransactionsInCurrentMonth();
     }
 
-    // Removed: paint repetitive financial obligations
 
-    public ArrayList paintRepetitiveIncomes() {
-        return model.getListOfRepetitiveIncomesInCurrentMonth();
+    public ArrayList paintRepetitiveTransactions() {
+        return model.getListOfRepetitiveTransactionsInCurrentMonth();
     }
 
-    // Removed: get financial obligations by day
 
     public List getIncomesByDay(int day) {
         return model.getIncomesByDay(day);
@@ -121,21 +112,19 @@ public class Controller {
         return model.getCurrentYear();
     }
 
-    // Removed: remove financial obligation from day
-
     public void removeIncomeFromDayById(int id, int numberDay) {
         model.removeIncomeFromDayById(id, numberDay);
     }
-
-    // Removed: get information of financial obligation
 
     public HashMap getInformationOfIncome(int id) {
         return model.getInformationOfIncome(id);
     }
 
-    // Removed: delete all financial obligations
-
     public void deleteAllIncomes() {    
         model.deleteIncomesFromDays();
+    }
+
+    public List<Transaction> getListOfTransactionsCurrentMonth(){
+        return pc.findAllTransactionsForCurrentMonth();
     }
 }

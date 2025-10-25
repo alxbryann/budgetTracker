@@ -65,25 +65,25 @@ public class ViewController {
 
     // Removed: assign financial obligations to days
 
-    public void assignIncomesToDays() {
+    public void assignTransactionToDays() {
         controller.assignTransactionToDays();
     }
 
     // Removed: paint financial obligations
 
-    public ArrayList paintINs() {
-        return controller.paintINs();
+    public ArrayList getDaysToPaint() {
+        return controller.getDaysToPaint();
     }
 
     // Removed: paint repetitive financial obligations
 
-    public ArrayList paintRepetitiveIncomes() {
-        return controller.paintRepetitiveIncomes();
+public ArrayList paintRepetitiveTransactions() {
+        return controller.paintRepetitiveTransactions();
     }
 
-    public void paintDaysInView() {
-        view.paintINsInView();
-    }
+    /*public void paintTransactionsInView() {
+        view.paintTransactionsInView();
+    }*/
 
     // Removed: get financial obligations by day
 
@@ -121,9 +121,9 @@ public class ViewController {
         view.clearViewCalendar();
     }
 
-    public void updateViewCalendar() {
+    /*public void updateViewCalendar() {
         view.updateViewCalendar();
-    }
+    }*/
 
     public void updateNextIncomes() {
         nextTransactionsPanel.updateTransactionsContainer();

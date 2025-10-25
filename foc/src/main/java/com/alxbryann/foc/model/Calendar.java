@@ -97,7 +97,7 @@ public final class Calendar {
         return LocalDate.now().getYear();
     }
 
-    public int getMonthFromFo(Date date) {
+    public int getMonthFromTransaction(Date date) {
         LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
         String localDateStr = String.valueOf(localDate);
         return Integer.parseInt(localDateStr.substring(localDateStr.length() - 5, localDateStr.length() - 3));
@@ -107,7 +107,7 @@ public final class Calendar {
         return LocalDate.now().getDayOfMonth();
     }
 
-    public int getDayFromFo(Date date) {
+    public int getDayFromTransaction(Date date) {
         LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
         String localDateStr = String.valueOf(localDate);
         return Integer.parseInt(localDateStr.substring(localDateStr.length() - 2, localDateStr.length()));

@@ -185,7 +185,7 @@ public class ElementDetail extends JPanel {
     }
 
     public void updateView() {
-        viewController.updateViewCalendar();
+        //viewController.updateViewCalendar();
         viewController.updateNextIncomes();
         viewController.updateDetailContainer();
     }
