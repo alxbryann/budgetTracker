@@ -53,7 +53,7 @@ public class TabbedItem extends JToggleButton {
         setBorderPainted(false);
         setFocusPainted(false);
         setOpaque(false);
-        setMargin(new java.awt.Insets(0, 6, 0, 4));
+        setMargin(new java.awt.Insets(4, 8, 4, 6));
         putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
                 + "focusWidth:0;"
@@ -63,7 +63,7 @@ public class TabbedItem extends JToggleButton {
                 + "hoverBackground:null;"
                 + "pressedBackground:null;"
                 + "arc:5;"
-                + "margin:0,6,0,4;"
+                + "margin:4,8,4,6;"
                 + "foreground:#ffffff");
 
         label = new JLabel(name);
@@ -71,7 +71,7 @@ public class TabbedItem extends JToggleButton {
         label.putClientProperty(FlatClientProperties.STYLE, "foreground:#ffffff");
 
         cmd = new JButton();
-        cmd.setPreferredSize(new java.awt.Dimension(18, 18));
+        cmd.setPreferredSize(new java.awt.Dimension(20, 20));
         cmd.setContentAreaFilled(false);
         cmd.setBorderPainted(false);
         cmd.setFocusPainted(false);
@@ -83,7 +83,7 @@ public class TabbedItem extends JToggleButton {
             }
         });
         cmd.putClientProperty(FlatClientProperties.STYLE, ""
-                + "margin:1,1,1,1;"
+                + "margin:2,2,2,2;"
                 + "borderWidth:0;"
                 + "focusWidth:0;"
                 + "innerFocusWidth:0;"
@@ -97,8 +97,8 @@ public class TabbedItem extends JToggleButton {
     @Override
     public java.awt.Dimension getPreferredSize() {
         java.awt.Dimension d = super.getPreferredSize();
-        // Hacer la pestaña aún más baja de forma consistente
-        return new java.awt.Dimension(d.width, 22);
+        // Establecer altura adecuada para las pestañas
+        return new java.awt.Dimension(d.width, 32);
     }
 
     @Override

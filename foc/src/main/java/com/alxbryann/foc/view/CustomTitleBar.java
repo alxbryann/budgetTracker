@@ -170,9 +170,9 @@ public class CustomTitleBar extends JPanel {
         return button;
     }
 
-    private JLabel createLogoLabel() {
+    private JLabel createLogoLabel() { 
         try {
-            ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("img/logo.png"));
+            ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("./img/logo.png"));
 
             Image img = logoIcon.getImage();
             Image scaledImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);

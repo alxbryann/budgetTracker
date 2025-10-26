@@ -14,8 +14,8 @@ public class PanelTabbed extends JPanel {
     private final ButtonGroup buttonGroup;
 
     public PanelTabbed() {
-        // Alinear las tabs al borde inferior de la barra de título y sin espacio extra
-        setLayout(new MigLayout("insets -3 8 0 8, aligny bottom"));
+        // Configurar layout con margen inferior negativo para mezclar con el contenido
+        setLayout(new MigLayout("insets 3 8 -3 8, aligny bottom"));
         buttonGroup = new ButtonGroup();
         setOpaque(false);
     }
