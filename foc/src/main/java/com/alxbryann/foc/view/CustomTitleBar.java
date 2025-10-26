@@ -70,9 +70,7 @@ public class CustomTitleBar extends JPanel {
         panelTabbed = new PanelTabbed();
         panelTabbed.setBackground(TITLE_BAR_COLOR);
         panelTabbed.putClientProperty(FlatClientProperties.STYLE,
-                "background:" + String.format("#%06X", TITLE_BAR_COLOR.getRGB() & 0xFFFFFF) + ";" +
-                        "foreground:white;" +
-                        "margin:0,0,0,0");
+                "background:" + String.format("#%06X", TITLE_BAR_COLOR.getRGB() & 0xFFFFFF));
 
         tabbedScrollPane = createTabbedScrollPane(panelTabbed);
 

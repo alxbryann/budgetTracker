@@ -38,11 +38,11 @@ public class ConfirmationDialog extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
         buttonPanel.setBackground(Color.WHITE);
         
-        RoundedButton yesButton = new RoundedButton("Yes", 20);
+        JButton yesButton = new JButton("Yes");
         yesButton.setPreferredSize(new Dimension(100, 40));
-        yesButton.setBackground(new Color(220, 53, 69));
-        yesButton.setForeground(Color.WHITE);
         yesButton.setFont(new Font("Kantumruy Pro", Font.BOLD, 14));
+        // Aplicar estilo FlatLaf
+        FlatLafStyleManager.applyCancelButtonStyle(yesButton);
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,11 +54,11 @@ public class ConfirmationDialog extends JPanel {
             }
         });
         
-        RoundedButton noButton = new RoundedButton("No", 20);
+        JButton noButton = new JButton("No");
         noButton.setPreferredSize(new Dimension(100, 40));
-        noButton.setBackground(new Color(108, 117, 125));
-        noButton.setForeground(Color.WHITE);
         noButton.setFont(new Font("Kantumruy Pro", Font.BOLD, 14));
+        // Aplicar estilo FlatLaf
+        FlatLafStyleManager.applyConfirmButtonStyle(noButton);
         noButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

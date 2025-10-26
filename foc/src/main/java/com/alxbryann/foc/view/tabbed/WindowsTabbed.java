@@ -45,9 +45,7 @@ public class WindowsTabbed {
                 + "margin:0,0,0,0");
         panelTabbed = new PanelTabbed();
         panelTabbed.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:#295a4b;" // Mismo color de fondo
-                + "foreground:white;"
-                + "margin:0,0,0,0");
+                + "background:#295a4b"); // Mismo color de fondo
         menuBar.add(createDrawerButton());
         menuBar.add(createScroll(panelTabbed));
         frame.setJMenuBar(menuBar);
@@ -83,7 +81,7 @@ public class WindowsTabbed {
                 + "innerFocusWidth:0;"
                 + "background:null;"
                 + "arc:5;"
-                + "foreground:white;"
+                + "foreground:#ffffff;"
                 + "margin:5,5,5,5");
         return cmd;
     }

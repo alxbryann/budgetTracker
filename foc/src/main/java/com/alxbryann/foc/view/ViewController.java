@@ -12,10 +12,20 @@ import java.util.List;
  * @author alxbryann
  */
 public class ViewController {
+    // Crea una nueva transacción y la asigna al día
+    public void createTransaction(int dayNumber, String name, double value) {
+        Transaction transaction = new Transaction();
+        transaction.setName(name);
+        transaction.setValue(value);
+        // Puedes ajustar la fecha aquí si tienes lógica para el mes/año actual
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(java.util.Calendar.DAY_OF_MONTH, dayNumber);
+        transaction.setDate(cal.getTime());
+        controller.addTransactionToDay(transaction, dayNumber);
+    }
 
     private Controller controller;
     private View view;
-    // Removed NextPaymentsPanel (payments) support
     private NextTransactionsPanel nextTransactionsPanel;
     private DetailContainer currentDetailContainer;
 
@@ -29,8 +39,6 @@ public class ViewController {
     public void setView(View view) {
         this.view = view;
     }
-
-    // Removed setter for NextPaymentsPanel
 
     public void setNextTransactionsPanel(NextTransactionsPanel nextTransactionsPanel) {
         this.nextTransactionsPanel = nextTransactionsPanel;
@@ -46,15 +54,11 @@ public class ViewController {
         }
     }
 
-    // Removed: FinancialObligation creation
-
     public void setInfoIncome(String name, String value, String date, Color selectedColor, boolean isRepetitive,
             boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         controller.setInfoIncome(name, value, date, selectedColor, isRepetitive, isRepetitiveByWeek,
                 isRepetitiveByMonth);
     }
-
-    // Removed: FinancialObligation listing
 
     public List<Transaction> getInfoIncome() {
         return controller.findAllTransactions();
@@ -64,29 +68,17 @@ public class ViewController {
         return controller.getNumberOfDaysInCurrentMonth();
     }
 
-    // Removed: assign financial obligations to days
-
     public void assignTransactionToDays() {
         controller.assignTransactionToDays();
     }
-
-    // Removed: paint financial obligations
 
     public ArrayList getDaysToPaint() {
         return controller.getDaysToPaint();
     }
 
-    // Removed: paint repetitive financial obligations
-
 public ArrayList paintRepetitiveTransactions() {
         return controller.paintRepetitiveTransactions();
     }
-
-    /*public void paintTransactionsInView() {
-        view.paintTransactionsInView();
-    }*/
-
-    // Removed: get financial obligations by day
 
     public List getIncomesByDay(int day) {
         return controller.getIncomesByDay(day);
@@ -112,8 +104,6 @@ public ArrayList paintRepetitiveTransactions() {
         return controller.getTotalNet(day);
     }
 
-    // Removed: delete financial obligation
-
     public void deleteTransactionById(int id) {
         controller.deleteTransactionById(id);
     }
@@ -122,29 +112,19 @@ public ArrayList paintRepetitiveTransactions() {
         view.clearViewCalendar();
     }
 
-    /*public void updateViewCalendar() {
-        view.updateViewCalendar();
-    }*/
-
-    public void updateNextIncomes() {
+    public void updateNextTransactions() {
         nextTransactionsPanel.updateTransactionsContainer();
     }
-
-    // Removed: update next financial obligations panel
-
-    // Removed: remove financial obligation from a day
 
     public void removeIncomeFromDayById(int id, int numberDay) {
         controller.removeIncomeFromDayById(id, numberDay);
     }
 
-    // Removed: get information of a financial obligation
-
-    public HashMap getInformationOfIncome(int id) {
+    public HashMap getInformationOfTransaction(int id) {
         return controller.getInformationOfIncome(id);
     }
 
-    public void editIncome(int id, String name, String amount, String date, Color selectedColor,
+    public void editTransaction(int id, String name, String amount, String date, Color selectedColor,
             boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         // Obtener el ingreso existente
         com.alxbryann.foc.model.Transaction existingIncome = controller.findTransactionById(id);
@@ -167,10 +147,6 @@ public ArrayList paintRepetitiveTransactions() {
             }
         }
     }
-
-    // Removed: edit financial obligation
-
-    // Removed: delete all financial obligations
 
     public void deleteAllIncomes() {
         controller.deleteAllIncomes();

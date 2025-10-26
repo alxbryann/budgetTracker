@@ -13,6 +13,11 @@ import java.util.List;
  * @author alxbryann
  */
 public class Model {
+    // Agrega una transacción a un día específico
+    public void addTransactionToDay(Transaction transaction, int dayNumber) {
+        Day day = calendar.getDayByNumberInSpecificMonth(dayNumber, calendar.getCurrentMonth());
+        day.setNewTransaction(transaction);
+    }
 
     Calendar calendar = new Calendar();
     Controller controller = new Controller();

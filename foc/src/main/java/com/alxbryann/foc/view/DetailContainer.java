@@ -61,7 +61,10 @@ public final class DetailContainer extends JPanel {
         setLayout(null);
         setBounds(60, 70, 640, 450);
         setBackground(new Color(232, 248, 245));
+
     }
+
+    
 
     @Override
     protected void paintComponent(Graphics g) {

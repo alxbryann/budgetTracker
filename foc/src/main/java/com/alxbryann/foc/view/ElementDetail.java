@@ -92,7 +92,7 @@ public class ElementDetail extends JPanel {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditIncome editIncomePanel = new EditIncome(viewController, id, dayNumber);
+                EditTransaction editIncomePanel = new EditTransaction(viewController, id, dayNumber);
                 JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(ElementDetail.this);
                 if (parentFrame != null) {
                     GlassPanePopup.install(parentFrame);
@@ -113,8 +113,14 @@ public class ElementDetail extends JPanel {
     }
     
     private void updatePositions() {
-        int width = getPreferredSize().width;
-        int height = getPreferredSize().height;
+        int width = getWidth();
+        int height = getHeight();
+        // Fallback to preferred size if actual size is not yet available
+        if (width <= 0 || height <= 0) {
+            Dimension pref = getPreferredSize();
+            width = pref.width;
+            height = pref.height;
+        }
         
         // Calcular el tamaño de fuente basado en la altura del componente
         // Para altura 80px usa 20pt, para altura 40px usa 12pt
@@ -188,7 +194,7 @@ public class ElementDetail extends JPanel {
 
     public void updateView() {
         //viewController.updateViewCalendar();
-        viewController.updateNextIncomes();
+        viewController.updateNextTransactions();
         viewController.updateDetailContainer();
     }
 

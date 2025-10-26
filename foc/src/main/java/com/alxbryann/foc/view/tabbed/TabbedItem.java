@@ -64,11 +64,11 @@ public class TabbedItem extends JToggleButton {
                 + "pressedBackground:null;"
                 + "arc:5;"
                 + "margin:0,6,0,4;"
-                + "foreground:white");
+                + "foreground:#ffffff");
 
         label = new JLabel(name);
         label.setFont(new java.awt.Font("Kantumruy Pro", java.awt.Font.BOLD, 13));
-        label.putClientProperty(FlatClientProperties.STYLE, "foreground:white");
+        label.putClientProperty(FlatClientProperties.STYLE, "foreground:#ffffff");
 
         cmd = new JButton();
         cmd.setPreferredSize(new java.awt.Dimension(18, 18));
@@ -89,7 +89,7 @@ public class TabbedItem extends JToggleButton {
                 + "innerFocusWidth:0;"
                 + "background:null;"
                 + "arc:999;"
-                + "foreground:white");
+                + "foreground:#ffffff");
         add(label);
         add(cmd, BorderLayout.EAST);
     }

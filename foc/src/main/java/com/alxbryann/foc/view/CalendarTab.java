@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -142,12 +143,41 @@ public class CalendarTab extends TabbedForm {
         }
         
     JPanel notifications = new JPanel();
-        notifications.setLayout(null);
-        notifications.setBounds(920, 0, 360, 720); 
-        notifications.setOpaque(true);
-        notifications.setBackground(Color.white);
-        notifications.add(new NextTransactionsPanel(viewController));
-        add(notifications);
+    notifications.setLayout(null);
+    notifications.setBounds(920, 0, 360, 720); 
+    notifications.setOpaque(true);
+    notifications.setBackground(Color.white);
+
+    // Add the NextTransactionsPanel instance (positioned lower to leave space for buttons)
+    NextTransactionsPanel nextPanel = new NextTransactionsPanel(viewController);
+    // Reubicar el panel arriba, sin espacio extra
+    nextPanel.setBounds(30, 20, 300, 460);
+    notifications.add(nextPanel);
+
+    // Add action buttons to container (outside NextTransactionsPanel)
+    JButton addIncomeBtn = new JButton("Add new Income");
+    // Place buttons directly below NextTransactionsPanel
+    addIncomeBtn.setBounds(40, 500, 280, 40);
+    addIncomeBtn.setFont(new Font("Lexend", Font.PLAIN, 16));
+    // Aplicar estilo FlatLaf
+    FlatLafStyleManager.applySuccessButtonStyle(addIncomeBtn);
+    addIncomeBtn.addActionListener(e -> nextPanel.openCreateTransactionDialog(false));
+    notifications.add(addIncomeBtn);
+
+    JButton addExpenseBtn = new JButton("Add new Expense");
+    addExpenseBtn.setBounds(40, 550, 280, 40);
+    addExpenseBtn.setFont(new Font("Lexend", Font.PLAIN, 16));
+    // Aplicar estilo FlatLaf
+    FlatLafStyleManager.applyDangerButtonStyle(addExpenseBtn);
+    addExpenseBtn.addActionListener(e -> nextPanel.openCreateTransactionDialog(true));
+    notifications.add(addExpenseBtn);
+
+    // Ensure buttons are on top visually
+    notifications.setComponentZOrder(addExpenseBtn, 0);
+    notifications.setComponentZOrder(addIncomeBtn, 0);
+    notifications.setComponentZOrder(nextPanel, 2);
+
+    add(notifications);
         
     parentView.setViewCalendar(viewCalendar);
         parentView.paintTransactionsInCalendarTab(viewCalendar);

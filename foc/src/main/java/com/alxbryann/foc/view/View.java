@@ -82,7 +82,7 @@ public final class View extends JFrame {
 
         add(customTitleBar, BorderLayout.NORTH);
         add(mainTabbedContainer, BorderLayout.CENTER);
-        
+        viewController.assignTransactionToDays();
         setVisible(true);
     }
 
@@ -264,7 +264,7 @@ public final class View extends JFrame {
     
     private void configureApplicationIcon() {
         try {
-            ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("img/logo.png"));
+            ImageIcon logoIcon = new ImageIcon(getClass().getClassLoader().getResource("./img/logo.png"));
             Image logoImage = logoIcon.getImage();
             
             setIconImage(logoImage);

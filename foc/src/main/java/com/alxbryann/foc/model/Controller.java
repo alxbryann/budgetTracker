@@ -11,6 +11,10 @@ import java.util.List;
  * @author alxbryann
  */
 public class Controller {
+    // Agrega una transacción a un día específico
+    public void addTransactionToDay(Transaction transaction, int dayNumber) {
+        model.addTransactionToDay(transaction, dayNumber);
+    }
 
     private PersistenceController pc = new PersistenceController();
     private Model model;

@@ -40,16 +40,9 @@ public final class NextTransactionsPanel extends JPanel {
         add(transactionsContainer);
         add(titleNextTransactions);
 
-        RoundedButton addNewIncomes = new RoundedButton("Add new income", 30);
-        addNewIncomes.setBounds(75, 210, 180, 30);
-        addNewIncomes.setBackground(new Color(86, 60, 16));
-        addNewIncomes.setForeground(Color.WHITE);
-        addNewIncomes.setFont(new Font("Lexend", Font.PLAIN, 15));
-        addNewIncomes.addActionListener(e -> createNewIncomeDialog());
-        add(addNewIncomes);
     }
 
-    private void createNewIncomeDialog() {
+    public void openCreateTransactionDialog(boolean isExpense) {
         // Use GlassPanePopup instead of a separate modal dialog
         JPanel addIncome = new JPanel();
         addIncome.setLayout(null);
@@ -57,7 +50,7 @@ public final class NextTransactionsPanel extends JPanel {
         addIncome.setBackground(Color.WHITE);
     addIncome.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, false));
 
-        JLabel title = new JLabel("Create New Income");
+    JLabel title = new JLabel(isExpense ? "Create New Expense" : "Create New Income");
         title.setFont(new Font("Lexend", Font.BOLD, 18));
         title.setBounds(45, 10, 500, 30);
         title.setForeground(new Color(60, 60, 60));
@@ -162,19 +155,19 @@ public final class NextTransactionsPanel extends JPanel {
         colorComboBox.setBounds(45, 320, 300, 30);
         addIncome.add(colorComboBox);
 
-    RoundedButton closeButton = new RoundedButton("Close", 30);
+    JButton closeButton = new JButton("Close");
         closeButton.setBounds(120, 420, 150, 40);
-        closeButton.setBackground(new Color(86, 60, 16));
-        closeButton.setForeground(Color.WHITE);
         closeButton.setFont(new Font("Lexend", Font.PLAIN, 16));
+        // Aplicar estilo FlatLaf - rojo como Expense
+        FlatLafStyleManager.applyDangerButtonStyle(closeButton);
     closeButton.addActionListener(e -> GlassPanePopup.closePopupLast());
         addIncome.add(closeButton);
 
-        RoundedButton send = new RoundedButton("Create", 30);
+    JButton send = new JButton("Create");
         send.setBounds(120, 370, 150, 40);
-        send.setBackground(new Color(86, 60, 16));
-        send.setForeground(Color.WHITE);
         send.setFont(new Font("Lexend", Font.PLAIN, 16));
+        // Aplicar estilo FlatLaf - verde como Income
+        FlatLafStyleManager.applySuccessButtonStyle(send);
     ModernToggleButton weekOrMonth = new ModernToggleButton();
     weekOrMonth.setFont(new Font("Lexend", Font.PLAIN, 14));
 
@@ -224,6 +217,19 @@ public final class NextTransactionsPanel extends JPanel {
 
             if (name.isEmpty() || value.isEmpty() || selectedDate == null) {
                 JOptionPane.showMessageDialog(NextTransactionsPanel.this, "Please complete all the fields.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // If expense, ensure value is negative
+            try {
+                double v = Double.parseDouble(value.replace(",", "."));
+                if (isExpense && v > 0) {
+                    v = -v;
+                }
+                value = Double.toString(v);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(NextTransactionsPanel.this, "Invalid value.", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -279,7 +285,8 @@ public final class NextTransactionsPanel extends JPanel {
             JOptionPane.showMessageDialog(NextTransactionsPanel.this, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             GlassPanePopup.closePopupLast();
             viewController.assignTransactionToDays();
-            //viewController.paintTransactionsInView();
+            viewController.updateNextTransactions();
+            viewController.updateDetailContainer();
         });
 
         addIncome.add(send);
@@ -289,7 +296,7 @@ public final class NextTransactionsPanel extends JPanel {
             GlassPanePopup.install(parentFrame);
             GlassPanePopup.showPopup(addIncome);
         }
-        updateTransactionsContainer();
+        // No refresh here to avoid layout jitter; we'll refresh after successful creation
     }
 
     public void updateTransactionsContainer() {
