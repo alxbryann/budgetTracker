@@ -35,7 +35,7 @@ public class PersistenceController {
         return transactionJpa.findTransactionById(id);
     }
     
-    public List findAllTransactions() {
+    public List<Transaction> findAllTransactions() {
         return transactionJpa.findAll();
     }
     

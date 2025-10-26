@@ -55,7 +55,7 @@ public class Controller {
         return pc.findAllRepetitiveTransaction();
     }
 
-    public List findAllTransactions() {
+    public List<Transaction> findAllTransactions() {
         return pc.findAllTransactions();
     }
 

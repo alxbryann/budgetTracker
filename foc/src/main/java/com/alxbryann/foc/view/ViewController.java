@@ -1,6 +1,7 @@
 package com.alxbryann.foc.view;
 
 import com.alxbryann.foc.model.Controller;
+import com.alxbryann.foc.model.Transaction;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class ViewController {
 
     // Removed: FinancialObligation listing
 
-    public List getInfoIncome() {
+    public List<Transaction> getInfoIncome() {
         return controller.findAllTransactions();
     }
 

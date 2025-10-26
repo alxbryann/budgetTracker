@@ -3,6 +3,7 @@ package com.alxbryann.foc.view;
 import com.alxbryann.foc.model.Transaction;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.alxbryann.foc.view.glasspanepopup.GlassPanePopup;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -49,21 +50,12 @@ public final class NextTransactionsPanel extends JPanel {
     }
 
     private void createNewIncomeDialog() {
-        RoundedJDialog modal = new RoundedJDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Create New Income",
-                400, 520, 30);
-        modal.setTitle("Create New Income");
-        modal.setSize(400, 520);
-        modal.setLayout(null);
-        modal.setLocationRelativeTo(null);
-        modal.setResizable(false);
-        modal.setUndecorated(true);
-        modal.getContentPane().setBackground(new Color(240, 240, 240));
-
+        // Use GlassPanePopup instead of a separate modal dialog
         JPanel addIncome = new JPanel();
         addIncome.setLayout(null);
-        addIncome.setBounds(0, 0, 400, 520);
+        addIncome.setPreferredSize(new Dimension(400, 520));
         addIncome.setBackground(Color.WHITE);
-        addIncome.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true));
+    addIncome.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, false));
 
         JLabel title = new JLabel("Create New Income");
         title.setFont(new Font("Lexend", Font.BOLD, 18));
@@ -122,6 +114,7 @@ public final class NextTransactionsPanel extends JPanel {
         textIsRepetitive.setFont(new Font("Lexend", Font.PLAIN, 14));
         ModernCheckBox isRepetitive = new ModernCheckBox();
         isRepetitive.setBounds(150, 260, 30, 20);
+    isRepetitive.setFont(new Font("Lexend", Font.PLAIN, 14));
         addIncome.add(textIsRepetitive);
         addIncome.add(isRepetitive);
 
@@ -150,13 +143,15 @@ public final class NextTransactionsPanel extends JPanel {
                 "Brown"
         };
 
-        JComboBox<String> colorComboBox = new JComboBox<>(colorNames);
+    JComboBox<String> colorComboBox = new JComboBox<>(colorNames);
+    colorComboBox.setFont(new Font("Lexend", Font.PLAIN, 14));
         colorComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
                     boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
                         cellHasFocus);
+        label.setFont(new Font("Lexend", Font.PLAIN, 14));
                 if (index >= 0 && index < pastelColors.length) {
                     Color color = pastelColors[index];
                     label.setIcon(new ColorIcon(color, 20, 20));
@@ -167,12 +162,12 @@ public final class NextTransactionsPanel extends JPanel {
         colorComboBox.setBounds(45, 320, 300, 30);
         addIncome.add(colorComboBox);
 
-        RoundedButton closeButton = new RoundedButton("Close", 30);
+    RoundedButton closeButton = new RoundedButton("Close", 30);
         closeButton.setBounds(120, 420, 150, 40);
         closeButton.setBackground(new Color(86, 60, 16));
         closeButton.setForeground(Color.WHITE);
         closeButton.setFont(new Font("Lexend", Font.PLAIN, 16));
-        closeButton.addActionListener(e -> modal.dispose());
+    closeButton.addActionListener(e -> GlassPanePopup.closePopupLast());
         addIncome.add(closeButton);
 
         RoundedButton send = new RoundedButton("Create", 30);
@@ -180,7 +175,8 @@ public final class NextTransactionsPanel extends JPanel {
         send.setBackground(new Color(86, 60, 16));
         send.setForeground(Color.WHITE);
         send.setFont(new Font("Lexend", Font.PLAIN, 16));
-        ModernToggleButton weekOrMonth = new ModernToggleButton();
+    ModernToggleButton weekOrMonth = new ModernToggleButton();
+    weekOrMonth.setFont(new Font("Lexend", Font.PLAIN, 14));
 
         isRepetitive.addActionListener(e -> {
             if (isRepetitive.isSelected()) {
@@ -212,22 +208,6 @@ public final class NextTransactionsPanel extends JPanel {
             String name = nameIncome.getText().trim();
             String value = valueIncome.getText().trim();
             LocalDate selectedDate = datePicker.getDate();
-            if (selectedDate.getDayOfMonth() == 31) {
-                UIManager.put("OptionPane.background", new Color(245, 245, 235));
-                UIManager.put("Panel.background", new Color(245, 245, 235));
-                UIManager.put("OptionPane.messageForeground", new Color(0, 111, 74));
-                UIManager.put("Button.background", new Color(0, 111, 74));
-                UIManager.put("Button.foreground", Color.white);
-                UIManager.put("Button.focus", new Color(0, 90, 60));
-
-                JOptionPane.showMessageDialog(
-                        modal,
-                        "El día 31 no es válido. Se ajustará automáticamente al día 30.",
-                        "Aviso",
-                        JOptionPane.WARNING_MESSAGE);
-
-                selectedDate = selectedDate.withDayOfMonth(30);
-            }
 
             String selectedColorName = (String) colorComboBox.getSelectedItem();
             boolean isRepetitiveIncome = false;
@@ -243,9 +223,27 @@ public final class NextTransactionsPanel extends JPanel {
             }
 
             if (name.isEmpty() || value.isEmpty() || selectedDate == null) {
-                JOptionPane.showMessageDialog(modal, "Please complete all the fields.", "Error",
+                JOptionPane.showMessageDialog(NextTransactionsPanel.this, "Please complete all the fields.", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
+            }
+
+            // Adjust invalid 31st day after ensuring date is not null
+            if (selectedDate.getDayOfMonth() == 31) {
+                UIManager.put("OptionPane.background", new Color(245, 245, 235));
+                UIManager.put("Panel.background", new Color(245, 245, 235));
+                UIManager.put("OptionPane.messageForeground", new Color(0, 111, 74));
+                UIManager.put("Button.background", new Color(0, 111, 74));
+                UIManager.put("Button.foreground", Color.white);
+                UIManager.put("Button.focus", new Color(0, 90, 60));
+
+                JOptionPane.showMessageDialog(
+                        NextTransactionsPanel.this,
+                        "El día 31 no es válido. Se ajustará automáticamente al día 30.",
+                        "Aviso",
+                        JOptionPane.WARNING_MESSAGE);
+
+                selectedDate = selectedDate.withDayOfMonth(30);
             }
 
             Color selectedColor = null;
@@ -278,15 +276,19 @@ public final class NextTransactionsPanel extends JPanel {
             valueIncome.setText("");
             datePicker.clear();
             colorComboBox.setSelectedIndex(0);
-            JOptionPane.showMessageDialog(modal, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            modal.dispose();
+            JOptionPane.showMessageDialog(NextTransactionsPanel.this, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            GlassPanePopup.closePopupLast();
             viewController.assignTransactionToDays();
             //viewController.paintTransactionsInView();
         });
 
         addIncome.add(send);
-        modal.add(addIncome);
-        modal.setVisible(true);
+        // Install and show the popup on the parent frame
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (parentFrame != null) {
+            GlassPanePopup.install(parentFrame);
+            GlassPanePopup.showPopup(addIncome);
+        }
         updateTransactionsContainer();
     }
 

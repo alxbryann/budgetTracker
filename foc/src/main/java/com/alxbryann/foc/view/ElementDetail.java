@@ -92,10 +92,12 @@ public class ElementDetail extends JPanel {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditIncome editIncomeWindow = new EditIncome(viewController, id, dayNumber);
-                editIncomeWindow.setVisible(true);
-                updateView();
-
+                EditIncome editIncomePanel = new EditIncome(viewController, id, dayNumber);
+                JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(ElementDetail.this);
+                if (parentFrame != null) {
+                    GlassPanePopup.install(parentFrame);
+                    GlassPanePopup.showPopup(editIncomePanel);
+                }
             }
 
         });
