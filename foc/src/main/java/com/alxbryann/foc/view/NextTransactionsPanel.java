@@ -287,6 +287,7 @@ public final class NextTransactionsPanel extends JPanel {
             viewController.assignTransactionToDays();
             viewController.updateNextTransactions();
             viewController.updateDetailContainer();
+            viewController.updateCalendarView();
         });
 
         addIncome.add(send);

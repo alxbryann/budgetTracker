@@ -98,6 +98,10 @@ public final class View extends JFrame {
         this.viewCalendar = viewCalendar;
     }
 
+    public JPanel[] getViewCalendar() {
+        return viewCalendar;
+    }
+
     public void clearViewCalendar() {
         if (viewCalendar == null) {
             return;

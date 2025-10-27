@@ -35,7 +35,7 @@ public class ElementDetail extends JPanel {
         setLayout(null);
         setPreferredSize(new Dimension(600, 80));
         setBackground(color);
-        
+
         // Añadir listener para ajustar posiciones cuando cambie el tamaño
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
@@ -64,16 +64,16 @@ public class ElementDetail extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String message = "Are you sure you want to delete Income '" + name + "'?";
                 String title = "Confirm delete";
-                
+
                 Runnable onConfirm = () -> {
                     viewController.deleteTransactionById(id);
                     viewController.removeIncomeFromDayById(id, dayNumber);
                     updateView();
                 };
-                
+
                 Runnable onCancel = () -> {
                 };
-                
+
                 ConfirmationDialog confirmDialog = new ConfirmationDialog(message, title, onConfirm, onCancel);
                 JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(ElementDetail.this);
                 if (parentFrame != null) {
@@ -107,11 +107,11 @@ public class ElementDetail extends JPanel {
 
         add(deleteButton);
         add(editButton);
-        
+
         // Establecer posiciones iniciales
         updatePositions();
     }
-    
+
     private void updatePositions() {
         int width = getWidth();
         int height = getHeight();
@@ -121,7 +121,7 @@ public class ElementDetail extends JPanel {
             width = pref.width;
             height = pref.height;
         }
-        
+
         // Calcular el tamaño de fuente basado en la altura del componente
         // Para altura 80px usa 20pt, para altura 40px usa 12pt
         int fontSize;
@@ -135,48 +135,48 @@ public class ElementDetail extends JPanel {
         Font currentFont = new Font("Kantumruy Pro Medium", Font.PLAIN, fontSize);
         nameLabel.setFont(currentFont);
         costLabel.setFont(currentFont);
-        
+
         // Calcular el tamaño de los botones basado en la altura
         int buttonSize = (int) (height * 0.35);
         buttonSize = Math.max(20, Math.min(buttonSize, 28)); // Entre 20 y 28 px
-        
+
         // Calcular posiciones proporcionalmente basadas en el ancho
         // Columna 1 (Nombre): 4% del ancho, ocupa ~32% del ancho
         int nameX = (int) (width * 0.04);
         int nameWidth = (int) (width * 0.32);
-        
+
         // Columna 2 (Costo): 38% del ancho, ocupa ~36% del ancho
         int costX = (int) (width * 0.38);
         int costWidth = (int) (width * 0.36);
-        
+
         // Columna 3 (Botones): comienzan al 76% del ancho
         int buttonsX = (int) (width * 0.76);
         int buttonSpacing = (int) (width * 0.12); // Espacio entre botones: 12% del ancho
-        
+
         // Altura vertical centrada
         int labelY = (int) (height * 0.3);
         int buttonY = (int) ((height - buttonSize) / 2);
-        
+
         // Altura de labels ajustada al tamaño de fuente
         int labelHeight = fontSize + 5;
-        
+
         // Actualizar iconos de botones si es necesario
         updateButtonIcons(buttonSize);
-        
+
         // Aplicar posiciones
         nameLabel.setBounds(nameX, labelY, nameWidth, labelHeight);
         costLabel.setBounds(costX, labelY, costWidth, labelHeight);
         deleteButton.setBounds(buttonsX, buttonY, buttonSize, buttonSize);
         editButton.setBounds(buttonsX + buttonSpacing, buttonY, buttonSize, buttonSize);
     }
-    
+
     private void updateButtonIcons(int size) {
         // Actualizar icono del botón de eliminar
         ImageIcon rawIcon = new ImageIcon(getClass().getResource("/img/trash.png"));
         Image scaledImage = rawIcon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);
         ImageIcon trashIcon = new ImageIcon(scaledImage);
         deleteButton.setIcon(trashIcon);
-        
+
         // Actualizar icono del botón de editar
         rawIcon = new ImageIcon(getClass().getResource("/img/pencil.png"));
         scaledImage = rawIcon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH);
@@ -193,7 +193,7 @@ public class ElementDetail extends JPanel {
     }
 
     public void updateView() {
-        //viewController.updateViewCalendar();
+        viewController.updateCalendarView();
         viewController.updateNextTransactions();
         viewController.updateDetailContainer();
     }

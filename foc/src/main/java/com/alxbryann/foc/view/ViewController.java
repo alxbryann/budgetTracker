@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JPanel;
 
 /**
  *
@@ -150,5 +151,27 @@ public ArrayList paintRepetitiveTransactions() {
 
     public void deleteAllIncomes() {
         controller.deleteAllIncomes();
+    }
+
+    /**
+     * Updates the calendar view by clearing the current view and repainting all transactions.
+     * This method should be called whenever transactions are added, edited, or deleted
+     * to ensure the calendar displays the most current data.
+     */
+    public void updateCalendarView() {
+        if (view != null) {
+            // Clear the current calendar view
+            view.clearViewCalendar();
+            
+            // Reassign transactions to days to ensure data is current
+            controller.assignTransactionToDays();
+            
+            // Get the calendar panels from the view
+            JPanel[] calendarPanels = view.getViewCalendar();
+            if (calendarPanels != null) {
+                // Repaint all transactions in the calendar
+                view.paintTransactionsInCalendarTab(calendarPanels);
+            }
+        }
     }
 }
