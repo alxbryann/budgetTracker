@@ -26,9 +26,13 @@ public class ElementDetail extends JPanel {
         this.cost = cost;
         this.viewController = viewController;
         this.dayNumber = dayNumber;
-
-        // Only incomes are supported now
-        initializeUI(new Color(144, 203, 173));
+        Color color;
+        if (cost >= 0) {
+            color = new Color(144, 203, 173); 
+        } else {
+            color = new Color(240, 128, 128); 
+        }
+        initializeUI(color);
     }
 
     private void initializeUI(Color color) {
@@ -190,6 +194,39 @@ public class ElementDetail extends JPanel {
         button.setContentAreaFilled(false);
         button.setFont(new Font("SansSerif", Font.PLAIN, 18));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        // Mejor compatibilidad con macOS sin efectos visuales molestos
+        button.setOpaque(false);
+        button.setRolloverEnabled(false); // Desactivar rollover por defecto
+        
+        // Efecto hover más sutil - solo cambia la opacidad del icono
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                // Efecto sutil: solo cambiar la transparencia del botón
+                button.setContentAreaFilled(false);
+                button.repaint();
+            }
+            
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setContentAreaFilled(false);
+                button.repaint();
+            }
+            
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                // Efecto muy sutil al presionar
+                button.setContentAreaFilled(false);
+                button.repaint();
+            }
+            
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                button.setContentAreaFilled(false);
+                button.repaint();
+            }
+        });
     }
 
     public void updateView() {

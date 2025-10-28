@@ -42,7 +42,7 @@ public class ConfirmationDialog extends JPanel {
         yesButton.setPreferredSize(new Dimension(100, 40));
         yesButton.setFont(new Font("Kantumruy Pro", Font.BOLD, 14));
         // Aplicar estilo FlatLaf
-        FlatLafStyleManager.applyCancelButtonStyle(yesButton);
+        FlatLafStyleManager.applyConfirmButtonStyle(yesButton);
         yesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,7 +58,7 @@ public class ConfirmationDialog extends JPanel {
         noButton.setPreferredSize(new Dimension(100, 40));
         noButton.setFont(new Font("Kantumruy Pro", Font.BOLD, 14));
         // Aplicar estilo FlatLaf
-        FlatLafStyleManager.applyConfirmButtonStyle(noButton);
+        FlatLafStyleManager.applyCancelButtonStyle(noButton);
         noButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

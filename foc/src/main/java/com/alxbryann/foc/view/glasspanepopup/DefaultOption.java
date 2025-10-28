@@ -25,6 +25,11 @@ public class DefaultOption implements Option {
 
     @Override
     public boolean useSnapshot() {
+        // Disable snapshot on macOS to avoid visual artifacts
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("mac")) {
+            return false;
+        }
         return true;
     }
     

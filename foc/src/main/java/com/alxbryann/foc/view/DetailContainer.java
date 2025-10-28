@@ -1,9 +1,9 @@
 package com.alxbryann.foc.view;
 
-import com.alxbryann.foc.model.Transaction;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public final class DetailContainer extends JPanel {
 
@@ -19,17 +19,17 @@ public final class DetailContainer extends JPanel {
 
     private void prepareElementsDetail() {
         cleanElementsDetail();
-        ArrayList incomes = getIncomesByDay();
+        List<HashMap<String, Object>> transactions = getTransactionsByDay();
         int spaceY = 20;
         int elementWidth = 600;
         int elementHeight = 80;
-        int containerWidth = 640; // ancho del DetailContainer
+        int containerWidth = 640; 
         int x = (containerWidth - elementWidth) / 2;
-        for (int i = 0; i < incomes.size(); i++) {
-            Transaction temporalIncome = (Transaction) incomes.get(i);
-            int id = temporalIncome.getId();
-            String name = temporalIncome.getName();
-            double cost = temporalIncome.getValue();
+        for (int i = 0; i < transactions.size(); i++) {
+            HashMap<String, Object> transaction = transactions.get(i);
+            int id = (int) transaction.get("id");
+            String name = (String) transaction.get("name");
+            double cost = (double) transaction.get("value");
             ElementDetail ed = new ElementDetail(id, name, cost, viewController, dayNumber);
             ed.setBounds(x, spaceY, elementWidth, elementHeight);
             spaceY += 100;
@@ -49,8 +49,8 @@ public final class DetailContainer extends JPanel {
         repaint();
     }
 
-    private ArrayList getIncomesByDay() {
-        return (ArrayList) viewController.getIncomesByDay(dayNumber);
+    private List<HashMap<String, Object>> getTransactionsByDay() {
+        return viewController.getTransactionsByDay(dayNumber);
     }
 
     public void refreshElementsDetail() {

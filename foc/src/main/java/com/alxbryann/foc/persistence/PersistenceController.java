@@ -42,12 +42,28 @@ public class PersistenceController {
     public void createRepetitiveTransaction(RepetitiveTransaction ri) {
         repetitiveTransactionJpa.create(ri);
     }
-    
-    public List findAllRepetitiveTransaction() {
+
+    public List<RepetitiveTransaction> findAllRepetitiveTransaction() {
         return repetitiveTransactionJpa.findAll();
     }
 
     public List<Transaction> findAllTransactionsForCurrentMonth() {
         return transactionJpa.findAllTransactionsForCurrentMonth();
+    }
+
+    public List<Transaction> findTransactionsByDay(int day) {
+        return transactionJpa.findTransactionsByDay(day);
+    }
+
+    public double getTotalNetByDay(int day) {
+        return transactionJpa.getTotalNetByDay(day);
+    }
+
+    public double getTotalIncomeByDay(int day) {
+        return transactionJpa.getTotalIncomeByDay(day);
+    }
+
+    public double getTotalCostByDay(int day) {
+        return transactionJpa.getTotalCostByDay(day);
     }
 }

@@ -146,11 +146,22 @@ public class Popup extends JComponent {
 
     @Override
     protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+        Graphics2D g2 = (Graphics2D) g.create();
+        
+        // Better rendering hints for macOS
+        g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, 
+                           java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(java.awt.RenderingHints.KEY_RENDERING, 
+                           java.awt.RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION, 
+                           java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        
         g2.setComposite(AlphaComposite.SrcOver.derive(animate * option.opacity()));
         g2.setColor(option.background());
         g2.fill(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
         g2.setComposite(AlphaComposite.SrcOver.derive(animate));
+        
+        g2.dispose();
         super.paintComponent(g);
     }
 

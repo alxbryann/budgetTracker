@@ -23,7 +23,7 @@ public class TransactionJpaController implements Serializable {
     public TransactionJpaController() {
         this.emf = Persistence.createEntityManagerFactory("focPU");
     }
-    
+
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
@@ -85,25 +85,126 @@ public class TransactionJpaController implements Serializable {
         }
     }
 
-    public List<Transaction> findAllTransactionsForCurrentMonth() {
+    public List<Transaction> findTransactionsByDay(int day) {
         EntityManager em = getEntityManager();
+        day++;
         try {
-            // Use a portable date range query instead of YEAR/MONTH functions to avoid provider/dialect issues
             java.time.LocalDate now = java.time.LocalDate.now();
-            java.time.LocalDate startOfMonth = now.withDayOfMonth(1);
-            java.time.LocalDate startOfNextMonth = startOfMonth.plusMonths(1);
+            if (day < 1 || day > now.lengthOfMonth()) {
+                throw new IllegalArgumentException("Invalid day of month: " + day);
+            }
+            java.time.LocalDate startOfDay = now.withDayOfMonth(day);
+            java.time.LocalDate startOfNextDay = startOfDay.plusDays(1);
 
-            java.util.Date start = java.util.Date.from(startOfMonth.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
-            java.util.Date end = java.util.Date.from(startOfNextMonth.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+            java.util.Date start = java.util.Date
+                    .from(startOfDay.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+            java.util.Date end = java.util.Date
+                    .from(startOfNextDay.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
 
             return em.createQuery(
                     "SELECT o FROM Transaction o WHERE o.date >= :start AND o.date < :end",
                     Transaction.class)
-                .setParameter("start", start, javax.persistence.TemporalType.DATE)
-                .setParameter("end", end, javax.persistence.TemporalType.DATE)
-                .getResultList();
+                    .setParameter("start", start, javax.persistence.TemporalType.DATE)
+                    .setParameter("end", end, javax.persistence.TemporalType.DATE)
+                    .getResultList();
         } finally {
             em.close();
         }
     }
+
+    public List<Transaction> findAllTransactionsForCurrentMonth() {
+        EntityManager em = getEntityManager();
+        try {
+            java.time.LocalDate now = java.time.LocalDate.now();
+            java.time.LocalDate startOfMonth = now.withDayOfMonth(1);
+            java.time.LocalDate startOfNextMonth = startOfMonth.plusMonths(1);
+
+            java.util.Date start = java.util.Date
+                .from(startOfMonth.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+            java.util.Date end = java.util.Date
+                .from(startOfNextMonth.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+
+            return em.createQuery(
+                "SELECT t FROM Transaction t WHERE t.date >= :start AND t.date < :end",
+                Transaction.class)
+                .setParameter("start", start, javax.persistence.TemporalType.TIMESTAMP)
+                .setParameter("end", end, javax.persistence.TemporalType.TIMESTAMP)
+                .getResultList();
+        } finally {
+            em.close();
+        }
+        }
+
+        public double getTotalCostByDay(int day) {
+        EntityManager em = getEntityManager();
+        day++;
+        double totalCost = 0.0;
+        try {
+            java.time.LocalDate now = java.time.LocalDate.now();
+            if (day < 1 || day > now.lengthOfMonth()) {
+            throw new IllegalArgumentException("Invalid day of month: " + day);
+            }
+            java.time.LocalDate startOfDay = now.withDayOfMonth(day);
+            java.time.LocalDate startOfNextDay = startOfDay.plusDays(1);
+
+            java.util.Date start = java.util.Date
+                .from(startOfDay.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+            java.util.Date end = java.util.Date
+                .from(startOfNextDay.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+
+            List<Transaction> transactions = em.createQuery(
+                "SELECT t FROM Transaction t WHERE t.date >= :start AND t.date < :end AND t.value < 0",
+                Transaction.class)
+                .setParameter("start", start, javax.persistence.TemporalType.TIMESTAMP)
+                .setParameter("end", end, javax.persistence.TemporalType.TIMESTAMP)
+                .getResultList();
+
+            for (Transaction tran : transactions) {
+            totalCost += Math.abs(tran.getValue());
+            }
+            return totalCost;
+        } finally {
+            em.close();
+        }
+        }
+
+        public double getTotalIncomeByDay(int day) {
+        EntityManager em = getEntityManager();
+        day++;
+        double totalIncome = 0.0;
+        try {
+            java.time.LocalDate now = java.time.LocalDate.now();
+            if (day < 1 || day > now.lengthOfMonth()) {
+            throw new IllegalArgumentException("Invalid day of month: " + day);
+            }
+            java.time.LocalDate startOfDay = now.withDayOfMonth(day);
+            java.time.LocalDate startOfNextDay = startOfDay.plusDays(1);
+
+            java.util.Date start = java.util.Date
+                .from(startOfDay.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+            java.util.Date end = java.util.Date
+                .from(startOfNextDay.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+
+            List<Transaction> transactions = em.createQuery(
+                "SELECT t FROM Transaction t WHERE t.date >= :start AND t.date < :end AND t.value > 0",
+                Transaction.class)
+                .setParameter("start", start, javax.persistence.TemporalType.TIMESTAMP)
+                .setParameter("end", end, javax.persistence.TemporalType.TIMESTAMP)
+                .getResultList();
+
+            for (Transaction tran : transactions) {
+            totalIncome += tran.getValue();
+            }
+            return totalIncome;
+        } finally {
+            em.close();
+        }
+        }
+
+        public double getTotalNetByDay(int day) {
+        double totalCost = getTotalCostByDay(day);
+        double totalIncome = getTotalIncomeByDay(day);
+        return totalIncome - totalCost;
+        }
+
 }

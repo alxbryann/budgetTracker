@@ -24,16 +24,14 @@ public class Summary extends JPanel {
     private void initializeUI() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBounds(0, 0, 360, 580);
-        setBackground(new Color(232, 248, 245)); // azul claro
+        setBackground(new Color(232, 248, 245)); 
 
-        // Título
         JLabel title = new JLabel("Summary");
-        title.setFont(new Font("SansSerif", Font.BOLD, 20));
+        title.setFont(new Font("Kantumruy Pro", Font.BOLD, 20));
         title.setAlignmentX(CENTER_ALIGNMENT);
         title.setBorder(BorderFactory.createEmptyBorder(20, 0, 30, 0));
         add(title);
 
-        // Items (centrados)
         SummaryItem costItem = new SummaryItem("Total cost", totalCost, new Color(210, 133, 133));
         costItem.setAlignmentX(CENTER_ALIGNMENT);
         add(costItem);
@@ -52,7 +50,7 @@ public class Summary extends JPanel {
     }
 
     private void setTotalCost() {
-        //totalCost = viewController.getTotalCostByDay(clickedDay);
+        totalCost = viewController.getTotalCostByDay(clickedDay);
     }
 
     private void setTotalIncome() {
@@ -64,12 +62,13 @@ public class Summary extends JPanel {
     }
     
     private static class SummaryItem extends JPanel {
-        private final String label;
+        private final String itemLabel;
+        @SuppressWarnings("unused")
         private final double value;
         private final Color bgColor;
 
-        public SummaryItem(String label, double value, Color bgColor) {
-            this.label = label;
+        public SummaryItem(String itemLabel, double value, Color bgColor) {
+            this.itemLabel = itemLabel;
             this.value = value;
             this.bgColor = bgColor;
 
@@ -78,12 +77,12 @@ public class Summary extends JPanel {
             setMaximumSize(new Dimension(280, 80));
             setOpaque(false);
 
-            JLabel labelText = new JLabel(label);
-            labelText.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            JLabel labelText = new JLabel(this.itemLabel);
+            labelText.setFont(new Font("Kantumruy Pro Medium", Font.PLAIN, 18));
             labelText.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 
             JLabel valueText = new JLabel("$" + String.format("%,.0f", value));
-            valueText.setFont(new Font("SansSerif", Font.BOLD, 18));
+            valueText.setFont(new Font("Kantumruy Pro Medium", Font.BOLD, 18));
             valueText.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
 
             add(labelText, BorderLayout.WEST);

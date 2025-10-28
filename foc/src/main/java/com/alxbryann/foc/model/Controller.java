@@ -11,9 +11,13 @@ import java.util.List;
  * @author alxbryann
  */
 public class Controller {
-    // Agrega una transacción a un día específico
+
     public void addTransactionToDay(Transaction transaction, int dayNumber) {
         model.addTransactionToDay(transaction, dayNumber);
+    }
+
+    public List<Transaction> findTransactionsByDay(int day) {
+        return pc.findTransactionsByDay(day);
     }
 
     private PersistenceController pc = new PersistenceController();
@@ -55,7 +59,7 @@ public class Controller {
         }
     }
 
-    public List findAllRepetitiveIncomes() {
+    public List<RepetitiveTransaction> findAllRepetitiveTransactions() {
         return pc.findAllRepetitiveTransaction();
     }
 
@@ -96,16 +100,20 @@ public class Controller {
     }
 
 
-    public List getIncomesByDay(int day) {
-        return model.getIncomesByDay(day);
+    public List<HashMap<String, Object>> getTransactionsByDay(int day) {
+        return model.getTransactionsByDay(day);
+    }
+
+    public double getTotalCostByDay(int day) {
+        return pc.getTotalCostByDay(day);
     }
 
     public double getTotalIncomeByDay(int day) {
-        return model.getTotalIncomeByDay(day);
+        return pc.getTotalIncomeByDay(day);
     }
 
     public double getTotalNet(int day) {
-        return model.getTotalNetByDay(day);
+        return pc.getTotalNetByDay(day);
     }
 
     public String getCurrentMonthInString() {
@@ -120,8 +128,8 @@ public class Controller {
         model.removeIncomeFromDayById(id, numberDay);
     }
 
-    public HashMap getInformationOfIncome(int id) {
-        return model.getInformationOfIncome(id);
+    public HashMap<String, Object> getInformationOfTransaction(int id) {
+        return model.getInformationOfTransaction(id);
     }
 
     public void deleteAllIncomes() {    

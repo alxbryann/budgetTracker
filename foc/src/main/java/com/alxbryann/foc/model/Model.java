@@ -13,7 +13,7 @@ import java.util.List;
  * @author alxbryann
  */
 public class Model {
-    // Agrega una transacción a un día específico
+
     public void addTransactionToDay(Transaction transaction, int dayNumber) {
         Day day = calendar.getDayByNumberInSpecificMonth(dayNumber, calendar.getCurrentMonth());
         day.setNewTransaction(transaction);
@@ -25,8 +25,6 @@ public class Model {
     public Model(Controller controller) {
         this.controller = controller;
     }
-
-    // Removed: financial obligation edit and creation methods
 
     public void setInfoIncome(String name, String value, String dateStr, Color selectedColor, boolean isRepetitive,
             boolean repetitiveByWeek, boolean repetitiveByMonth) {
@@ -48,13 +46,9 @@ public class Model {
         controller.createIncome(income);
     }
 
-    // Removed: assignment and removal of financial obligations in days
-
     public int getNumberOfDaysInCurrentMonth() {
         return calendar.getNumberOfDaysInCurrentMonth();
     }
-
-    // Removed: repetitive financial obligations list
 
     public void assignTransactionToDays() {
         List<Transaction> allTransactions = controller.findAllTransactions();
@@ -107,20 +101,25 @@ public class Model {
         }
 
         return transactionsInCurrentMonth;
-    }    
+    }
 
-    public List getIncomesByDay(int day) {
-        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
-        for (int i = 0; i < tempDay.getIncomes().size(); i++) {
-            Transaction temporalIncome = (Transaction) tempDay.getIncomes().get(i);
+    public List<HashMap<String, Object>>  getTransactionsByDay(int day) {
+        List<Transaction> transactions = controller.findTransactionsByDay(day);
+        List<HashMap<String, Object>> result = new ArrayList<>();
+        for (Transaction t : transactions) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("id", t.getId());
+            map.put("name", t.getName());
+            map.put("value", t.getValue());
+            result.add(map);
         }
-        return tempDay.getIncomes();
+        return result;
     }
 
     public ArrayList<Integer> getListOfRepetitiveTransactionsInCurrentMonth() {
         ArrayList RepetitiveIncomesInCurrentMonth = new ArrayList<>();
         List<RepetitiveTransaction> ri;
-        ri = (List<RepetitiveTransaction>) controller.findAllRepetitiveIncomes();
+        ri = (List<RepetitiveTransaction>) controller.findAllRepetitiveTransactions();
         for (int i = 0; i < ri.size(); i++) {
             int id = ri.get(i).getRepetitiveTransaction_id();
             Transaction temporalIncome = (Transaction) controller.findTransactionById(id);
@@ -159,10 +158,6 @@ public class Model {
         return RepetitiveIncomesInCurrentMonth;
     }
 
-    // Removed: get financial obligations by day
-
-    // Removed: delete all financial obligations from days
-
     public String getCurrentMonthInString() {
         return calendar.getCurrentMonthInString();
     }
@@ -171,21 +166,7 @@ public class Model {
         return calendar.getCurrentYear();
     }
 
-    public double getTotalIncomeByDay(int day) {
-        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
-        double totalIncome = tempDay.getTotalIncome();
-        return totalIncome;
-    }
-
-    public double getTotalNetByDay(int day) {
-        Day tempDay = calendar.getDayByNumberInSpecificMonth(day, calendar.getCurrentMonth());
-        double totalNet = tempDay.getTotalNet();
-        return totalNet;
-    }
-
-    // Removed: information of financial obligation
-
-    public HashMap<String, Object> getInformationOfIncome(int id) {
+    public HashMap<String, Object> getInformationOfTransaction(int id) {
         Transaction temporalIncome = controller.findTransactionById(id);
         HashMap<String, Object> incomeInformation = new HashMap<>();
         String name = temporalIncome.getName();
@@ -205,33 +186,5 @@ public class Model {
         incomeInformation.put("repetitiveByMonth", repetitiveByMonth);
 
         return incomeInformation;
-    }
-
-    public void editIncome(int id, String name, String amount, String dateStr, Color selectedColor,
-            boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
-        try {
-            Transaction existingIncome = controller.findTransactionById(id);
-            if (existingIncome != null) {
-                existingIncome.setName(name);
-                double amountDouble = Double.parseDouble(amount);
-                existingIncome.setValue(amountDouble);
-
-                LocalDate localDate = LocalDate.parse(dateStr);
-                ZoneId defaultZoneId = ZoneId.systemDefault();
-                Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-                existingIncome.setDate(date);
-
-                String rgb = selectedColor.getRed() + ", " + selectedColor.getGreen() + ", " + selectedColor.getBlue();
-                existingIncome.setRgb(rgb);
-                existingIncome.setColor(selectedColor);
-                existingIncome.setIsRepetitive(isRepetitive);
-                existingIncome.setRepetitiveByWeek(isRepetitiveByWeek);
-                existingIncome.setRepetitiveByMonth(isRepetitiveByMonth);
-
-                controller.editTransaction(existingIncome);
-            }
-        } catch (Exception e) {
-            System.err.println("Error editing income: " + e.getMessage());
-        }
     }
 }

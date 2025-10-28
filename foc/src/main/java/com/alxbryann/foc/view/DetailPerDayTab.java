@@ -28,7 +28,6 @@ public class DetailPerDayTab extends TabbedForm {
     private void initializeUI() {
         setLayout(null);
         setBackground(Color.WHITE);
-        // Establecer el tamaño para ocupar todo el espacio disponible del JFrame
         setPreferredSize(new Dimension(1280, 720));
         setBounds(0, 0, 1280, 720);
         
@@ -63,17 +62,13 @@ public class DetailPerDayTab extends TabbedForm {
     
     @Override
     public void formOpen() {
-        // Se llama cuando se abre la pestaña
         super.formOpen();
-        // Asegurar que los componentes se repinten correctamente
         revalidate();
         repaint();
     }
     
     @Override
     public boolean formClose() {
-        // Se llama cuando se cierra la pestaña
-        // Retorna true para permitir el cierre
         return true;
     }
     

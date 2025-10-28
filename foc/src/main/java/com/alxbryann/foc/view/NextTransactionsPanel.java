@@ -33,8 +33,8 @@ public final class NextTransactionsPanel extends JPanel {
         titleNextTransactions.setForeground(Color.BLACK);
 
         transactionsContainer = new JPanel();
-        transactionsContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        transactionsContainer.setBounds(10, 45, 280, 155);
+        transactionsContainer.setLayout(new BoxLayout(transactionsContainer, BoxLayout.Y_AXIS));
+        transactionsContainer.setBounds(10, 45, 280, 400);
         transactionsContainer.setOpaque(false);
 
         add(transactionsContainer);
@@ -305,7 +305,8 @@ public final class NextTransactionsPanel extends JPanel {
         transactionsContainer.removeAll();
         
         if (!incomeList.isEmpty()) {
-            for (Transaction transaction : incomeList) {
+            for (int i = 0; i < incomeList.size(); i++) {
+                Transaction transaction = incomeList.get(i);
                 // Get the day number from the transaction date
                 LocalDate incomeDate = transaction.getDate().toInstant()
                         .atZone(ZoneId.systemDefault())
@@ -321,12 +322,19 @@ public final class NextTransactionsPanel extends JPanel {
                         dayNumber
                 );
                 
-                // Set smaller size to fit in the container
-                elementDetail.setPreferredSize(new Dimension(250, 40));
+                // Set size to fill the container width and have consistent height
+                elementDetail.setPreferredSize(new Dimension(270, 50));
+                elementDetail.setMaximumSize(new Dimension(270, 50));
+                elementDetail.setMinimumSize(new Dimension(270, 50));
+                
                 transactionsContainer.add(elementDetail);
+                
+                // Add spacing between elements except after the last one
+                if (i < incomeList.size() - 1) {
+                    transactionsContainer.add(Box.createRigidArea(new Dimension(0, 8)));
+                }
             }
         }
-        
         transactionsContainer.revalidate();
         transactionsContainer.repaint();
     }

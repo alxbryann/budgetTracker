@@ -81,8 +81,8 @@ public ArrayList paintRepetitiveTransactions() {
         return controller.paintRepetitiveTransactions();
     }
 
-    public List getIncomesByDay(int day) {
-        return controller.getIncomesByDay(day);
+    public List<HashMap<String, Object>> getTransactionsByDay(int day) {
+        return controller.getTransactionsByDay(day);
     }
 
     public String getCurrentMonthInString() {
@@ -95,6 +95,10 @@ public ArrayList paintRepetitiveTransactions() {
 
     public int getClickedDay() {
         return view.getDayClicked();
+    }
+
+    public double getTotalCostByDay(int day) {
+        return controller.getTotalCostByDay(day);
     }
     
     public double getTotalIncomeByDay(int day) {
@@ -121,8 +125,8 @@ public ArrayList paintRepetitiveTransactions() {
         controller.removeIncomeFromDayById(id, numberDay);
     }
 
-    public HashMap getInformationOfTransaction(int id) {
-        return controller.getInformationOfIncome(id);
+    public HashMap<String, Object> getInformationOfTransaction(int id) {
+        return controller.getInformationOfTransaction(id);
     }
 
     public void editTransaction(int id, String name, String amount, String date, Color selectedColor,
@@ -160,16 +164,10 @@ public ArrayList paintRepetitiveTransactions() {
      */
     public void updateCalendarView() {
         if (view != null) {
-            // Clear the current calendar view
             view.clearViewCalendar();
-            
-            // Reassign transactions to days to ensure data is current
             controller.assignTransactionToDays();
-            
-            // Get the calendar panels from the view
             JPanel[] calendarPanels = view.getViewCalendar();
             if (calendarPanels != null) {
-                // Repaint all transactions in the calendar
                 view.paintTransactionsInCalendarTab(calendarPanels);
             }
         }
