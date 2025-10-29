@@ -5,7 +5,10 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.alxbryann.foc.view.glasspanepopup.GlassPanePopup;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -24,7 +27,7 @@ public final class NextTransactionsPanel extends JPanel {
 
     private void initializeUI() {
         setLayout(null);
-        setBounds(30, 50, 300, 460);
+        // parent will set this panel bounds; don't hardcode here so parent-controlled sizing works
         setBackground(new Color(0xE8E0BE));
 
         JLabel titleNextTransactions = new JLabel("Next Transactions");
@@ -34,10 +37,38 @@ public final class NextTransactionsPanel extends JPanel {
 
         transactionsContainer = new JPanel();
         transactionsContainer.setLayout(new BoxLayout(transactionsContainer, BoxLayout.Y_AXIS));
-        transactionsContainer.setBounds(10, 45, 280, 400);
         transactionsContainer.setOpaque(false);
 
-        add(transactionsContainer);
+        // Wrap transactionsContainer in a scroll pane so overflowing items can scroll
+        JScrollPane scrollPane = new JScrollPane(transactionsContainer, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPane.setBorder(null);
+    scrollPane.setOpaque(false);
+    scrollPane.getViewport().setOpaque(false);
+    JScrollBar vbar = scrollPane.getVerticalScrollBar();
+    vbar.setUnitIncrement(16);
+    // make the scrollbar a bit thinner
+    vbar.setPreferredSize(new Dimension(8, 0));
+    vbar.setOpaque(false);
+    // add inner right padding so ElementDetail items don't sit flush against the scrollbar
+    scrollPane.setViewportBorder(new EmptyBorder(0, 0, 0, 8));
+
+        // Set an initial bounds for the scrollPane (fallback) and add a component listener so it resizes with this panel
+        int innerLeft = 10;
+        int innerTop = 45;
+        int fallbackWidth = 280;
+        int fallbackHeight = 400;
+        scrollPane.setBounds(innerLeft, innerTop, fallbackWidth, fallbackHeight);
+        int bottomPadding = 20; // keep some space at the bottom inside this panel
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                int innerWidth = Math.max(50, getWidth() - innerLeft * 2);
+                int innerHeight = Math.max(20, getHeight() - innerTop - bottomPadding);
+                scrollPane.setBounds(innerLeft, innerTop, innerWidth, innerHeight);
+            }
+        });
+
+        add(scrollPane);
         add(titleNextTransactions);
 
     }
