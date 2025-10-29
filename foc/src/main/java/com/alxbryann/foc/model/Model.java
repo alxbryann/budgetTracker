@@ -3,6 +3,7 @@ package com.alxbryann.foc.model;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +45,37 @@ public class Model {
         income.setRepetitiveByMonth(repetitiveByMonth);
 
         controller.createIncome(income);
+        
+        if (isRepetitive && repetitiveByWeek) {
+            int currentMonth = calendar.getCurrentMonth();
+            int currentYear = calendar.getCurrentYear();
+            YearMonth ym = YearMonth.of(currentYear, currentMonth);
+            int daysInMonth = ym.lengthOfMonth();
+
+            for (int day = 1; day <= daysInMonth; day++) {
+                try {
+                    LocalDate occurrence = LocalDate.of(currentYear, currentMonth, day);
+                    // match day of week
+                    if (occurrence.getDayOfWeek().equals(localDate.getDayOfWeek())) {
+                        if (!occurrence.equals(localDate)) {
+                            Transaction occTrans = new Transaction();
+                            occTrans.setName(name);
+                            occTrans.setValue(valueDouble);
+                            Date occDate = Date.from(occurrence.atStartOfDay(defaultZoneId).toInstant());
+                            occTrans.setDate(occDate);
+                            occTrans.setColor(selectedColor);
+                            // these created occurrences are not marked as repetitive
+                            occTrans.setIsRepetitive(false);
+                            occTrans.setRepetitiveByWeek(false);
+                            occTrans.setRepetitiveByMonth(false);
+                            controller.createIncome(occTrans);
+                        }
+                    }
+                } catch (Exception e) {
+                    // ignore invalid dates or persistence exceptions for individual occurrences
+                }
+            }
+        }
     }
 
     public int getNumberOfDaysInCurrentMonth() {
@@ -103,7 +135,7 @@ public class Model {
         return transactionsInCurrentMonth;
     }
 
-    public List<HashMap<String, Object>>  getTransactionsByDay(int day) {
+    public List<HashMap<String, Object>> getTransactionsByDay(int day) {
         List<Transaction> transactions = controller.findTransactionsByDay(day);
         List<HashMap<String, Object>> result = new ArrayList<>();
         for (Transaction t : transactions) {
@@ -123,28 +155,8 @@ public class Model {
         for (int i = 0; i < ri.size(); i++) {
             int id = ri.get(i).getRepetitiveTransaction_id();
             Transaction temporalIncome = (Transaction) controller.findTransactionById(id);
-            if (temporalIncome.isRepetitiveByWeek()) { // if is repetitive by week
-                int incomeDay = calendar.getDayFromTransaction(temporalIncome.getDate());
-                int dayToPaint = incomeDay;
-                int incomeMonth = calendar.getMonthFromTransaction(temporalIncome.getDate());
-                int thisMonth = calendar.getCurrentMonth();
-                while (dayToPaint < calendar.getNumberOfDaysInCurrentMonth()) {
-                    try {
-                        if (incomeMonth <= thisMonth) {
-                            RepetitiveIncomesInCurrentMonth.add(dayToPaint);
-                            RepetitiveIncomesInCurrentMonth.add(temporalIncome.getRgb());
-                            RepetitiveIncomesInCurrentMonth.add(temporalIncome.getName());
-                            dayToPaint += 7;
-                            if (!RepetitiveIncomesInCurrentMonth.contains(dayToPaint)) {
-                                Day tempDay = calendar.getDayByNumberInSpecificMonth(dayToPaint,
-                                        calendar.getCurrentMonth());
-                                tempDay.setNewTransaction(temporalIncome);
-                            }
-                        }
-                    } catch (Exception e) {
-                    }
-                }
-            } else { // if is repetitive by month
+            // Only process repetitive-by-month transactions for painting.
+            if (temporalIncome.isRepetitiveByMonth()) {
                 int dayToPaint = calendar.getDayFromTransaction(temporalIncome.getDate());
                 if (calendar.getMonthFromTransaction(temporalIncome.getDate()) != calendar.getCurrentMonth()) {
                     RepetitiveIncomesInCurrentMonth.add(dayToPaint);

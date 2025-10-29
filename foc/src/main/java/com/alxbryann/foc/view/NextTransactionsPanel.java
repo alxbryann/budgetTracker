@@ -48,9 +48,9 @@ public final class NextTransactionsPanel extends JPanel {
         addIncome.setLayout(null);
         addIncome.setPreferredSize(new Dimension(400, 520));
         addIncome.setBackground(Color.WHITE);
-    addIncome.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, false));
+        addIncome.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, false));
 
-    JLabel title = new JLabel(isExpense ? "Create New Expense" : "Create New Income");
+        JLabel title = new JLabel(isExpense ? "Create New Expense" : "Create New Income");
         title.setFont(new Font("Lexend", Font.BOLD, 18));
         title.setBounds(45, 10, 500, 30);
         title.setForeground(new Color(60, 60, 60));
@@ -107,7 +107,7 @@ public final class NextTransactionsPanel extends JPanel {
         textIsRepetitive.setFont(new Font("Lexend", Font.PLAIN, 14));
         ModernCheckBox isRepetitive = new ModernCheckBox();
         isRepetitive.setBounds(150, 260, 30, 20);
-    isRepetitive.setFont(new Font("Lexend", Font.PLAIN, 14));
+        isRepetitive.setFont(new Font("Lexend", Font.PLAIN, 14));
         addIncome.add(textIsRepetitive);
         addIncome.add(isRepetitive);
 
@@ -136,15 +136,15 @@ public final class NextTransactionsPanel extends JPanel {
                 "Brown"
         };
 
-    JComboBox<String> colorComboBox = new JComboBox<>(colorNames);
-    colorComboBox.setFont(new Font("Lexend", Font.PLAIN, 14));
+        JComboBox<String> colorComboBox = new JComboBox<>(colorNames);
+        colorComboBox.setFont(new Font("Lexend", Font.PLAIN, 14));
         colorComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
                     boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
                         cellHasFocus);
-        label.setFont(new Font("Lexend", Font.PLAIN, 14));
+                label.setFont(new Font("Lexend", Font.PLAIN, 14));
                 if (index >= 0 && index < pastelColors.length) {
                     Color color = pastelColors[index];
                     label.setIcon(new ColorIcon(color, 20, 20));
@@ -155,21 +155,21 @@ public final class NextTransactionsPanel extends JPanel {
         colorComboBox.setBounds(45, 320, 300, 30);
         addIncome.add(colorComboBox);
 
-    JButton closeButton = new JButton("Close");
+        JButton closeButton = new JButton("Close");
         closeButton.setBounds(120, 420, 150, 40);
         closeButton.setFont(new Font("Lexend", Font.PLAIN, 16));
         // Aplicar estilo FlatLaf - rojo como Expense
         FlatLafStyleManager.applyDangerButtonStyle(closeButton);
-    closeButton.addActionListener(e -> GlassPanePopup.closePopupLast());
+        closeButton.addActionListener(e -> GlassPanePopup.closePopupLast());
         addIncome.add(closeButton);
 
-    JButton send = new JButton("Create");
+        JButton send = new JButton("Create");
         send.setBounds(120, 370, 150, 40);
         send.setFont(new Font("Lexend", Font.PLAIN, 16));
         // Aplicar estilo FlatLaf - verde como Income
         FlatLafStyleManager.applySuccessButtonStyle(send);
-    ModernToggleButton weekOrMonth = new ModernToggleButton();
-    weekOrMonth.setFont(new Font("Lexend", Font.PLAIN, 14));
+        ModernToggleButton weekOrMonth = new ModernToggleButton();
+        weekOrMonth.setFont(new Font("Lexend", Font.PLAIN, 14));
 
         isRepetitive.addActionListener(e -> {
             if (isRepetitive.isSelected()) {
@@ -282,7 +282,8 @@ public final class NextTransactionsPanel extends JPanel {
             valueIncome.setText("");
             datePicker.clear();
             colorComboBox.setSelectedIndex(0);
-            JOptionPane.showMessageDialog(NextTransactionsPanel.this, "Added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(NextTransactionsPanel.this, "Added successfully", "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
             GlassPanePopup.closePopupLast();
             viewController.assignTransactionToDays();
             viewController.updateNextTransactions();
@@ -297,13 +298,14 @@ public final class NextTransactionsPanel extends JPanel {
             GlassPanePopup.install(parentFrame);
             GlassPanePopup.showPopup(addIncome);
         }
-        // No refresh here to avoid layout jitter; we'll refresh after successful creation
+        // No refresh here to avoid layout jitter; we'll refresh after successful
+        // creation
     }
 
     public void updateTransactionsContainer() {
         List<Transaction> incomeList = viewController.getInfoIncome();
         transactionsContainer.removeAll();
-        
+
         if (!incomeList.isEmpty()) {
             for (int i = 0; i < incomeList.size(); i++) {
                 Transaction transaction = incomeList.get(i);
@@ -312,23 +314,22 @@ public final class NextTransactionsPanel extends JPanel {
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
                 int dayNumber = incomeDate.getDayOfMonth();
-                
+
                 // Create ElementDetail for each transaction
                 ElementDetail elementDetail = new ElementDetail(
                         transaction.getId(),
                         transaction.getName(),
                         transaction.getValue(),
                         viewController,
-                        dayNumber
-                );
-                
+                        dayNumber);
+
                 // Set size to fill the container width and have consistent height
                 elementDetail.setPreferredSize(new Dimension(270, 50));
                 elementDetail.setMaximumSize(new Dimension(270, 50));
                 elementDetail.setMinimumSize(new Dimension(270, 50));
-                
+
                 transactionsContainer.add(elementDetail);
-                
+
                 // Add spacing between elements except after the last one
                 if (i < incomeList.size() - 1) {
                     transactionsContainer.add(Box.createRigidArea(new Dimension(0, 8)));

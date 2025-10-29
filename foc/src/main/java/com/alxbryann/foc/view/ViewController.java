@@ -77,7 +77,7 @@ public class ViewController {
         return controller.getDaysToPaint();
     }
 
-public ArrayList paintRepetitiveTransactions() {
+    public ArrayList paintRepetitiveTransactions() {
         return controller.paintRepetitiveTransactions();
     }
 
@@ -100,7 +100,7 @@ public ArrayList paintRepetitiveTransactions() {
     public double getTotalCostByDay(int day) {
         return controller.getTotalCostByDay(day);
     }
-    
+
     public double getTotalIncomeByDay(int day) {
         return controller.getTotalIncomeByDay(day);
     }
@@ -158,8 +158,10 @@ public ArrayList paintRepetitiveTransactions() {
     }
 
     /**
-     * Updates the calendar view by clearing the current view and repainting all transactions.
-     * This method should be called whenever transactions are added, edited, or deleted
+     * Updates the calendar view by clearing the current view and repainting all
+     * transactions.
+     * This method should be called whenever transactions are added, edited, or
+     * deleted
      * to ensure the calendar displays the most current data.
      */
     public void updateCalendarView() {
