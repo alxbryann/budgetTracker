@@ -95,7 +95,7 @@ public class Controller {
     }
 
 
-    public ArrayList paintRepetitiveTransactions() {
+    public  List<HashMap<String, Object>> getListOfRepetitiveTransactionsInCurrentMonth() {
         return model.getListOfRepetitiveTransactionsInCurrentMonth();
     }
 

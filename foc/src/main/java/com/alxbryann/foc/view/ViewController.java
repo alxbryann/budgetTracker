@@ -77,8 +77,8 @@ public class ViewController {
         return controller.getDaysToPaint();
     }
 
-    public ArrayList paintRepetitiveTransactions() {
-        return controller.paintRepetitiveTransactions();
+    public  List<HashMap<String, Object>> getListOfRepetitiveTransactionsInCurrentMonth() {
+        return controller.getListOfRepetitiveTransactionsInCurrentMonth();
     }
 
     public List<HashMap<String, Object>> getTransactionsByDay(int day) {

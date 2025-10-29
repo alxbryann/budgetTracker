@@ -12,6 +12,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Taskbar;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -175,51 +176,71 @@ public final class View extends JFrame {
     }
 
     private void paintRepetitiveTransactionsInCalendarTab(JPanel[] calendarDays) {
-        ArrayList<Object[]> daysToPaint = viewController.paintRepetitiveTransactions();
+        List<HashMap<String, Object>> daysToPaint = viewController.getListOfRepetitiveTransactionsInCurrentMonth();
         paintRepetitiveDataInCalendarTab(daysToPaint, calendarDays);
     }
 
-    private void paintRepetitiveDataInCalendarTab(ArrayList<Object[]> daysToPaint, JPanel[] calendarDays) {
-        for (int i = 0; i < daysToPaint.size(); i += 3) {
-            Object day = daysToPaint.get(i);
-            Object rgb = daysToPaint.get(i + 1);
-            int intDay = (Integer) day;
-            JPanel tempDay = calendarDays[intDay];
-            if (!tempDay.getClientProperty("painted").equals("true")) {
-                String strRgb = (String) rgb;
-                int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
-                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
-                int green = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
-                strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
-                int blue = Integer.parseInt(strRgb);
-                Object name = daysToPaint.get(i + 2);
-                String strName = (String) name;
-                tempDay.removeAll();
-                tempDay.revalidate();
-                tempDay.repaint();
-                tempDay.setBackground(new Color(red, green, blue));
-                JLabel numberDay = new JLabel(String.valueOf(tempDay.getClientProperty("dayNumber")));
-                numberDay.setFont(new Font("Lexend", Font.BOLD, 30));
-                numberDay.setBounds(10, 6, 50, 30);
-                numberDay.setForeground(Color.white);
-                tempDay.add(numberDay);
-                JLabel nameJLabel = new JLabel(strName);
-                if (strName.length() <= 7) {
-                    nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
-                } else {
-                    if (strName.length() > 7) {
-                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
-                    } else {
-                        if (strName.length() > 10) {
-                            nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 10));
-                        }
-                    }
+    private void paintRepetitiveDataInCalendarTab(List<HashMap<String, Object>> daysToPaint, JPanel[] calendarDays) {
+        if (daysToPaint == null) {
+            return;
+        }
+        for (HashMap<String, Object> map : daysToPaint) {
+            if (map == null) continue;
+            Object dayObj = map.get("day");
+            Object rgbObj = map.get("rgb");
+            Object nameObj = map.get("name");
+            if (dayObj == null || rgbObj == null || nameObj == null) continue;
+
+            int intDay;
+            if (dayObj instanceof Integer) {
+                // The model stores day as 1-based (e.g., 1..31). View calendar index is 0-based.
+                intDay = ((Integer) dayObj) - 1;
+            } else {
+                try {
+                    intDay = Integer.parseInt(dayObj.toString()) - 1;
+                } catch (Exception e) {
+                    continue;
                 }
-                nameJLabel.setForeground(Color.BLACK);
-                nameJLabel.setHorizontalAlignment(JLabel.CENTER);
-                nameJLabel.setBounds(0, 40, 100, 50);
-                tempDay.add(nameJLabel);
-                tempDay.putClientProperty("painted", "true");
+            }
+
+            if (intDay < 0 || intDay >= calendarDays.length) continue;
+
+            JPanel tempDay = calendarDays[intDay];
+            if (!"true".equals(tempDay.getClientProperty("painted"))) {
+                String strRgb = rgbObj.toString();
+                try {
+                    int red = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
+                    strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
+                    int green = Integer.parseInt(strRgb.substring(0, strRgb.indexOf(",")));
+                    strRgb = strRgb.substring(strRgb.indexOf(",") + 2);
+                    int blue = Integer.parseInt(strRgb);
+                    String strName = nameObj.toString();
+                    tempDay.removeAll();
+                    tempDay.revalidate();
+                    tempDay.repaint();
+                    tempDay.setBackground(new Color(red, green, blue));
+                    JLabel numberDay = new JLabel(String.valueOf(tempDay.getClientProperty("dayNumber")));
+                    numberDay.setFont(new Font("Lexend", Font.BOLD, 30));
+                    numberDay.setBounds(10, 6, 50, 30);
+                    numberDay.setForeground(Color.white);
+                    tempDay.add(numberDay);
+                    JLabel nameJLabel = new JLabel(strName);
+                    if (strName.length() <= 7) {
+                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 20));
+                    } else if (strName.length() > 10) {
+                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 10));
+                    } else {
+                        nameJLabel.setFont(new Font("Lexend", Font.PLAIN, 14));
+                    }
+                    nameJLabel.setForeground(Color.BLACK);
+                    nameJLabel.setHorizontalAlignment(JLabel.CENTER);
+                    nameJLabel.setBounds(0, 40, 100, 50);
+                    tempDay.add(nameJLabel);
+                    tempDay.putClientProperty("painted", "true");
+                } catch (Exception ex) {
+                    // If rgb parsing fails, skip this entry
+                    continue;
+                }
             } else {
                 JLabel plus = new JLabel("+");
                 plus.setFont(new Font("Lexend", Font.BOLD, 30));

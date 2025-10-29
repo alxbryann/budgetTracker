@@ -148,26 +148,28 @@ public class Model {
         return result;
     }
 
-    public ArrayList<Integer> getListOfRepetitiveTransactionsInCurrentMonth() {
-        ArrayList RepetitiveIncomesInCurrentMonth = new ArrayList<>();
-        List<RepetitiveTransaction> ri;
-        ri = (List<RepetitiveTransaction>) controller.findAllRepetitiveTransactions();
+    public List<HashMap<String, Object>> getListOfRepetitiveTransactionsInCurrentMonth() {
+        List<HashMap<String, Object>> repetitiveIncomesInCurrentMonth = new ArrayList<>();
+        List<RepetitiveTransaction> ri = (List<RepetitiveTransaction>) controller.findAllRepetitiveTransactions();
         for (int i = 0; i < ri.size(); i++) {
             int id = ri.get(i).getRepetitiveTransaction_id();
-            Transaction temporalIncome = (Transaction) controller.findTransactionById(id);
+            Transaction temporalIncome = controller.findTransactionById(id);
+            if (temporalIncome == null) continue;
             // Only process repetitive-by-month transactions for painting.
             if (temporalIncome.isRepetitiveByMonth()) {
                 int dayToPaint = calendar.getDayFromTransaction(temporalIncome.getDate());
                 if (calendar.getMonthFromTransaction(temporalIncome.getDate()) != calendar.getCurrentMonth()) {
-                    RepetitiveIncomesInCurrentMonth.add(dayToPaint);
-                    RepetitiveIncomesInCurrentMonth.add(temporalIncome.getRgb());
-                    RepetitiveIncomesInCurrentMonth.add(temporalIncome.getName());
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("day", dayToPaint);
+                    map.put("rgb", temporalIncome.getRgb());
+                    map.put("name", temporalIncome.getName());
+                    repetitiveIncomesInCurrentMonth.add(map);
                     Day tempDay = calendar.getDayByNumberInSpecificMonth(dayToPaint, calendar.getCurrentMonth());
                     tempDay.setNewTransaction(temporalIncome);
                 }
             }
         }
-        return RepetitiveIncomesInCurrentMonth;
+        return repetitiveIncomesInCurrentMonth;
     }
 
     public String getCurrentMonthInString() {
