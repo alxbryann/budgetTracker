@@ -25,6 +25,21 @@ public class ModernToggleButton extends JToggleButton {
         addActionListener(e -> animateSwitch());
     }
 
+    @Override
+    public void setSelected(boolean selected) {
+        // Ensure visual state matches programmatic selection immediately
+        super.setSelected(selected);
+        // Position the circle according to the selected state
+        if (selected) {
+            circleX = WIDTH - HEIGHT + 5; // move to right
+            backgroundColor = new Color(243, 150, 0);
+        } else {
+            circleX = 5; // move to left
+            backgroundColor = new Color(69, 74, 183);
+        }
+        repaint();
+    }
+
     private void animateSwitch() {
         boolean isOn = isSelected();
         Timer timer = new Timer(5, new ActionListener() {
