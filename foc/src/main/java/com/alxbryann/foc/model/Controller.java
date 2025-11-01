@@ -139,4 +139,8 @@ public class Controller {
     public List<Transaction> getListOfTransactionsCurrentMonth(){
         return pc.findAllTransactionsForCurrentMonth();
     }
+
+    public void copyRepetitiveTransactionsForThisMonth() {
+        pc.copyRepetitiveTransactionsForThisMonth();
+    }
 }

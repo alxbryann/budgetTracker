@@ -34,7 +34,7 @@ public final class View extends JFrame {
     public View(Controller controller) {
         viewController = new ViewController();
         viewController.setController(controller);
-        //viewController.assignTransactionToDays();
+        viewController.copyRepetitiveTransactionsForThisMonth();
         viewController.setView(this);
         
         setUndecorated(true);

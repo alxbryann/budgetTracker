@@ -45,7 +45,7 @@ public class Model {
         income.setRepetitiveByMonth(repetitiveByMonth);
 
         controller.createIncome(income);
-        
+
         if (isRepetitive && repetitiveByWeek) {
             int currentMonth = calendar.getCurrentMonth();
             int currentYear = calendar.getCurrentYear();
@@ -154,8 +154,12 @@ public class Model {
         for (int i = 0; i < ri.size(); i++) {
             int id = ri.get(i).getRepetitiveTransaction_id();
             Transaction temporalIncome = controller.findTransactionById(id);
-            if (temporalIncome == null) continue;
-            // Only process repetitive-by-month transactions for painting.
+            if (temporalIncome == null)
+                continue;
+
+            Date originalDate = temporalIncome.getDate();
+            LocalDate originalLocalDate = originalDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
             if (temporalIncome.isRepetitiveByMonth()) {
                 int dayToPaint = calendar.getDayFromTransaction(temporalIncome.getDate());
                 if (calendar.getMonthFromTransaction(temporalIncome.getDate()) != calendar.getCurrentMonth()) {
@@ -166,6 +170,33 @@ public class Model {
                     repetitiveIncomesInCurrentMonth.add(map);
                     Day tempDay = calendar.getDayByNumberInSpecificMonth(dayToPaint, calendar.getCurrentMonth());
                     tempDay.setNewTransaction(temporalIncome);
+                }
+            }
+
+            if (temporalIncome.isRepetitiveByWeek()) {
+                int currentMonth = calendar.getCurrentMonth();
+                int currentYear = calendar.getCurrentYear();
+                YearMonth ym = YearMonth.of(currentYear, currentMonth);
+                int daysInMonth = ym.lengthOfMonth();
+
+                for (int day = 1; day <= daysInMonth; day++) {
+                    try {
+                        LocalDate occurrence = LocalDate.of(currentYear, currentMonth, day);
+                        if (occurrence.getDayOfWeek().equals(originalLocalDate.getDayOfWeek())) {
+                            if (!(occurrence.getYear() == originalLocalDate.getYear()
+                                    && occurrence.getMonthValue() == originalLocalDate.getMonthValue()
+                                    && occurrence.getDayOfMonth() == originalLocalDate.getDayOfMonth())) {
+                                HashMap<String, Object> map = new HashMap<>();
+                                map.put("day", occurrence.getDayOfMonth());
+                                map.put("rgb", temporalIncome.getRgb());
+                                map.put("name", temporalIncome.getName());
+                                repetitiveIncomesInCurrentMonth.add(map);
+                                Day tempDay = calendar.getDayByNumberInSpecificMonth(occurrence.getDayOfMonth(), currentMonth);
+                                tempDay.setNewTransaction(temporalIncome);
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
                 }
             }
         }

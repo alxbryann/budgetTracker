@@ -66,4 +66,8 @@ public class PersistenceController {
     public double getTotalCostByDay(int day) {
         return transactionJpa.getTotalCostByDay(day);
     }
+
+    public void copyRepetitiveTransactionsForThisMonth() {
+        transactionJpa.copyRepetitiveTransactionsForThisMonth();
+    }
 }

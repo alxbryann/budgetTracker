@@ -174,4 +174,8 @@ public class ViewController {
             }
         }
     }
+
+    public void copyRepetitiveTransactionsForThisMonth() {
+        controller.copyRepetitiveTransactionsForThisMonth();
+    }
 }
