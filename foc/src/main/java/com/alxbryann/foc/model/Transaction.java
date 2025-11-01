@@ -2,14 +2,12 @@ package com.alxbryann.foc.model;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  *
@@ -25,8 +23,7 @@ public class Transaction implements Serializable {
     private String name;
     @Basic
     private double value;
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    private LocalDate date;
     @Basic
     private String rgb;
     @Basic
@@ -40,7 +37,8 @@ public class Transaction implements Serializable {
 
     }
 
-    public Transaction(int id, String name, double value, Date date, Color selectedColor, boolean isRepetitive, boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
+    public Transaction(int id, String name, double value, LocalDate date, Color selectedColor, boolean isRepetitive,
+            boolean isRepetitiveByWeek, boolean isRepetitiveByMonth) {
         this.id = id;
         this.name = name;
         this.value = value;
@@ -75,11 +73,11 @@ public class Transaction implements Serializable {
         this.value = value;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

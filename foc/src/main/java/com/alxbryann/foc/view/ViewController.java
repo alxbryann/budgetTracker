@@ -19,9 +19,9 @@ public class ViewController {
         transaction.setName(name);
         transaction.setValue(value);
         // Puedes ajustar la fecha aquí si tienes lógica para el mes/año actual
-        java.util.Calendar cal = java.util.Calendar.getInstance();
-        cal.set(java.util.Calendar.DAY_OF_MONTH, dayNumber);
-        transaction.setDate(cal.getTime());
+        java.time.LocalDate now = java.time.LocalDate.now();
+        java.time.LocalDate date = java.time.LocalDate.of(now.getYear(), now.getMonthValue(), Math.max(1, dayNumber));
+        transaction.setDate(date);
         controller.addTransactionToDay(transaction, dayNumber);
     }
 
@@ -143,9 +143,7 @@ public class ViewController {
                 double amountDouble = Double.parseDouble(amount);
                 existingIncome.setValue(amountDouble);
                 java.time.LocalDate localDate = java.time.LocalDate.parse(date);
-                java.time.ZoneId defaultZoneId = java.time.ZoneId.systemDefault();
-                java.util.Date dateObj = java.util.Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-                existingIncome.setDate(dateObj);
+                existingIncome.setDate(localDate);
                 existingIncome.setColor(selectedColor);
                 existingIncome.setIsRepetitive(isRepetitive);
                 existingIncome.setRepetitiveByWeek(isRepetitiveByWeek);

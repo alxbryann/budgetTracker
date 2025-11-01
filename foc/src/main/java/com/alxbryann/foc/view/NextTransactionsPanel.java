@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 public final class NextTransactionsPanel extends JPanel {
@@ -340,10 +339,8 @@ public final class NextTransactionsPanel extends JPanel {
         if (!incomeList.isEmpty()) {
             for (int i = 0; i < incomeList.size(); i++) {
                 Transaction transaction = incomeList.get(i);
-                // Get the day number from the transaction date
-                LocalDate incomeDate = transaction.getDate().toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
+        // Get the day number from the transaction date (already a LocalDate)
+        LocalDate incomeDate = transaction.getDate();
                 int dayNumber = incomeDate.getDayOfMonth();
 
                 // Create ElementDetail for each transaction

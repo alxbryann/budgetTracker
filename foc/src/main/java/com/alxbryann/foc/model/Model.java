@@ -2,10 +2,9 @@ package com.alxbryann.foc.model;
 
 import java.awt.Color;
 import java.time.LocalDate;
-import java.time.ZoneId;
+
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,9 +34,7 @@ public class Model {
         income.setValue(valueDouble);
 
         LocalDate localDate = LocalDate.parse(dateStr);
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        Date date = Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
-        income.setDate(date);
+        income.setDate(localDate);
 
         income.setColor(selectedColor);
         income.setIsRepetitive(isRepetitive);
@@ -61,8 +58,7 @@ public class Model {
                             Transaction occTrans = new Transaction();
                             occTrans.setName(name);
                             occTrans.setValue(valueDouble);
-                            Date occDate = Date.from(occurrence.atStartOfDay(defaultZoneId).toInstant());
-                            occTrans.setDate(occDate);
+                            occTrans.setDate(occurrence);
                             occTrans.setColor(selectedColor);
                             // these created occurrences are not marked as repetitive
                             occTrans.setIsRepetitive(false);
@@ -90,7 +86,7 @@ public class Model {
 
         for (int i = 0; i < allTransactions.size(); i++) {
             Transaction temporalTransaction = (Transaction) allTransactions.get(i);
-            Date date = temporalTransaction.getDate();
+            LocalDate date = temporalTransaction.getDate();
             int dayOfTransaction = calendar.getDayFromTransaction(date) - 1;
             int monthOfTransaction = calendar.getMonthFromTransaction(date);
             Day temporalDay = calendar.getDayByNumberInSpecificMonth(dayOfTransaction, monthOfTransaction);
@@ -121,7 +117,7 @@ public class Model {
         for (int i = 0; i < controller.getListOfTransactionsCurrentMonth().size(); i++) {
             Transaction temporalTransaction = controller.getListOfTransactionsCurrentMonth().get(i);
 
-            Date transactionDate = temporalTransaction.getDate();
+            LocalDate transactionDate = temporalTransaction.getDate();
             // Transaction day -1 because of index in viewCalendar
             int transactionDay = calendar.getDayFromTransaction(transactionDate) - 1;
             String transactionName = temporalTransaction.getName();
@@ -150,15 +146,16 @@ public class Model {
 
     public List<HashMap<String, Object>> getListOfRepetitiveTransactionsInCurrentMonth() {
         List<HashMap<String, Object>> repetitiveIncomesInCurrentMonth = new ArrayList<>();
-        List<RepetitiveTransaction> ri = (List<RepetitiveTransaction>) controller.findAllRepetitiveTransactionsInCurrentMonth();
+        List<RepetitiveTransaction> ri = (List<RepetitiveTransaction>) controller
+                .findAllRepetitiveTransactionsInCurrentMonth();
         for (int i = 0; i < ri.size(); i++) {
             int id = ri.get(i).getRepetitiveTransaction_id();
             Transaction temporalIncome = controller.findTransactionById(id);
             if (temporalIncome == null)
                 continue;
 
-            Date originalDate = temporalIncome.getDate();
-            LocalDate originalLocalDate = originalDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate originalDate = temporalIncome.getDate();
+            LocalDate originalLocalDate = originalDate;
 
             if (temporalIncome.isRepetitiveByMonth()) {
                 int dayToPaint = calendar.getDayFromTransaction(temporalIncome.getDate());
@@ -191,7 +188,8 @@ public class Model {
                                 map.put("rgb", temporalIncome.getRgb());
                                 map.put("name", temporalIncome.getName());
                                 repetitiveIncomesInCurrentMonth.add(map);
-                                Day tempDay = calendar.getDayByNumberInSpecificMonth(occurrence.getDayOfMonth(), currentMonth);
+                                Day tempDay = calendar.getDayByNumberInSpecificMonth(occurrence.getDayOfMonth(),
+                                        currentMonth);
                                 tempDay.setNewTransaction(temporalIncome);
                             }
                         }
@@ -215,7 +213,7 @@ public class Model {
         Transaction temporalIncome = controller.findTransactionById(id);
         HashMap<String, Object> incomeInformation = new HashMap<>();
         String name = temporalIncome.getName();
-        Date date = temporalIncome.getDate();
+        LocalDate date = temporalIncome.getDate();
         double amount = temporalIncome.getValue();
         String rgb = temporalIncome.getRgb();
         boolean isRepetitive = temporalIncome.isRepetitive();

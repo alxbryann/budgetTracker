@@ -2,9 +2,8 @@ package com.alxbryann.foc.model;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.ZoneOffset;
+
 import java.util.ArrayList;
-import java.util.Date;
 
 public final class Calendar {
 
@@ -52,7 +51,6 @@ public final class Calendar {
         months.get(month).addToBusyDays(days);
     }
 
-
     public LocalDate getCurrentLocalDate() {
         return LocalDate.now();
     }
@@ -92,24 +90,20 @@ public final class Calendar {
                 return "Mes inválido";
         }
     }
-    
+
     public int getCurrentYear() {
         return LocalDate.now().getYear();
     }
 
-    public int getMonthFromTransaction(Date date) {
-        LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
-        String localDateStr = String.valueOf(localDate);
-        return Integer.parseInt(localDateStr.substring(localDateStr.length() - 5, localDateStr.length() - 3));
+    public int getMonthFromTransaction(LocalDate date) {
+        return date.getMonthValue();
     }
 
     public int getCurrentDay() {
         return LocalDate.now().getDayOfMonth();
     }
 
-    public int getDayFromTransaction(Date date) {
-        LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
-        String localDateStr = String.valueOf(localDate);
-        return Integer.parseInt(localDateStr.substring(localDateStr.length() - 2, localDateStr.length()));
+    public int getDayFromTransaction(LocalDate date) {
+        return date.getDayOfMonth();
     }
 }
