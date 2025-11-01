@@ -150,7 +150,7 @@ public class Model {
 
     public List<HashMap<String, Object>> getListOfRepetitiveTransactionsInCurrentMonth() {
         List<HashMap<String, Object>> repetitiveIncomesInCurrentMonth = new ArrayList<>();
-        List<RepetitiveTransaction> ri = (List<RepetitiveTransaction>) controller.findAllRepetitiveTransactions();
+        List<RepetitiveTransaction> ri = (List<RepetitiveTransaction>) controller.findAllRepetitiveTransactionsInCurrentMonth();
         for (int i = 0; i < ri.size(); i++) {
             int id = ri.get(i).getRepetitiveTransaction_id();
             Transaction temporalIncome = controller.findTransactionById(id);

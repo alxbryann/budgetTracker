@@ -334,7 +334,7 @@ public final class NextTransactionsPanel extends JPanel {
     }
 
     public void updateTransactionsContainer() {
-        List<Transaction> incomeList = viewController.getInfoIncome();
+        List<Transaction> incomeList = viewController.getFutureTransactions();
         transactionsContainer.removeAll();
 
         if (!incomeList.isEmpty()) {

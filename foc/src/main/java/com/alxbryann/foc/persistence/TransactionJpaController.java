@@ -86,6 +86,25 @@ public class TransactionJpaController implements Serializable {
         }
     }
 
+    public List<Transaction> findFutureTransactions() {
+        EntityManager em = getEntityManager();
+        try {
+            // Obtener la fecha actual (hoy a las 00:00:00)
+            java.time.LocalDate today = java.time.LocalDate.now();
+            java.util.Date startOfToday = java.util.Date
+                    .from(today.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+
+            // Query para obtener solo las transacciones de hoy en adelante
+            return em.createQuery(
+                    "SELECT t FROM Transaction t WHERE t.date >= :today ORDER BY t.date ASC",
+                    Transaction.class)
+                    .setParameter("today", startOfToday, javax.persistence.TemporalType.DATE)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     public List<Transaction> findTransactionsByDay(int day) {
         EntityManager em = getEntityManager();
         day++;
@@ -228,14 +247,20 @@ public class TransactionJpaController implements Serializable {
                     continue;
                 }
                 
+                // Obtener la fecha de la transacción original
+                java.time.LocalDate originalDate = originalTransaction.getDate()
+                        .toInstant()
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalDate();
+                
+                // Validar que la transacción original sea de cualquier mes anterior al actual
+                if (!originalDate.isBefore(startOfMonth)) {
+                    // Si la transacción no es de un mes anterior, no la copiamos
+                    continue;
+                }
+                
                 // Si es repetitiva por mes, crear una copia para este mes
                 if (originalTransaction.isRepetitiveByMonth()) {
-                    // Obtener la fecha de la transacción original
-                    java.time.LocalDate originalDate = originalTransaction.getDate()
-                            .toInstant()
-                            .atZone(java.time.ZoneId.systemDefault())
-                            .toLocalDate();
-                    
                     // Primero corregir el día (sumar 1 para compensar el desfase), luego sumar un mes
                     java.time.LocalDate correctedDate = originalDate.plusDays(1);
                     java.time.LocalDate newDate = correctedDate.plusMonths(1);
@@ -248,11 +273,6 @@ public class TransactionJpaController implements Serializable {
                 
                 // Si es repetitiva por semana, crear copias para cada semana del mes
                 if (originalTransaction.isRepetitiveByWeek()) {
-                    java.time.LocalDate originalDate = originalTransaction.getDate()
-                            .toInstant()
-                            .atZone(java.time.ZoneId.systemDefault())
-                            .toLocalDate();
-                    
                     java.time.DayOfWeek dayOfWeek = originalDate.getDayOfWeek();
                     
                     // Encontrar el primer día de la semana en el mes actual
@@ -314,6 +334,29 @@ public class TransactionJpaController implements Serializable {
         copy.setRepetitiveByMonth(false);
         
         create(copy);
+    }
+
+    public List<Transaction> findAllRpetitiveTransactionsForCurrentMonth() {
+        EntityManager em = getEntityManager();
+        try {
+            java.time.LocalDate now = java.time.LocalDate.now();
+            java.time.LocalDate startOfMonth = now.withDayOfMonth(1);
+            java.time.LocalDate startOfNextMonth = startOfMonth.plusMonths(1);
+
+            java.util.Date start = java.util.Date
+                    .from(startOfMonth.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+            java.util.Date end = java.util.Date
+                    .from(startOfNextMonth.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+
+            return em.createQuery(
+                    "SELECT t FROM Transaction t WHERE t.date >= :start AND t.date < :end AND t.isRepetitive = true",
+                    Transaction.class)
+                    .setParameter("start", start, javax.persistence.TemporalType.TIMESTAMP)
+                    .setParameter("end", end, javax.persistence.TemporalType.TIMESTAMP)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
     }
 
 }

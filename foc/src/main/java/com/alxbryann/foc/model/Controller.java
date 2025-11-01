@@ -63,8 +63,16 @@ public class Controller {
         return pc.findAllRepetitiveTransaction();
     }
 
+    public List<RepetitiveTransaction> findAllRepetitiveTransactionsInCurrentMonth() {
+        return pc.findAllRepetitiveTransaction();
+    }
+
     public List<Transaction> findAllTransactions() {
         return pc.findAllTransactions();
+    }
+
+    public List<Transaction> findFutureTransactions() {
+        return pc.findFutureTransactions();
     }
 
     public Transaction findTransactionById(int id) {

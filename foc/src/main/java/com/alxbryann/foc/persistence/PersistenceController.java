@@ -38,6 +38,10 @@ public class PersistenceController {
     public List<Transaction> findAllTransactions() {
         return transactionJpa.findAll();
     }
+
+    public List<Transaction> findFutureTransactions() {
+        return transactionJpa.findFutureTransactions();
+    }
     
     public void createRepetitiveTransaction(RepetitiveTransaction ri) {
         repetitiveTransactionJpa.create(ri);
@@ -49,6 +53,10 @@ public class PersistenceController {
 
     public List<Transaction> findAllTransactionsForCurrentMonth() {
         return transactionJpa.findAllTransactionsForCurrentMonth();
+    }
+
+    public List<Transaction> findAllRpetitiveTransactionsForCurrentMonth() {
+        return transactionJpa.findAllRpetitiveTransactionsForCurrentMonth();
     }
 
     public List<Transaction> findTransactionsByDay(int day) {

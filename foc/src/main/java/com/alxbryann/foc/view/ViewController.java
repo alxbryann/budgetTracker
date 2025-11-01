@@ -65,6 +65,10 @@ public class ViewController {
         return controller.findAllTransactions();
     }
 
+    public List<Transaction> getFutureTransactions() {
+        return controller.findFutureTransactions();
+    }
+
     public int getDaysInCurrentMonth() {
         return controller.getNumberOfDaysInCurrentMonth();
     }
